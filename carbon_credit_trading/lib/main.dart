@@ -3,7 +3,7 @@ import 'package:carbon_credit_trading/pages/buyer_page.dart';
 import 'package:carbon_credit_trading/pages/change_profile.dart';
 
 import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
-import 'package:carbon_credit_trading/pages/intermediary.dart';
+import 'package:carbon_credit_trading/pages/intermediary_page.dart';
 import 'package:carbon_credit_trading/pages/login_page.dart';
 import 'package:carbon_credit_trading/pages/profile_page.dart';
 import 'package:carbon_credit_trading/pages/seller_page.dart';
