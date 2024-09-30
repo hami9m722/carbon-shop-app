@@ -15,8 +15,6 @@ class BusinessOptionsPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const SizedBox(height: 10),
-
-            const SizedBox(height: 10),
             // Đăng nhập Button
             SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -30,6 +28,23 @@ class BusinessOptionsPage extends StatelessWidget {
                 ),
                 child: const Text(
                   'Kênh người bán',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/buyer');
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColors.greenButton,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Text(
+                  'Kênh người mua',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
