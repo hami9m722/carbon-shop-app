@@ -1,6 +1,14 @@
-import 'package:carbon_credit_trading/pages/business_options.dart';
+import 'package:carbon_credit_trading/pages/business_options_page.dart';
+import 'package:carbon_credit_trading/pages/buyer_page.dart';
+import 'package:carbon_credit_trading/pages/change_profile.dart';
+
+import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
 import 'package:carbon_credit_trading/pages/intermediary.dart';
-import 'package:carbon_credit_trading/pages/login.dart';
+import 'package:carbon_credit_trading/pages/login_page.dart';
+import 'package:carbon_credit_trading/pages/profile_page.dart';
+import 'package:carbon_credit_trading/pages/seller_page.dart';
+
+import 'package:carbon_credit_trading/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,11 +28,17 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      initialRoute: '/change_profile',
       routes: {
         '/login': (context) => const LoginPage(),
         '/business_options': (context) => const BusinessOptionsPage(),
         '/intermediary': (context) => const IntermediaryPage(),
+        '/forgetpass': (context) => const ForgetPassPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/buyer': (context) => const BuyerPage(),
+        '/seller': (context) => const SellerPage(),
+        '/profile': (context) => const ProfilePage(),
+        '/change_profile': (context) => const ChangeProfilePage(),
       },
     );
   }

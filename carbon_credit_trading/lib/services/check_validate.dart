@@ -13,7 +13,7 @@ class Validators {
 
   static String? validatePassword(String? password) {
     if (password == null || password.trim().isEmpty) {
-      return 'Password không được để trống';
+      return 'Mật khẩu không được để trống';
     } else if (password.length < 8) {
       return 'Mật khẩu phải có ít nhất 8 ký tự';
     } else if (!RegExp(r'(?=.*[0-9])').hasMatch(password)) {
@@ -24,6 +24,14 @@ class Validators {
       return 'Mật khẩu phải chứa ít nhất một chữ hoa';
     } else if (!RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])').hasMatch(password)) {
       return 'Mật khẩu phải chứa ít nhất một ký tự đặc biệt';
+    }
+    return null;
+  }
+
+// can check by importing library
+  static String? validatePhone(String? phone) {
+    if (phone == null || phone.trim().isEmpty) {
+      return 'Số điện thoại không được để trống';
     }
     return null;
   }

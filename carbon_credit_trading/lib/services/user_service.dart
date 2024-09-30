@@ -4,11 +4,11 @@ class UserService {
   final List<User> _fakeUsers = [
     User(
         email: 'example@domain.com',
-        password: 'Huda1493@',
+        password: 'Huda123456@',
         type: 'doanh_nghiep'),
     User(
         email: '21522425@gm.uit.edu.vn',
-        password: 'Huda1493@',
+        password: 'Huda123456@',
         type: 'cty_trung_gian'),
   ];
 
