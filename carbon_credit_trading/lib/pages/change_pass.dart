@@ -5,14 +5,14 @@ import 'package:carbon_credit_trading/theme/custome_appbar.dart';
 import 'package:carbon_credit_trading/theme/custome_emailfield.dart';
 import 'package:flutter/material.dart';
 
-class ForgetPassPage extends StatefulWidget {
-  const ForgetPassPage({super.key});
+class ChangePassPage extends StatefulWidget {
+  const ChangePassPage({super.key});
 
   @override
-  createState() => _ForgetPassPage();
+  createState() => _ChangePassPage();
 }
 
-class _ForgetPassPage extends State<ForgetPassPage> {
+class _ChangePassPage extends State<ChangePassPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final UserService userService = UserService();
