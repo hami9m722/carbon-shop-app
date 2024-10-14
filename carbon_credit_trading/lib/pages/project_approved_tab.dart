@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ProjectApprovedTab extends StatelessWidget {
+  const ProjectApprovedTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -8,22 +10,22 @@ class ProjectApprovedTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Mã giao dịch: 022'),
-          Text(
+          const Text('Mã giao dịch: 022'),
+          const Text(
             'Số hợp đồng: Đã duyệt',
             style: TextStyle(color: Colors.green),
           ),
-          Text('Ngày ký hợp đồng: 10/10/2023'),
-          Text('Dự án mua: REDD+ Bảo tồn rừng ngập mặn'),
-          Text('Số tín chỉ đăng ký mua: 5,000'),
-          Text('Tổng tiền: 7,000,000 USD'),
-          Text('Bên bán: GreenEco Building Corp'),
-          SizedBox(height: 20),
+          const Text('Ngày ký hợp đồng: 10/10/2023'),
+          const Text('Dự án mua: REDD+ Bảo tồn rừng ngập mặn'),
+          const Text('Số tín chỉ đăng ký mua: 5,000'),
+          const Text('Tổng tiền: 7,000,000 USD'),
+          const Text('Bên bán: GreenEco Building Corp'),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Navigate to details page
             },
-            child: Text('Chi tiết'),
+            child: const Text('Chi tiết'),
           ),
         ],
       ),

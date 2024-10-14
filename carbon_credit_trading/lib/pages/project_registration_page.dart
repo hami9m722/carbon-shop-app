@@ -2,17 +2,19 @@ import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 import 'package:flutter/material.dart';
 
 class ProjectRegistrationPage extends StatelessWidget {
+  const ProjectRegistrationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Đăng ký dự án'),
+        title: const Text('Đăng ký dự án'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,17 +35,17 @@ class ProjectRegistrationPage extends StatelessWidget {
             _buildTextField('Thông tin khác:', ''),
             _buildTextField('Giá bán (USD/tín chỉ)', '15'),
             _buildTextField('Hình thức thanh toán', 'Chuyển khoản quốc tế'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProjectImageUploadPage(),
+                    builder: (context) => const ProjectImageUploadPage(),
                   ),
                 );
               },
-              child: Text('Tiếp theo'),
+              child: const Text('Tiếp theo'),
             ),
           ],
         ),
@@ -58,7 +60,7 @@ class ProjectRegistrationPage extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           hintText: placeholder,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );

@@ -2,35 +2,37 @@ import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
 import 'package:flutter/material.dart';
 
 class ProjectImageUploadPage extends StatelessWidget {
+  const ProjectImageUploadPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Đăng tải ảnh dự án'),
+        title: const Text('Đăng tải ảnh dự án'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildImageUploadSection(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreditImageUploadPage(),
+                    builder: (context) => const CreditImageUploadPage(),
                   ),
                 );
               },
-              child: Text('Tiếp theo'),
+              child: const Text('Tiếp theo'),
             ),
           ],
         ),
@@ -48,19 +50,19 @@ class ProjectImageUploadPage extends StatelessWidget {
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Center(
+          child: const Center(
             child: Text('Chọn ảnh từ máy'),
           ),
         ),
-        SizedBox(height: 10),
-        Text('Hoặc'),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
+        const Text('Hoặc'),
+        const SizedBox(height: 10),
         ElevatedButton.icon(
           onPressed: () {
             // Logic to open camera and take a picture
           },
-          icon: Icon(Icons.camera_alt),
-          label: Text('Mở máy ảnh và chụp'),
+          icon: const Icon(Icons.camera_alt),
+          label: const Text('Mở máy ảnh và chụp'),
         ),
       ],
     );
