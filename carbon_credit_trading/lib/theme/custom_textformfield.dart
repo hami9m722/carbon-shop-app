@@ -5,16 +5,18 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final InputDecoration? decoration;
-  final bool obscureText; // Đặt mặc định là false
-  final String? labelText; // Thuộc tính cho title
+  final bool obscureText;
+  final String? labelText;
+  final TextInputType? keyboardType;
 
   const CustomTextFormField({
     super.key,
     this.controller,
     this.validator,
     this.decoration,
-    this.obscureText = false, // Giá trị mặc định
-    this.labelText, // Khởi tạo labelText
+    this.obscureText = false,
+    this.labelText,
+    this.keyboardType,
   });
 
   @override
@@ -24,9 +26,10 @@ class CustomTextFormField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       obscureText: obscureText,
+      keyboardType: keyboardType, // Sử dụng keyboardType
       decoration: decoration ??
           InputDecoration(
-            labelText: labelText, // Sử dụng labelText ở đây
+            labelText: labelText,
             border: const OutlineInputBorder(),
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.greenButton, width: 2.0),
