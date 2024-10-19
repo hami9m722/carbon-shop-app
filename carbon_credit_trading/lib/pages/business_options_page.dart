@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/seller_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,12 @@ class BusinessOptionsPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/seller');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SellerPage(),
+                      ),
+                    );
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
@@ -37,7 +43,12 @@ class BusinessOptionsPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/buyer');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BusinessOptionsPage(),
+                      ),
+                    );
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,

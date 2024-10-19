@@ -1,4 +1,7 @@
 import 'package:carbon_credit_trading/models/user.dart';
+import 'package:carbon_credit_trading/pages/business_options_page.dart';
+import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
+import 'package:carbon_credit_trading/pages/intermediary_page.dart';
 import 'package:carbon_credit_trading/services/user_service.dart'; // Đảm bảo đường dẫn đúng
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
@@ -32,9 +35,19 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       // Kiểm tra loại người dùng và điều hướng
       if (user.type == 'doanh_nghiep') {
-        Navigator.pushNamed(context, '/business_options');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BusinessOptionsPage(),
+          ),
+        );
       } else {
-        Navigator.pushNamed(context, '/intermediary');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const IntermediaryPage(),
+          ),
+        );
       }
     } else {
       setState(() {
@@ -72,7 +85,12 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/forgetpass');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ForgetPassPage(),
+                    ),
+                  );
                 },
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
@@ -105,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
+                  Navigator.push(context, '/signup' as Route<Object?>);
                 },
                 child: const Text(
                   'Nếu chưa có tài khoản, vui lòng đăng ký!',

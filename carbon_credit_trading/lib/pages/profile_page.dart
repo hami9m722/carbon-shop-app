@@ -1,3 +1,5 @@
+import 'package:carbon_credit_trading/pages/change_pass.dart';
+import 'package:carbon_credit_trading/pages/change_profile.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -83,8 +85,14 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: TextButton(
-                      onPressed: () =>
-                          {Navigator.pushNamed(context, '/change_profile')},
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangeProfilePage(),
+                          ),
+                        )
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: AppColors.greenButton,
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -99,8 +107,14 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: TextButton(
-                      onPressed: () =>
-                          {Navigator.pushNamed(context, '/change_pass')},
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangePassPage(),
+                          ),
+                        )
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: AppColors.greenButton,
                         padding: const EdgeInsets.symmetric(vertical: 12),

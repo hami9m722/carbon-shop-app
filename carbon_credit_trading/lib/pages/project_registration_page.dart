@@ -1,10 +1,13 @@
-import 'package:carbon_credit_trading/theme/colors.dart';
+import 'dart:io';
+
+import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
+import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:carbon_credit_trading/theme/custom_datepicker.dart';
-import 'package:carbon_credit_trading/theme/custom_textformfield.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
+
+import 'dart:developer';
 
 class ProjectRegistrationPage extends StatefulWidget {
   const ProjectRegistrationPage({super.key});
@@ -14,42 +17,81 @@ class ProjectRegistrationPage extends StatefulWidget {
 }
 
 class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _projectNameController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _scaleController = TextEditingController();
-  final TextEditingController _scopeController = TextEditingController();
-  final TextEditingController _partnersController = TextEditingController();
-  final TextEditingController _certificatesController = TextEditingController();
-  final TextEditingController _issuerController = TextEditingController();
-  final TextEditingController _availableCreditsController =
-      TextEditingController();
-  final TextEditingController _certificateIdController =
-      TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  String? _selectedPaymentMethod;
-  final List<String> _paymentMethods = [
-    'Chuyển khoản quốc tế',
-    'Thẻ tín dụng',
-    'PayPal',
-    'Chuyển khoản nội địa',
-  ];
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController controller) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
+// info registered project
+  String _projectName = '';
+  String _startDate = '';
+  String _endDate = '';
+  String _location = '';
+  String _scale = '';
+  String _scope = '';
+  String _partners = '';
+  String _issuer = '';
+  String _availableCredits = '';
+  String _certificates = '';
+  String _price = '';
+  List<String> _selectedPaymentMethodList = [];
+  List<File> _projectImages = [];
+  List<File> _creditImages = [];
+
+  void _nextPage() {
+    if (_currentIndex < 2) {
       setState(() {
-        controller.text =
-            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+        _currentIndex++;
       });
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
     }
+  }
+
+  void _previousPage() {
+    if (_currentIndex > 0) {
+      setState(() {
+        _currentIndex--;
+      });
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _saveProject() {
+    final project = Project(
+      projectName: _projectName,
+      startDate: _startDate,
+      endDate: _endDate,
+      location: _location,
+      scale: _scale,
+      scope: _scope,
+      partners: _partners,
+      issuer: _issuer,
+      availableCredits: _availableCredits,
+      certificates: _certificates,
+      price: _price,
+      projectImages: _projectImages,
+      creditImages: _creditImages,
+      paymentMethods: _selectedPaymentMethodList,
+    );
+    log('Project Details: \n'
+        'Project Name: ${project.projectName}\n'
+        'Start Date: ${project.startDate}\n'
+        'End Date: ${project.endDate}\n'
+        'Location: ${project.location}\n'
+        'Scale: ${project.scale}\n'
+        'Scope: ${project.scope}\n'
+        'Partners: ${project.partners}\n'
+        'Issuer: ${project.issuer}\n'
+        'Available Credits: ${project.availableCredits}\n'
+        'Certificates: ${project.certificates}\n'
+        'Price: ${project.price}\n'
+        'Payment Methods: ${project.paymentMethods}\n'
+        'Project Images: ${project.projectImages.map((file) => file.path).toList()}\n'
+        'Credit Images: ${project.creditImages.map((file) => file.path).toList()}');
   }
 
   @override
@@ -58,119 +100,53 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
       appBar: const CustomAppBar(
         title: "Đăng ký dự án",
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              CustomTextFormField(
-                  controller: _projectNameController, labelText: 'Tên dự án'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _locationController, labelText: 'Vị trí'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _scaleController, labelText: 'Quy mô'),
-              const SizedBox(height: 15),
-              CustomDatePickerField(
-                controller: _startDateController,
-                labelText: 'Thời gian bắt đầu',
-                onTap: (context) {
-                  _selectDate(context, _startDateController);
-                },
-              ),
-              const SizedBox(height: 15),
-              CustomDatePickerField(
-                controller: _startDateController,
-                labelText: 'Thời gian kết thúc',
-                onTap: (context) {
-                  _selectDate(context, _endDateController);
-                },
-              ),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _scopeController, labelText: 'Phạm vi'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _partnersController, labelText: 'Đối tác'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _certificatesController,
-                  labelText: 'Chứng chỉ tín chỉ carbon'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                  controller: _issuerController, labelText: 'Tổ chức cấp'),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                // Sử dụng CustomDigitField cho số lượng tín chỉ
-                controller: _availableCreditsController,
-                labelText: 'Số lượng tín chỉ có sẵn',
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                controller: _certificateIdController,
-                labelText: 'Giấy chứng nhận',
-              ),
-              const SizedBox(height: 15),
-              CustomTextFormField(
-                // Sử dụng CustomDigitField cho số lượng tín chỉ
-                controller: _priceController,
-                labelText: 'Giá bán (USD/tín chỉ)',
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 15),
-              _buildPaymentMethodDropdown(),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProjectImageUploadPage(),
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: AppColors.greenButton,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 12, horizontal: 28), // Padding chiều ngang
-                ),
-                child: const Text(
-                  'Tiếp theo',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 10),
-            ],
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(), // Disable swiping
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: [
+          AddInfoProjectPage(
+            onNext: _nextPage,
+            onProjectDataChanged: (Project data) {
+              setState(() {
+                _projectName = data.projectName;
+                _startDate = data.startDate;
+                _endDate = data.endDate;
+                _location = data.location;
+                _scale = data.scale;
+                _scope = data.scope;
+                _partners = data.partners;
+                _issuer = data.issuer;
+                _availableCredits = data.availableCredits;
+                _certificates = data.certificates;
+                _price = data.price;
+                _selectedPaymentMethodList = [];
+              });
+            },
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaymentMethodDropdown() {
-    return DropdownButton2(
-      hint: const Text('Chọn hình thức thanh toán'),
-      items: _paymentMethods.map((method) {
-        return DropdownMenuItem<String>(
-          value: method,
-          child: Text(method),
-        );
-      }).toList(),
-      value: _selectedPaymentMethod,
-      onChanged: (value) {
-        setState(() {
-          _selectedPaymentMethod = value;
-        });
-      },
-      buttonStyleData: const ButtonStyleData(
-        height: 40,
-        padding: EdgeInsets.only(left: 14, right: 14),
-      ),
-      menuItemStyleData: const MenuItemStyleData(
-        height: 40,
+          ProjectImageUploadPage(
+            onPrevious: _previousPage,
+            onNext: (images) {
+              setState(() {
+                _projectImages = images;
+              });
+              _nextPage();
+            },
+          ),
+          CreditImageUploadPage(
+            onPrevious: _previousPage,
+            onSave: (List<File> creditImages) {
+              setState(() {
+                _creditImages = creditImages;
+              });
+              _saveProject();
+            },
+          )
+        ],
       ),
     );
   }

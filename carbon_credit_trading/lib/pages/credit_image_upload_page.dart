@@ -1,64 +1,97 @@
+import 'dart:io';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/image_picker_button.dart';
+import 'package:carbon_credit_trading/theme/image_upload_section.dart';
 import 'package:flutter/material.dart';
 
-class CreditImageUploadPage extends StatelessWidget {
-  const CreditImageUploadPage({super.key});
+class CreditImageUploadPage extends StatefulWidget {
+  final VoidCallback onPrevious;
+  final Function(List<File>) onSave;
+
+  const CreditImageUploadPage({
+    super.key,
+    required this.onPrevious,
+    required this.onSave,
+  });
+
+  @override
+  createState() => _CreditImageUploadPageState();
+}
+
+class _CreditImageUploadPageState extends State<CreditImageUploadPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  final List<File> _imageFiles = [];
+
+  void _addImage(File newImage) {
+    setState(() {
+      _imageFiles.add(newImage);
+    });
+  }
+
+  void _removeImage(File image) {
+    setState(() {
+      _imageFiles.remove(image);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Đăng tải ảnh tín chỉ'),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            _buildImageUploadSection(),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Logic to save project
-              },
-              child: const Text('Lưu dự án'),
+            ImagePickerButton(
+              onImageSelected: _addImage,
+              imageFiles: _imageFiles,
+            ),
+            const SizedBox(height: 15),
+            Expanded(
+              child: ImageUploadSection(
+                imageFiles: _imageFiles,
+                onRemoveImage: _removeImage,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    widget.onPrevious();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppColors.greenButton,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 28),
+                  ),
+                  child: const Text(
+                    'Trước',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    widget.onSave(_imageFiles);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppColors.greenButton,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 28),
+                  ),
+                  child: const Text(
+                    'Lưu dự án',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildImageUploadSection() {
-    return Column(
-      children: [
-        Container(
-          height: 150,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Center(
-            child: Text('Chọn ảnh từ máy'),
-          ),
-        ),
-        const SizedBox(height: 10),
-        const Text('Hoặc'),
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: () {
-            // Logic to open camera and take a picture
-          },
-          icon: const Icon(Icons.camera_alt),
-          label: const Text('Mở máy ảnh và chụp'),
-        ),
-      ],
     );
   }
 }

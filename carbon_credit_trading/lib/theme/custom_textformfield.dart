@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final String? labelText;
   final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   const CustomTextFormField({
     super.key,
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.labelText,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -26,7 +28,8 @@ class CustomTextFormField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       obscureText: obscureText,
-      keyboardType: keyboardType, // Sử dụng keyboardType
+      keyboardType: keyboardType,
+      onChanged: onChanged,
       decoration: decoration ??
           InputDecoration(
             labelText: labelText,

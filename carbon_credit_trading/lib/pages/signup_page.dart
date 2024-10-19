@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/login_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:carbon_credit_trading/theme/custom_emailfield.dart';
@@ -29,7 +30,12 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         errorMessage = null;
       });
-      Navigator.pushNamed(context, '/login');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+      );
     }
   }
 
@@ -121,7 +127,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
                     },
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
@@ -138,7 +149,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 // Đăng nhập Button
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
-                   
                   child: TextButton(
                     onPressed: _signUp,
                     style: TextButton.styleFrom(
@@ -149,7 +159,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       'Đăng ký',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
-                    
                   ),
                 ),
                 const SizedBox(height: 10),
