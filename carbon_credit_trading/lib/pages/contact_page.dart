@@ -1,4 +1,6 @@
 import 'package:carbon_credit_trading/models/message.dart';
+import 'package:carbon_credit_trading/pages/chat_page.dart';
+import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:collection/collection.dart';
@@ -29,7 +31,7 @@ final List<Message> mockMessages = [
     senderAvatar: 'https://example.com/avatar2.jpg',
     receiverName: 'You',
     receiverAvatar: 'https://example.com/your_avatar.jpg',
-    content: 'Let\'s catch up John later!',
+    content: 'Let\'s catch up John later',
     timestamp: DateTime.parse('2024-10-19 09:20:00'),
     isRead: false,
   ),
@@ -86,7 +88,7 @@ class _ContactPageState extends State<ContactPage> {
   List<Map<String, dynamic>> getFilteredMessages() {
     final query = searchController.text.toLowerCase();
     if (query.isEmpty) {
-      return groupedMessages; // Trả về tất cả tin nhắn nếu không có tìm kiếm
+      return groupedMessages;
     }
 
     return groupedMessages.where((message) {
@@ -176,7 +178,7 @@ class _ContactPageState extends State<ContactPage> {
               ],
             ),
           ),
-          
+
           // Show people and message tab
           // if (isSearching && hasResults)
           //   Row(
@@ -199,6 +201,7 @@ class _ContactPageState extends State<ContactPage> {
           Expanded(
             child: filteredMessages.isNotEmpty
                 ? ListView.builder(
+                    physics: const BouncingScrollPhysics(),
                     itemCount: filteredMessages.length,
                     itemBuilder: (context, index) {
                       final message = filteredMessages[index];
@@ -210,27 +213,45 @@ class _ContactPageState extends State<ContactPage> {
                           radius: 30,
                           backgroundImage: NetworkImage(message['avatar']),
                         ),
-                        title: Text(
-                          message['name'],
-                          style: TextStyle(
-                            fontWeight: message['isRead']
-                                ? FontWeight.normal
-                                : FontWeight.bold,
+                        title: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontWeight: message['isRead']
+                                  ? FontWeight.w600
+                                  : FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 22,
+                            ),
+                            children: highlightMatches(
+                              message['name'],
+                              searchController.text,
+                              Colors.yellow,
+                            ),
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Text(
-                                truncateMessage(message['latestMessage']),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontWeight: message['isRead']
+                                        ? FontWeight.normal
+                                        : FontWeight.w600,
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                  children: highlightMatches(
+                                    message['latestMessage'],
+                                    searchController.text,
+                                    Colors.yellow,
+                                  ),
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: message['isRead']
-                                      ? FontWeight.normal
-                                      : FontWeight.bold,
-                                ),
                               ),
                             ),
                             Text(
@@ -253,7 +274,14 @@ class _ContactPageState extends State<ContactPage> {
                               )
                             : null,
                         onTap: () {
-                          // Điều hướng tới màn hình chat cụ thể
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                contactName: message['name'],
+                                contactAvatar: message['avatar'],
+                              ),
+                            ),
+                          );
                         },
                       );
                     },
