@@ -10,7 +10,9 @@ class SellerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(
+        title: "Kênh người bán",
+      ),
       body: Container(
         color: Colors.white,
         child: Column(

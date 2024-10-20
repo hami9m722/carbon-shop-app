@@ -1,4 +1,3 @@
-import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -6,11 +5,13 @@ import 'dart:io';
 class ImagePickerButton extends StatefulWidget {
   final Function(File) onImageSelected;
   final List<File> imageFiles;
+  final Widget child;
 
   const ImagePickerButton({
     super.key,
     required this.onImageSelected,
     this.imageFiles = const [],
+    required this.child,
   });
 
   @override
@@ -93,13 +94,9 @@ class _ImagePickerButtonState extends State<ImagePickerButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: IconButton(
-        icon: const Icon(Icons.add_a_photo,
-            size: 40, color: AppColors.greenButton),
-        onPressed: () => _showImagePickerOptions(context),
-      ),
+    return GestureDetector(
+      onTap: () => _showImagePickerOptions(context),
+      child: widget.child,
     );
   }
 }

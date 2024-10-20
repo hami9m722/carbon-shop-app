@@ -1,4 +1,4 @@
-import 'package:carbon_credit_trading/pages/seller_page.dart';
+import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         }), //navigation transition
         useMaterial3: true, // should be changed
       ),
-      home: const SellerPage(),
+      home: const ContactPage(),
     );
   }
 }
