@@ -1,5 +1,7 @@
+import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:carbon_credit_trading/pages/profile_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +147,25 @@ class SellerPage extends StatelessWidget {
                           ),
                         );
                       }),
-                      _buildActionCard(Icons.check, 'Dự án đã duyệt'),
-                      _buildActionCard(Icons.contact_page, 'Liên hệ'),
+                      _buildActionCard(Icons.check, 'Các dự án'),
+                      _buildActionCard(Icons.check, 'Các giao dịch',
+                          onTapped: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TransactionReviewPage(),
+                          ),
+                        );
+                      }),
+                      _buildActionCard(Icons.contact_page, 'Liên hệ',
+                          onTapped: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ContactPage(),
+                          ),
+                        );
+                      }),
                       _buildActionCard(Icons.bar_chart, 'Thống kê doanh thu'),
                     ],
                   ),

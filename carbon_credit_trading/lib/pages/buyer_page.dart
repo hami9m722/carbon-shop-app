@@ -1,114 +1,177 @@
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/pages/contact_page.dart';
+import 'package:carbon_credit_trading/pages/favorite_tab.dart';
+import 'package:carbon_credit_trading/pages/profile_page.dart';
+import 'package:carbon_credit_trading/pages/search_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-class BuyerPage extends StatelessWidget {
+class BuyerPage extends StatefulWidget {
   const BuyerPage({super.key});
 
   @override
+  createState() => _BuyerPageState();
+}
+
+class _BuyerPageState extends State<BuyerPage> {
+  int currentIndex = 0;
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  void onTabTapped(int index) {
+    pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return PopScope(
-        canPop: false,
-        child: Scaffold(
-          appBar: const CustomAppBar(
-            title: "Kênh người bán",
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.grey[300],
-                      child: const Icon(Icons.person, size: 30),
-                    ),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Renewable Biomass Energy Ventures',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text('andi@renewablebiomass.id'),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        // Thao tác quay lại
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Transaction Section
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildTransactionCard('Giao dịch đang chờ duyệt', '0'),
-                    _buildTransactionCard('Giao dịch đã hoàn thành', '0'),
-                    _buildTransactionCard('Giao dịch đã hủy', '0'),
-                    _buildTransactionCard('Phản hồi', '0'),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Action Buttons Section
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    children: [
-                      _buildActionCard(Icons.file_copy, 'Đăng ký dự án'),
-                      _buildActionCard(Icons.check, 'Dự án đã duyệt'),
-                      _buildActionCard(Icons.contact_page, 'Liên hệ'),
-                      _buildActionCard(Icons.bar_chart, 'Thống kê doanh thu'),
-                    ],
-                  ),
-                ),
+    return Scaffold(
+      backgroundColor: AppColors.greyBackGround,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 90),
+            child: PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                SearchTab(),
+                TransactionReviewPage(),
+                ContactPage(),
+                FavoriteTab(),
+                ProfilePage(),
               ],
             ),
           ),
-        ));
-  }
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 85,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 40,
+                  ),
+                ],
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(5, (index) {
+                  IconData icon;
+                  String label;
 
-  Widget _buildTransactionCard(String title, String count) {
-    return Column(
-      children: [
-        Text(
-          count,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5),
-        Text(title, textAlign: TextAlign.center),
-      ],
-    );
-  }
+                  switch (index) {
+                    case 0:
+                      icon = Icons.gamepad;
+                      label = "Tìm kiếm";
+                      break;
+                    case 1:
+                      icon = Icons.search;
+                      label = "Giao dịch";
+                      break;
+                    case 2:
+                      icon = Icons.add_box;
+                      label = "Liên hệ";
+                      break;
+                    case 3:
+                      icon = Icons.favorite;
+                      label = "Yêu thích";
+                      break;
+                    case 4:
+                      icon = Icons.person;
+                      label = "Tài khoản";
+                      break;
+                    default:
+                      icon = Icons.error;
+                      label = "";
+                  }
 
-  Widget _buildActionCard(IconData icon, String label) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          // Thao tác khi nhấn
-        },
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 40, color: Colors.green),
-              const SizedBox(height: 10),
-              Text(label, style: const TextStyle(fontSize: 16)),
-            ],
+                  return GestureDetector(
+                    onTap: () => onTabTapped(index),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              Transform.translate(
+                                offset:
+                                    Offset(0, currentIndex == index ? -10 : 0),
+                                child: Transform.rotate(
+                                  angle: currentIndex == index
+                                      ? -15 * (3.14159 / 180)
+                                      : 0,
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    height: currentIndex == index ? 50 : 48,
+                                    width: currentIndex == index ? 50 : 48,
+                                    decoration: BoxDecoration(
+                                      color: currentIndex == index
+                                          ? Colors.white
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(25),
+                                      boxShadow: currentIndex == index
+                                          ? [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                blurRadius: 20,
+                                                offset: const Offset(0, 10),
+                                              )
+                                            ]
+                                          : [],
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        icon,
+                                        size: currentIndex == index ? 36 : 28,
+                                        color: currentIndex == index
+                                            ? Colors.green
+                                            : Colors.black26,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          label,
+                          style: TextStyle(
+                            color: currentIndex == index
+                                ? Colors.green
+                                : Colors.black26,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

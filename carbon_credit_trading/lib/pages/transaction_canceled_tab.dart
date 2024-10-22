@@ -2,8 +2,8 @@ import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/theme/transaction_item.dart';
 import 'package:flutter/material.dart';
 
-class ProjectCanceledTab extends StatelessWidget {
-  const ProjectCanceledTab({super.key});
+class TransactionCanceledTab extends StatelessWidget {
+  const TransactionCanceledTab({super.key});
 
   @override
   Widget build(BuildContext context) {

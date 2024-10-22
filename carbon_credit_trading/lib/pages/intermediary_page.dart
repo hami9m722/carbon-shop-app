@@ -1,5 +1,5 @@
 import 'package:carbon_credit_trading/pages/profile_page.dart';
-import 'package:carbon_credit_trading/pages/project_review_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -76,20 +76,22 @@ class IntermediaryPage extends StatelessWidget {
                           SizedBox(
                             width: constraints.maxWidth / 3 - 5,
                             child: _buildActionCard(
-                                Icons.file_copy, 'Duyệt dự án', onTapped: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ProjectReviewPage(),
-                                ),
-                              );
-                            }),
+                              Icons.file_copy,
+                              'Duyệt dự án',
+                            ),
                           ),
                           SizedBox(
                             width: constraints.maxWidth / 3 - 5,
                             child: _buildActionCard(
-                                Icons.check, 'Duyệt giao dịch'),
+                                Icons.check, 'Duyệt giao dịch', onTapped: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TransactionReviewPage(),
+                                ),
+                              );
+                            }),
                           ),
                           SizedBox(
                             width: constraints.maxWidth / 3 - 5,

@@ -1,11 +1,9 @@
 import 'package:carbon_credit_trading/models/transaction.dart';
-import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_ricktext.dart';
 import 'package:carbon_credit_trading/theme/transaction_item.dart';
 import 'package:flutter/material.dart';
 
-class ProjectPendingTab extends StatelessWidget {
-  const ProjectPendingTab({super.key});
+class TransactionApprovedTab extends StatelessWidget {
+  const TransactionApprovedTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,23 +11,23 @@ class ProjectPendingTab extends StatelessWidget {
     final List<Transaction> pendingTransactions = [
       Transaction(
         transactionId: '021',
-        contractNumber: '',
-        contractDate: '',
+        contractNumber: 'HD098',
+        contractDate: '18/08/2024',
         projectName: 'REDD+ Bảo tồn rừng ngập mặn',
         creditAmount: '10,000',
         totalAmount: '14,000,000 USD',
         seller: 'EcoHome Building Corporation',
-        status: 'pending',
+        status: 'approved',
       ),
       Transaction(
         transactionId: '022',
-        contractNumber: '',
-        contractDate: '',
+        contractNumber: 'HD098',
+        contractDate: '20/10/2024',
         projectName: 'REDD+ Bảo tồn rừng ngập mặn',
         creditAmount: '10,000',
         totalAmount: '14,000,000 USD',
         seller: 'EcoHome Building Corporation',
-        status: 'pending',
+        status: 'approved',
       ),
     ];
 

@@ -18,10 +18,7 @@ class ProjectImageUploadPage extends StatefulWidget {
   createState() => _ProjectImageUploadPage();
 }
 
-class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _ProjectImageUploadPage extends State<ProjectImageUploadPage> {
   final List<File> _imageFiles = [];
 
   void _addImage(File newImage) {
@@ -38,7 +35,6 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
