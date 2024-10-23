@@ -1,5 +1,3 @@
-// chat_screen.dart
-
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:flutter/material.dart';
 
