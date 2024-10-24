@@ -1,7 +1,7 @@
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_datepicker.dart';
-import 'package:carbon_credit_trading/theme/custom_textformfield.dart';
+import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
+import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class AddInfoProjectPage extends StatefulWidget {

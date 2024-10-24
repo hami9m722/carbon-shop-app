@@ -1,5 +1,5 @@
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:carbon_credit_trading/theme/project_item.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 
 class SearchTab extends StatelessWidget {

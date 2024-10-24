@@ -1,6 +1,6 @@
 import 'package:carbon_credit_trading/models/comment.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:carbon_credit_trading/theme/feedback_item.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/feedback_item.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackPage extends StatelessWidget {
@@ -44,21 +44,19 @@ class FeedbackPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.all(15.0),
               child: Text(
                 '${feedbackList.length} đánh giá',
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: feedbackList.length,
                 itemBuilder: (context, index) {
                   final feedback = feedbackList[index];
 
-                  // Use FeedbackItem widget for each feedback
                   return FeedbackItem(feedback: feedback);
                 },
               ),

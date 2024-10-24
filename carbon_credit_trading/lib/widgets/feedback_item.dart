@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/models/comment.dart';
+import 'package:carbon_credit_trading/widgets/full_screen__view.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackItem extends StatelessWidget {
@@ -70,17 +71,25 @@ class FeedbackItem extends StatelessWidget {
                   Text(feedback.review),
                   const SizedBox(height: 8),
                   SizedBox(
+                    height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: feedback.images.length,
                       itemBuilder: (context, imgIndex) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Container(
-                            width: 150,
-                            color: Colors.grey[300],
-                            child: Center(
-                              child: Text(feedback.images[imgIndex]),
+                        return GestureDetector(
+                          onTap: () {
+                            showFullScreen(
+                                context, feedback.images, imgIndex);
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Container(
+                              width: 150,
+                              color: Colors.grey[300],
+                              child: Center(
+                                child: Text(feedback.images[imgIndex]),
+                              ),
                             ),
                           ),
                         );

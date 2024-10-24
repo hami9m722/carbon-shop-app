@@ -1,4 +1,5 @@
-import 'package:carbon_credit_trading/pages/search_tab.dart';
+import 'package:carbon_credit_trading/pages/add_image_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         }), //navigation transition
         useMaterial3: true, // should be changed
       ),
-      home: const SearchTab(),
+      home: const AddImageScreen(),
     );
   }
 }
