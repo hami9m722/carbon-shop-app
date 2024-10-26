@@ -5,12 +5,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool centerTitle;
   final bool automaticallyImplyLeading;
+  final Color color;
 
   const CustomAppBar({
     super.key,
     this.title = '',
     this.centerTitle = true,
     this.automaticallyImplyLeading = true,
+    this.color = Colors.white,
   });
 
   @override
@@ -20,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: color,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),

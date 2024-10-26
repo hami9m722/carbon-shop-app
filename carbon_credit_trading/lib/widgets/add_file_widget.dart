@@ -215,6 +215,7 @@ class _AddFileWidgetState extends State<AddFileWidget> {
               ],
             )
           : GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
