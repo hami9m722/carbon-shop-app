@@ -12,8 +12,6 @@ class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
   const TransactionDetailPage({super.key, required this.transaction});
 
-  get normalText => null;
-
   @override
   Widget build(BuildContext context) {
     String transactionStatusMessage =

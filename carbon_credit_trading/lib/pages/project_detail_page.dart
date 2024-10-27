@@ -4,6 +4,7 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:carbon_credit_trading/widgets/image_carousel.dart';
+import 'package:carbon_credit_trading/widgets/purchase_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailPage extends StatefulWidget {
@@ -14,7 +15,8 @@ class ProjectDetailPage extends StatefulWidget {
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
-  
+  final int maxQuantity = 20;
+  final double pricePerUnit = 1000000.0;
 
   final List<String> _imagePaths = [
     'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
@@ -22,7 +24,18 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     '/path/to/local/image2.jpg',
   ];
 
- 
+  void showPurchaseDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PurchaseDialog(
+          maxQuantity: maxQuantity,
+          pricePerUnit: pricePerUnit,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +154,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
-                        onPressed: () => {},
+                        onPressed: showPurchaseDialog,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.greenButton,
                           foregroundColor: Colors.white,
