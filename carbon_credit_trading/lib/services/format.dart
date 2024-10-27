@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-List<TextSpan> highlightMatches(String text, String query, Color highlightColor) {
+List<TextSpan> highlightMatches(
+    String text, String query, Color highlightColor) {
   if (query.isEmpty) {
     return [TextSpan(text: text)];
   }
@@ -22,7 +23,7 @@ List<TextSpan> highlightMatches(String text, String query, Color highlightColor)
     spans.add(TextSpan(
       text: text.substring(match.start, match.end),
       style: TextStyle(
-        backgroundColor: highlightColor, 
+        backgroundColor: highlightColor,
       ),
     ));
     start = match.end;
@@ -33,4 +34,16 @@ List<TextSpan> highlightMatches(String text, String query, Color highlightColor)
   }
 
   return spans;
+}
+
+String getTransactionStatusMessage(String status) {
+  if (status == 'approved') {
+    return 'đã thành công';
+  } else if (status == 'pending') {
+    return 'đang được duyệt, trạng thái mới sẽ được cập nhật chậm nhất ngày 17/09/2024';
+  } else if (status == 'canceled') {
+    return 'đã hủy';
+  } else {
+    return 'có trạng thái không xác định';
+  }
 }

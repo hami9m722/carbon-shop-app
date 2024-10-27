@@ -18,7 +18,7 @@ class TransactionItem extends StatelessWidget {
 
     FontWeight valueFontWeight =
         (transaction.status == 'pending' || transaction.status == 'canceled')
-            ? FontWeight.bold 
+            ? FontWeight.bold
             : FontWeight.normal;
 
     return Card(
@@ -67,7 +67,7 @@ class TransactionItem extends StatelessWidget {
             ),
             customRichText(
               title: 'Bên bán:',
-              value: transaction.seller,
+              value: transaction.seller?.businessName ?? '',
             ),
             const SizedBox(height: 10),
             Align(
@@ -83,8 +83,7 @@ class TransactionItem extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppColors.greenButton,
+                  backgroundColor: AppColors.greenButton,
                   foregroundColor: Colors.white,
                 ),
                 child: const Text(

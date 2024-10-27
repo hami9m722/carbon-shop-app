@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class Project {
   final String projectName;
   final String startDate;
@@ -12,8 +10,8 @@ class Project {
   final String availableCredits;
   final String certificates;
   final String price;
-  final List<File> projectImages;
-  final List<File> creditImages;
+  final List<dynamic> projectImages;
+  final List<dynamic> creditImages;
   final List<String> paymentMethods;
 
   Project({
@@ -28,7 +26,7 @@ class Project {
     required this.availableCredits,
     required this.certificates,
     required this.price,
-    this.projectImages = const [], 
+    this.projectImages = const [],
     this.creditImages = const [],
     this.paymentMethods = const [],
   });
