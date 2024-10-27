@@ -28,6 +28,7 @@ class ImageUploadSection extends StatelessWidget {
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
+                shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,

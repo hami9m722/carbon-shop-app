@@ -1,4 +1,4 @@
-import 'package:carbon_credit_trading/pages/transaction_detail_page.dart';
+import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class TransactionItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          TransactionDetailPage(transaction: transaction),
+                          ApproveTransactionPage(transaction: transaction),
                     ),
                   );
                 },

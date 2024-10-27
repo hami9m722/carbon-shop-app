@@ -1,6 +1,7 @@
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
   const TransactionDetailPage({super.key, required this.transaction});
+
+  get normalText => null;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +59,22 @@ class TransactionDetailPage extends StatelessWidget {
                     child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Ngày tạo đơn: 11/09/2024'),
-                          Text('Ngày cập nhật: 12/09/2024'),
-                          Text('Ngày bán giao hàng: 13/09/2024'),
+                          Text(
+                            'Ngày tạo đơn: 11/09/2024',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Ngày ký hợp đồng: 12/09/2024',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Ngày thanh toán: 13/09/2024',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Ngày bàn giao tín chỉ:',
+                            style: AppTextStyles.normalText,
+                          ),
                         ])),
                 const SizedBox(height: 16.0),
                 Container(
@@ -69,11 +85,25 @@ class TransactionDetailPage extends StatelessWidget {
                     child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Doanh nghiệp mua:'),
                           Text(
-                              'Tên doanh nghiệp: Coastal Mangrove Restoration'),
-                          Text('Mã số thuế: 123456789'),
-                          Text('Địa chỉ: 123 Đường ABC, TP.HCM'),
+                            'Doanh nghiệp mua',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Tên doanh nghiệp: Coastal Mangrove Restoration',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Mã số thuế: 123456789',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Địa chỉ: 123 Đường ABC, TP.HCM',
+                            style: AppTextStyles.normalText,
+                          ),
                         ])),
                 const SizedBox(height: 16.0),
                 Container(
@@ -84,11 +114,25 @@ class TransactionDetailPage extends StatelessWidget {
                     child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Doanh nghiệp bán:'),
                           Text(
-                              'Tên doanh nghiệp: EcoRestore Building Corporation'),
-                          Text('Mã số thuế: 987654321'),
-                          Text('Địa chỉ: 456 Đường DEF, Sydney, Úc'),
+                            'Doanh nghiệp bán',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Tên doanh nghiệp: EcoRestore Building Corporation',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Mã số thuế: 987654321',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Địa chỉ: 456 Đường DEF, Sydney, Úc',
+                            style: AppTextStyles.normalText,
+                          ),
                         ])),
                 const SizedBox(height: 16.0),
                 Container(
@@ -99,24 +143,46 @@ class TransactionDetailPage extends StatelessWidget {
                     child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Thông tin dự án:'),
                           Text(
-                              'Tên sản phẩm: Sản phẩm công nghệ giảm thiểu khí thải'),
-                          Text('Số lượng: 1000'),
-                          Text('Đơn giá: 10,000,000 VND'),
-                          Text('Thành tiền: 10,000,000,000 VND'),
-                          SizedBox(height: 16.0),
-                          Text('Hàng được KTV kiểm tra:'),
-                          SizedBox(height: 8.0),
+                            'Thông tin dự án',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Tên dự án: REDD+ Bảo tồn rừng ngập mặn Thái Lan',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Vị trí: Vịnh Thái Lan',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Quy mô: 20,000 ha',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Thời gian: 2021 - 2041',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Phạm vi: Giảm 60,000 tấn CO2/năm, bảo vệ hệ sinh thái ven biển',
+                            style: AppTextStyles.normalText,
+                          ),
+                          Text(
+                            'Số lượng cần bán: 100,000',
+                            style: AppTextStyles.normalText,
+                          ),
                         ])),
-                const SizedBox(height: 16.0),
                 Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 20),
+                        vertical: 10, horizontal: 20),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(height: 10.0),
                           customRichText(
                               title: "Hợp đồng",
                               value: "Đã ký",
@@ -140,6 +206,14 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 15.0),
+                          const Text(
+                            'Hóa đơn thanh toán',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
                           ImageCarousel(
                             imagePaths: billImages,
                             onImageTap: (context, images, index) {
@@ -158,10 +232,19 @@ class TransactionDetailPage extends StatelessWidget {
                                   ),
                                   child: const Text(
                                     'Tải xuống',
-                                    style: TextStyle(fontSize: 16),
+                                    style: AppTextStyles.normalText,
                                   ),
                                 ),
                               )),
+                          const SizedBox(height: 15.0),
+                          const Text(
+                            'Hình ảnh tín chỉ',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
                           ImageCarousel(
                             imagePaths: creditImages,
                             onImageTap: (context, images, index) {
@@ -180,7 +263,7 @@ class TransactionDetailPage extends StatelessWidget {
                                   ),
                                   child: const Text(
                                     'Tải xuống',
-                                    style: TextStyle(fontSize: 16),
+                                    style: AppTextStyles.normalText,
                                   ),
                                 ),
                               )),
