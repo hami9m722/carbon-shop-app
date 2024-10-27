@@ -5,9 +5,9 @@ import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
-import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
-import 'package:carbon_credit_trading/widgets/image_carousel.dart';
+import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,24 +25,16 @@ class ApproveTransactionPage extends StatefulWidget {
 class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
   String? fileName;
   String? filePath;
-  List<File> _imageFiles = [];
+  List<File> billImages = [];
+  List<File> creditImages = [];
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     String transactionStatusMessage =
         getTransactionStatusMessage(widget.transaction.status);
-
-    final List<String> billImages = [
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      '/path/to/local/image2.jpg',
-    ];
-
-    final List<String> creditImages = [
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      '/path/to/local/image2.jpg',
-    ];
 
     void uploadFile() async {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -73,12 +65,44 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       }
     }
 
-    void _addImage(File newImage) {
-      _imageFiles.add(newImage);
+    void addCreditImage(File newImage) {
+      setState(() {
+        creditImages.add(newImage);
+      });
     }
 
-    void _removeImage(File image) {
-      _imageFiles.remove(image);
+    void removeCreditImage(File image) {
+      setState(() {
+        creditImages.remove(image);
+      });
+    }
+
+    void addBillImage(File newImage) {
+      setState(() {
+        billImages.add(newImage);
+      });
+    }
+
+    void removeBillImage(File image) {
+      setState(() {
+        billImages.remove(image);
+      });
+    }
+
+    Future<void> _selectDate(
+        BuildContext context, TextEditingController controller) async {
+      final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+      );
+      if (pickedDate != null) {
+        setState(() {
+          controller.text =
+              "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+        });
+      }
     }
 
     return Scaffold(
@@ -244,45 +268,48 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                             ),
                           ),
                         ),
-                      if (fileName == null) // Only show if a file is selected
-
+                      if (fileName == null)
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(
-                              onPressed: uploadFile,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.greenButton,
-                                foregroundColor: Colors.white,
-                              ),
-                              child: const Text('Đăng tải',
-                                  style: AppTextStyles.normalText),
+                          child: ElevatedButton(
+                            onPressed: uploadFile,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.greenButton,
+                              foregroundColor: Colors.white,
                             ),
+                            child: const Text('Đăng tải',
+                                style: AppTextStyles.normalText),
                           ),
                         ),
                       const Text('Hóa đơn thanh toán',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 5.0),
-                      ImageCarousel(
-                        imagePaths: billImages,
-                        onImageTap: (context, images, index) {
-                          showFullScreen(context, images, index);
-                        },
+                      Container(
+                        constraints: const BoxConstraints(minHeight: 130),
+                        child: ImageUploadSection(
+                          imageFiles: billImages,
+                          onRemoveImage: removeBillImage,
+                        ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.greenButton,
-                              foregroundColor: Colors.white,
+                      const SizedBox(height: 15),
+                      ImagePickerButton(
+                        onImageSelected: addBillImage,
+                        imageFiles: billImages,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: AppColors.greenButton,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const Text('Tải xuống',
-                                style: AppTextStyles.normalText),
+                            child: const Text(
+                              'Đăng tải',
+                              style: AppTextStyles.normalText,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),
@@ -290,55 +317,69 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 5.0),
-                      SizedBox(
+                      Container(
+                        constraints: const BoxConstraints(
+                            minHeight: 130), // Set your min height
                         child: ImageUploadSection(
-                          imageFiles: _imageFiles,
-                          onRemoveImage: _removeImage,
+                          imageFiles: creditImages,
+                          onRemoveImage: removeCreditImage,
                         ),
                       ),
                       const SizedBox(height: 15),
                       ImagePickerButton(
-                        onImageSelected: _addImage,
-                        imageFiles: _imageFiles,
+                        onImageSelected: addCreditImage,
+                        imageFiles: creditImages,
                         child: Align(
-                          alignment: Alignment
-                              .centerRight,
+                          alignment: Alignment.centerRight,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal:
-                                    12), 
+                                vertical: 6, horizontal: 20),
                             decoration: BoxDecoration(
-                              color: AppColors
-                                  .greenButton, 
-                              borderRadius: BorderRadius.circular(5),
+                              color: AppColors.greenButton,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize
-                                  .min, // Makes the Row only take as much space as its children
-                              children: [
-                                const Text(
-                                  'Đăng tải',
-                                  style: AppTextStyles.normalText,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            child: const Text(
+                              'Đăng tải',
+                              style: AppTextStyles.normalText,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.greenButton,
-                              foregroundColor: Colors.white,
-                            ),
-                            child: const Text('Đăng tải',
-                                style: AppTextStyles.normalText),
+                      const SizedBox(height: 15),
+                      CustomTextFormField(
+                        controller: _priceController,
+                        labelText: 'Giá bán (USD/tín chỉ)',
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 15),
+                      CustomDatePickerField(
+                        controller: _startDateController,
+                        labelText: 'Ngày ký thanh toán',
+                        onTap: (context) {
+                          _selectDate(context, _startDateController);
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      CustomDatePickerField(
+                        controller: _endDateController,
+                        labelText: 'Ngày ký bàn giao tín chỉ',
+                        onTap: (context) {
+                          _selectDate(context, _endDateController);
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            backgroundColor: AppColors.greenButton,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text(
+                            'Xác nhận giao dịch đã thành công',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                       ),
