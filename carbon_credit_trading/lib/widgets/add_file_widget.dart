@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/widgets/add_video_button.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -36,63 +37,65 @@ class _AddFileWidgetState extends State<AddFileWidget> {
   void initState() {
     super.initState();
     _localImageList = List.from(widget.imageList);
-    _localVideo = widget.video;
   }
 
   // Method for picking images
   Future<void> _addImage() async {
     if (_localImageList.length < 5) {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _localImageList.add(File(image.path));
-          widget.onImageListChanged(_localImageList);
-        });
-      }
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.image, size: 30),
+                title: const Text('Chọn ảnh từ thư viện',
+                    style: TextStyle(fontSize: 17)),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      _localImageList.add(File(image.path));
+                      widget.onImageListChanged(_localImageList);
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, size: 30),
+                title: const Text('Mở máy ảnh và chụp'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      _localImageList.add(File(image.path));
+                      widget.onImageListChanged(_localImageList);
+                    });
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
-      _showErrorDialog('You can only add up to 5 images.');
+      _showErrorDialog('Bạn chỉ có thể thêm tối đa 5 ảnh.');
     }
   }
 
-  // Method for picking video
-  Future<void> _addVideo() async {
-    if (_localVideo == null) {
-      try {
-        final XFile? video =
-            await _picker.pickVideo(source: ImageSource.gallery);
-        if (video != null) {
-          final File videoFile = File(video.path);
-          final VideoPlayerController controller =
-              VideoPlayerController.file(videoFile);
-          await controller.initialize();
-
-          final Duration videoDuration = controller.value.duration;
-          if (videoDuration.inSeconds < 3) {
-            _showErrorDialog('Video must be longer than 3 seconds.');
-            controller.dispose();
-            return;
-          } else if (videoDuration.inSeconds >= 60) {
-            _showErrorDialog('Video must be less than 60 seconds.');
-            controller.dispose();
-            return;
-          }
-
-          final int fileSize = await videoFile.length();
-          if (fileSize < 30 * 1024 * 1024) {
-            setState(() {
-              _localVideo = videoFile;
-              _videoController = controller;
-              widget.onVideoChanged(_localVideo);
-            });
-          } else {
-            _showErrorDialog('Video size must be less than 30 MB.');
-            controller.dispose();
-          }
-        }
-      } catch (e) {
-        _showErrorDialog('An error occurred while adding the video: $e');
-      }
-    }
+  void _onVideoChanged(File videoFile) {
+    setState(() {
+      _localVideo = videoFile;
+      widget.onVideoChanged(videoFile);
+      _videoController = VideoPlayerController.file(videoFile);
+      _videoController?.initialize().then((_) {
+        _videoController?.play();
+      });
+    });
   }
 
   // Remove an image
@@ -185,29 +188,35 @@ class _AddFileWidgetState extends State<AddFileWidget> {
                       ),
                       const SizedBox(width: 12.0),
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: _addVideo,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: AppColors.greenButton,
-                            side: const BorderSide(
-                                color: AppColors.greenPopUpText),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                          ),
-                          child: const Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 5),
-                              Icon(Icons.video_call_outlined,
-                                  color: AppColors.greenButton, size: 35),
-                              SizedBox(height: 5),
-                              Text('Thêm Video'),
-                              SizedBox(height: 5),
-                            ],
-                          ),
-                        ),
+                        child: AddVideoButton(
+                            onVideoChanged: _onVideoChanged,
+                            localVideo: _localVideo,
+                            videoController: _videoController,
+                            picker: _picker,
+                            showErrorDialog: _showErrorDialog,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: AppColors.greenPopUpText),
+                                borderRadius: BorderRadius.zero,
+                              ),
+                              child: const Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(height: 5),
+                                  Icon(Icons.video_call_outlined,
+                                      color: AppColors.greenButton, size: 35),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'Thêm video',
+                                    style:
+                                        TextStyle(color: AppColors.greenButton),
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
+                            )),
                       ),
                     ],
                   ),
@@ -320,35 +329,34 @@ class _AddFileWidgetState extends State<AddFileWidget> {
                 }
                 // Add video button
                 else {
-                  return DottedBorder(
-                    color: Colors.grey,
-                    strokeWidth: 2,
-                    dashPattern: const [5, 5],
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _addVideo,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.grey,
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
+                  return AddVideoButton(
+                      onVideoChanged: _onVideoChanged,
+                      localVideo: _localVideo,
+                      videoController: _videoController,
+                      picker: _picker,
+                      showErrorDialog: _showErrorDialog,
+                      child: DottedBorder(
+                        color: Colors.grey,
+                        strokeWidth: 2,
+                        dashPattern: const [5, 5],
+                        child: const SizedBox(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.video_call,
+                                  size: 45, color: Colors.grey),
+                              SizedBox(height: 5),
+                              Text(
+                                'Video',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
                           ),
                         ),
-                        child: const Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.video_call, size: 45),
-                            SizedBox(height: 5),
-                            Text('Video'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                      ));
                 }
               },
             ),
