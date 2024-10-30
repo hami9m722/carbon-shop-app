@@ -46,6 +46,10 @@ dependencies:
   chewie: 1.8.5
   open_file: 3.5.9
   record: 5.1.2 
+  path_provider: 2.1.5
+  audioplayers: 6.1.0 
+  voice_message_package: 2.2.1
+  
 
 dev_dependencies:
   flutter_test:

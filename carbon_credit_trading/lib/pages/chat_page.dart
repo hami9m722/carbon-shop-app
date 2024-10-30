@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/add_video_button.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:voice_message_package/voice_message_package.dart';
 
 final List<Message> mockMessages = [
   Message(
@@ -77,21 +80,47 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _sendMediaMessage({List<String>? imageUrls, String? videoUrl}) {
-    setState(() {
-      mockMessages.add(
-        Message(
-          senderName: 'You',
-          senderAvatar: 'https://example.com/your_avatar.jpg',
-          receiverName: widget.contactName,
-          receiverAvatar: widget.contactAvatar,
-          imageUrls: imageUrls,
-          videoUrl: videoUrl,
-          timestamp: DateTime.now(),
-          isRead: true,
-        ),
-      );
-    });
+  Future<void> _sendMediaMessage({
+    List<String>? imageUrls,
+    String? videoUrl,
+    String? audioUrl,
+  }) async {
+    if (audioUrl != null) {
+      final audioDuration = await _getAudioDuration(audioUrl);
+      if (audioDuration.inSeconds > 0 && audioDuration.inSeconds < 60) {
+        setState(() {
+          mockMessages.add(
+            Message(
+              senderName: 'You',
+              senderAvatar: 'https://example.com/your_avatar.jpg',
+              receiverName: widget.contactName,
+              receiverAvatar: widget.contactAvatar,
+              audioUrl: audioUrl,
+              timestamp: DateTime.now(),
+              isRead: true,
+            ),
+          );
+        });
+      } else {
+        showErrorDialog(
+            'Thời gian ghi âm phải lớn hơn 0 giây và nhỏ hơn 60 giây.');
+      }
+    } else {
+      setState(() {
+        mockMessages.add(
+          Message(
+            senderName: 'You',
+            senderAvatar: 'https://example.com/your_avatar.jpg',
+            receiverName: widget.contactName,
+            receiverAvatar: widget.contactAvatar,
+            imageUrls: imageUrls,
+            videoUrl: videoUrl,
+            timestamp: DateTime.now(),
+            isRead: true,
+          ),
+        );
+      });
+    }
   }
 
   void _toggleOptions() {
@@ -107,6 +136,13 @@ class _ChatPageState extends State<ChatPage> {
 
   void onVideoSelected(File video) {
     _sendMediaMessage(videoUrl: video.path);
+  }
+
+  Future<Duration> _getAudioDuration(String audioUrl) async {
+    final AudioPlayer audioPlayer = AudioPlayer();
+    await audioPlayer.setSourceUrl(audioUrl);
+    final Duration? duration = await audioPlayer.getDuration();
+    return duration!;
   }
 
   void showErrorDialog(String message) {
@@ -131,7 +167,6 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _controller.removeListener(_checkText);
     _controller.dispose();
-
     super.dispose();
   }
 
@@ -184,11 +219,10 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  Row(
                     children: [
                       AnimatedRotation(
                         turns: _isOptionsVisible ? 0.5 : 0,
@@ -234,28 +268,34 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                     ],
                   ),
-                )),
-            if (_isOptionsVisible)
-              Container(
-                color: Colors.grey[200],
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ImagePickerButton(
-                      onImageSelected: onImageSelected,
-                      child: _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
+                  if (_isOptionsVisible)
+                    Container(
+                      color: Colors.grey[200],
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImagePickerButton(
+                            onImageSelected: onImageSelected,
+                            child:
+                                _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
+                          ),
+                          AddVideoButton(
+                            picker: ImagePicker(),
+                            showErrorDialog: showErrorDialog,
+                            onVideoChanged: onVideoSelected,
+                            child: _buildOptionItem(
+                                Icons.video_call, 'Chọn video'),
+                          ),
+                          AudioRecorderButton(
+                            onAudioRecorded: (audioPath) {
+                              _sendMediaMessage(audioUrl: audioPath);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    AddVideoButton(
-                      picker: ImagePicker(),
-                      showErrorDialog: showErrorDialog,
-                      onVideoChanged: onVideoSelected,
-                      child: _buildOptionItem(Icons.video_call, 'Chọn video'),
-                    ),
-                    _buildOptionItem(Icons.mic, 'Ghi âm'),
-                  ],
-                ),
-              ),
+                ])),
           ],
         ),
       ),
@@ -312,10 +352,38 @@ class _ChatPageState extends State<ChatPage> {
           );
         }).toList(),
       );
+    } else if (message.content == null && message.audioUrl != null) {
+      return FutureBuilder<Duration>(
+          future: _getAudioDuration(message.audioUrl!),
+          builder: (context, snapshot) {
+            final audioDuration = snapshot.data ?? const Duration(seconds: 1);
+
+            return VoiceMessageView(
+              controller: VoiceController(
+                audioSrc: message.audioUrl!,
+                onComplete: () {
+                  // Do something on complete
+                },
+                onPause: () {
+                  // Do something on pause
+                },
+                onPlaying: () {
+                  // Do something on playing
+                },
+                onError: (err) {
+                  // Do something on error
+                },
+                maxDuration: audioDuration,
+                isFile: true,
+              ),
+              innerPadding: 12,
+              cornerRadius: 20,
+            );
+          });
     } else {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        constraints: BoxConstraints(maxWidth: maxWidth), // Limit width to 60%
+        constraints: BoxConstraints(maxWidth: maxWidth),
         decoration: BoxDecoration(
           color: message.senderName == 'You' ? Colors.blue : Colors.grey[300],
           borderRadius: BorderRadius.circular(20),
