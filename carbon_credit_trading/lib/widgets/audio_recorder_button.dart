@@ -71,7 +71,7 @@ class _AudioRecorderButtonState extends State<AudioRecorderButton> {
               size: 30,
               color: _isRecording ? Colors.red : Colors.black,
             ),
-            const SizedBox(height: 5), // Khoảng cách giữa icon và text
+            const SizedBox(height: 5), 
             Text(
               'Ghi âm',
               style: TextStyle(

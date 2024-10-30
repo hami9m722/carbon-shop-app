@@ -36,15 +36,4 @@ List<TextSpan> highlightMatches(
   return spans;
 }
 
-String getTransactionStatusMessage(String status) {
-  if (status == 'approved') {
-    return 'đã thành công';
-  } else if (status == 'pending') {
-    return 'đang được duyệt, trạng thái mới sẽ được cập nhật chậm nhất ngày 17/09/2024';
-  } else if (status == 'canceled') {
-    return 'đã hủy';
-  } else {
-    return 'có trạng thái không xác định';
-  }
-}
 

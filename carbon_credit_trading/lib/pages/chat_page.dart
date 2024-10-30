@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/add_video_button.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 
 final List<Message> mockMessages = [
@@ -48,6 +52,7 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   bool _isSendButtonVisible = false;
   bool _isOptionsVisible = false;
+  Message? _replyMessage;
 
   @override
   void initState() {
@@ -71,11 +76,13 @@ class _ChatPageState extends State<ChatPage> {
             receiverName: widget.contactName,
             receiverAvatar: widget.contactAvatar,
             content: _controller.text,
+            replyTo: _replyMessage,
             timestamp: DateTime.now(),
             isRead: true,
           ),
         );
         _controller.clear();
+        _replyMessage = null;
       });
     }
   }
@@ -84,6 +91,7 @@ class _ChatPageState extends State<ChatPage> {
     List<String>? imageUrls,
     String? videoUrl,
     String? audioUrl,
+    Message? replyMessage,
   }) async {
     if (audioUrl != null) {
       final audioDuration = await _getAudioDuration(audioUrl);
@@ -91,14 +99,14 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           mockMessages.add(
             Message(
-              senderName: 'You',
-              senderAvatar: 'https://example.com/your_avatar.jpg',
-              receiverName: widget.contactName,
-              receiverAvatar: widget.contactAvatar,
-              audioUrl: audioUrl,
-              timestamp: DateTime.now(),
-              isRead: true,
-            ),
+                senderName: 'You',
+                senderAvatar: 'https://example.com/your_avatar.jpg',
+                receiverName: widget.contactName,
+                receiverAvatar: widget.contactAvatar,
+                audioUrl: audioUrl,
+                timestamp: DateTime.now(),
+                isRead: true,
+                replyTo: replyMessage),
           );
         });
       } else {
@@ -109,15 +117,15 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         mockMessages.add(
           Message(
-            senderName: 'You',
-            senderAvatar: 'https://example.com/your_avatar.jpg',
-            receiverName: widget.contactName,
-            receiverAvatar: widget.contactAvatar,
-            imageUrls: imageUrls,
-            videoUrl: videoUrl,
-            timestamp: DateTime.now(),
-            isRead: true,
-          ),
+              senderName: 'You',
+              senderAvatar: 'https://example.com/your_avatar.jpg',
+              receiverName: widget.contactName,
+              receiverAvatar: widget.contactAvatar,
+              imageUrls: imageUrls,
+              videoUrl: videoUrl,
+              timestamp: DateTime.now(),
+              isRead: true,
+              replyTo: replyMessage),
         );
       });
     }
@@ -195,30 +203,74 @@ class _ChatPageState extends State<ChatPage> {
             Flexible(
               child: ListView.builder(
                 reverse: true,
+                physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: mockMessages.length,
+                itemCount: groupMessagesByDate(mockMessages).length,
                 itemBuilder: (context, index) {
-                  final message = mockMessages[mockMessages.length - 1 - index];
-                  return Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: message.senderName == 'You'
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      children: [
-                        if (message.senderName != 'You')
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(message.senderAvatar),
+                  final groupedMessages = groupMessagesByDate(mockMessages);
+
+                  final dates = groupedMessages.keys.toList().reversed.toList();
+
+                  final date = dates.elementAt(index);
+
+                  final messages = groupedMessages[date]!;
+
+                  final unreadMessages = messages
+                      .where((msg) => !msg.isRead && msg.receiverName == 'You')
+                      .toList();
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          !isToday(date) ? date : 'Hôm nay',
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 13),
+                        ),
+                      ),
+                      ...messages.map((message) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: message.senderName == 'You'
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(children: [
+                                      if (message.senderName != 'You')
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              message.senderAvatar),
+                                        ),
+                                      const SizedBox(width: 8),
+                                      _buildMessageContent(message),
+                                    ]),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        DateFormat('HH:mm').format(
+                                            message.timestamp), // Display time
+                                        style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                  ]),
+                            ],
                           ),
-                        const SizedBox(width: 8),
-                        _buildMessageContent(message),
-                      ],
-                    ),
+                        );
+                      }).toList(),
+                      const SizedBox(height: 10),
+                    ],
                   );
                 },
               ),
             ),
+            if (_replyMessage != null) _buildReply(_replyMessage!),
             Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(children: [
@@ -321,80 +373,213 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageContent(Message message) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double maxWidth = screenWidth * 0.6;
+    double maxWidth = screenWidth * 0.55;
 
-    if (message.videoUrl != null) {
-      return Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.black,
-        ),
-        child: const Center(
-          child: Text(
-            "Nhấp vào để xem",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      );
-    } else if (message.imageUrls != null && message.imageUrls!.isNotEmpty) {
-      return Column(
-        children: message.imageUrls!.map((url) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.file(
-              File(url),
-              fit: BoxFit.cover,
-              width: 200,
-              height: 200,
-            ),
-          );
-        }).toList(),
-      );
-    } else if (message.content == null && message.audioUrl != null) {
-      return FutureBuilder<Duration>(
-          future: _getAudioDuration(message.audioUrl!),
-          builder: (context, snapshot) {
-            final audioDuration = snapshot.data ?? const Duration(seconds: 1);
-
-            return VoiceMessageView(
-              controller: VoiceController(
-                audioSrc: message.audioUrl!,
-                onComplete: () {
-                  // Do something on complete
-                },
-                onPause: () {
-                  // Do something on pause
-                },
-                onPlaying: () {
-                  // Do something on playing
-                },
-                onError: (err) {
-                  // Do something on error
-                },
-                maxDuration: audioDuration,
-                isFile: true,
-              ),
-              innerPadding: 12,
-              cornerRadius: 20,
-            );
-          });
-    } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        constraints: BoxConstraints(maxWidth: maxWidth),
-        decoration: BoxDecoration(
-          color: message.senderName == 'You' ? Colors.blue : Colors.grey[300],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          message.content ?? '',
+    return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      if (message.replyTo != null) ...[
+        Text(
+          message.replyTo!.senderName == 'You'
+              ? 'Chính bạn'
+              : message.replyTo!.senderName,
           style: TextStyle(
-            color: message.senderName == 'You' ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
           ),
         ),
-      );
-    }
+        SizedBox(height: 5.0),
+        Text(
+          message.replyTo!.content!,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 8.0), // Space between reply and current message
+      ],
+      // Display the main message content
+
+      GestureDetector(
+        onLongPress: () => _showMessageOptions(message),
+        child: message.videoUrl != null
+            ? Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                ),
+                child: const Center(
+                  child: Text(
+                    "Nhấp vào để xem",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              )
+            : message.imageUrls != null && message.imageUrls!.isNotEmpty
+                ? Column(
+                    children: message.imageUrls!.map((url) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.file(
+                          File(url),
+                          fit: BoxFit.cover,
+                          width: 200,
+                          height: 200,
+                        ),
+                      );
+                    }).toList(),
+                  )
+                : message.audioUrl != null
+                    ? FutureBuilder<Duration>(
+                        future: _getAudioDuration(message.audioUrl!),
+                        builder: (context, snapshot) {
+                          final audioDuration =
+                              snapshot.data ?? const Duration(seconds: 1);
+                          return VoiceMessageView(
+                            controller: VoiceController(
+                              audioSrc: message.audioUrl!,
+                              onComplete: () {},
+                              onPause: () {},
+                              onPlaying: () {},
+                              onError: (err) {},
+                              maxDuration: audioDuration,
+                              isFile: true,
+                            ),
+                            innerPadding: 12,
+                            cornerRadius: 20,
+                          );
+                        },
+                      )
+                    : Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        constraints: BoxConstraints(maxWidth: maxWidth),
+                        decoration: BoxDecoration(
+                          color: message.senderName == 'You'
+                              ? Colors.blue
+                              : Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          message.content ?? '',
+                          style: TextStyle(
+                            color: message.senderName == 'You'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+      )
+    ]);
+  }
+
+  void _showMessageOptions(Message message) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (message.content != null) ...[
+                ListTile(
+                  leading: const Icon(Icons.reply),
+                  title: const Text('Reply'),
+                  onTap: () {
+                    _replyToMessage(message);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.copy),
+                  title: const Text('Copy'),
+                  onTap: () {
+                    // Handle copy action
+                    Clipboard.setData(ClipboardData(text: message.content!));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.copy),
+                  title: const Text('Chia sẻ'),
+                  onTap: () {
+                    // Handle copy action
+                    String contentToShare = message.audioUrl ?? '';
+                    Share.share(contentToShare);
+                  },
+                ),
+              ],
+              // Các tùy chọn khác như Download Image, Download Video, v.v.
+              // ...
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _replyToMessage(Message message) {
+    setState(() {
+      _replyMessage = message;
+    });
+  }
+
+  void _sendReplyMessage(Message? originalReplyMessage, String replyContent) {
+    Message replyMessage = Message(
+      senderName: "Your Name",
+      senderAvatar: "path/to/your/avatar.png",
+      receiverName: "Receiver's Name",
+      receiverAvatar: "path/to/receiver/avatar.png",
+      content: replyContent,
+      timestamp: DateTime.now(),
+      replyTo: originalReplyMessage,
+    );
+
+    setState(() {
+      mockMessages.add(replyMessage);
+    });
+
+    // Hiển thị thông báo gửi thành công
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Reply sent!")),
+    );
+  }
+
+  Widget _buildReply(Message replyMessage) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              replyMessage.senderName == 'You'
+                  ? 'Chính bạn'
+                  : replyMessage.senderName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              replyMessage.content!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
