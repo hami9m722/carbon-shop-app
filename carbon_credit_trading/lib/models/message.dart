@@ -2,6 +2,7 @@
 import 'package:intl/intl.dart';
 
 class Message {
+  final String messageId;
   final String senderName;
   final String senderAvatar;
   final String receiverName;
@@ -11,10 +12,11 @@ class Message {
   final String? videoUrl;
   final String? audioUrl;
   final DateTime timestamp;
-  final bool isRead;
+  bool isRead;
   final Message? replyTo;
 
   Message({
+    required this.messageId,
     required this.senderName,
     required this.senderAvatar,
     required this.receiverName,

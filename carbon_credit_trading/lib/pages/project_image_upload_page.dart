@@ -24,9 +24,9 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
   bool get wantKeepAlive => true;
   final List<File> _imageFiles = [];
 
-  void _addImage(File newImage) {
+  void _addImage(List<File> newImages) {
     setState(() {
-      _imageFiles.add(newImage);
+      _imageFiles.addAll(newImages);
     });
   }
 
@@ -52,7 +52,7 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
             ),
             const SizedBox(height: 15),
             ImagePickerButton(
-              onImageSelected: _addImage,
+              onImagesSelected: _addImage,
               imageFiles: _imageFiles,
               child: Container(
                 padding:

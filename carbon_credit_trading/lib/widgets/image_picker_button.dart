@@ -3,13 +3,13 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ImagePickerButton extends StatefulWidget {
-  final Function(File) onImageSelected;
+  final Function(List<File>) onImagesSelected;
   final List<File> imageFiles;
   final Widget child;
 
   const ImagePickerButton({
     super.key,
-    required this.onImageSelected,
+    required this.onImagesSelected,
     this.imageFiles = const [],
     required this.child,
   });
@@ -24,17 +24,25 @@ class _ImagePickerButtonState extends State<ImagePickerButton> {
     final ImagePicker picker = ImagePicker();
     final List<XFile> pickedFiles = await picker.pickMultiImage();
 
+    
+
+    List<File> newFiles = [];
     int duplicateCount = 0;
 
     for (var pickedFile in pickedFiles) {
       File newFile = File(pickedFile.path);
 
+      // Check for duplicates
       if (!widget.imageFiles.any((file) =>
           file.uri.pathSegments.last == newFile.uri.pathSegments.last)) {
-        widget.onImageSelected(newFile);
+        newFiles.add(newFile); // Add to the newFiles list
       } else {
         duplicateCount++;
       }
+    }
+
+    if (newFiles.isNotEmpty) {
+      widget.onImagesSelected(newFiles); // Send all new files at once
     }
 
     if (duplicateCount > 0 && mounted) {
@@ -47,14 +55,13 @@ class _ImagePickerButtonState extends State<ImagePickerButton> {
     }
   }
 
-// Access to camera and take screenshot
   Future<void> _pickImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null && mounted) {
       File newFile = File(pickedFile.path);
-      widget.onImageSelected(newFile);
+      widget.onImagesSelected([newFile]); // Send the new file in a list
     }
   }
 
