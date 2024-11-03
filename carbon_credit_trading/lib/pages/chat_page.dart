@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
+import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -100,7 +101,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     List<String>? imageUrls,
     String? videoUrl,
     String? audioUrl,
-    Message? replyMessage,
   }) async {
     if (audioUrl != null) {
       final audioDuration = await _getAudioDuration(audioUrl);
@@ -116,7 +116,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                 audioUrl: audioUrl,
                 timestamp: DateTime.now(),
                 isRead: false,
-                replyTo: replyMessage),
+                replyTo: _replyMessage),
           );
         });
       } else {
@@ -136,7 +136,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
               videoUrl: videoUrl,
               timestamp: DateTime.now(),
               isRead: false,
-              replyTo: replyMessage),
+              replyTo: _replyMessage),
         );
       });
     }
@@ -460,7 +460,15 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                               ),
                               const SizedBox(height: 5.0),
                               Text(
-                                message.replyTo!.content!,
+                                message.replyTo!.videoUrl != null
+                                    ? 'Video ${message.replyTo!.videoUrl}'
+                                    : message.replyTo!.imageUrls != null &&
+                                            message
+                                                .replyTo!.imageUrls!.isNotEmpty
+                                        ? 'Ảnh: ${message.replyTo!.imageUrls!.join(", ")}'
+                                        : message.replyTo!.audioUrl != null
+                                            ? 'Audio: ${message.replyTo!.audioUrl}'
+                                            : message.replyTo!.content!,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -474,14 +482,14 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                           )),
                     )
                   : const SizedBox()),
-
-          // Display the main message content
-
           Container(
-            margin: EdgeInsets.only(top: message.replyTo != null ? 60 : 0),
+            margin: EdgeInsets.only(top: message.replyTo != null ? 75 : 0),
             child: message.videoUrl != null
                 ? GestureDetector(
                     onLongPress: () => _showMessageOptions(message),
+                    onTap: () {
+                      showFullScreen(context, [message.videoUrl!], 0);
+                    },
                     child: Container(
                       width: 200,
                       height: 200,
@@ -500,18 +508,35 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                     ? GestureDetector(
                         onLongPress: () => _showMessageOptions(message),
                         child: Column(
-                          children: message.imageUrls!.map((url) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.file(
-                                File(url),
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
-                              ),
+                          children:
+                              message.imageUrls!.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            String url = entry.value;
+
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    showFullScreen(
+                                        context, message.imageUrls!, index);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.file(
+                                      File(url),
+                                      fit: BoxFit.cover,
+                                      width: 200,
+                                      height: 200,
+                                    ),
+                                  ),
+                                ),
+                                if (index < message.imageUrls!.length - 1)
+                                  const SizedBox(height: 5),
+                              ],
                             );
                           }).toList(),
-                        ))
+                        ),
+                      )
                     : message.audioUrl != null
                         ? GestureDetector(
                             onLongPress: () => _showMessageOptions(message),
@@ -532,6 +557,9 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                                   ),
                                   innerPadding: 12,
                                   cornerRadius: 20,
+                                  circlesColor: Colors.blue,
+                                  activeSliderColor: Colors.blue,
+                                  size: 38,
                                 );
                               },
                             ))
@@ -566,20 +594,24 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ListTile(
-                leading: const Icon(Icons.reply),
-                title: const Text('Reply'),
+              GestureDetector(
                 onTap: () {
                   _replyToMessage(message);
                   Navigator.pop(context);
                 },
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.reply, color: AppColors.greenButton),
+                    SizedBox(height: 4),
+                    Text('Reply'),
+                  ],
+                ),
               ),
-              ListTile(
-                leading: const Icon(Icons.copy),
-                title: const Text('Copy'),
+              GestureDetector(
                 onTap: () {
                   if (message.content != null && message.content!.isNotEmpty) {
                     Clipboard.setData(ClipboardData(text: message.content!));
@@ -593,10 +625,16 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                     Clipboard.setData(ClipboardData(text: message.audioUrl!));
                   }
                 },
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.copy, color: AppColors.greenButton),
+                    SizedBox(height: 4),
+                    Text('Copy'),
+                  ],
+                ),
               ),
-              ListTile(
-                leading: const Icon(Icons.copy),
-                title: const Text('Chia sẻ'),
+              GestureDetector(
                 onTap: () {
                   if (message.content != null && message.content!.isNotEmpty) {
                     Share.share(message.content!);
@@ -610,6 +648,14 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                     Share.share(message.audioUrl!);
                   }
                 },
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.share, color: AppColors.greenButton),
+                    SizedBox(height: 4),
+                    Text('Chia sẻ'),
+                  ],
+                ),
               ),
             ],
           ),
@@ -626,39 +672,43 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
 
   Widget _buildReply(Message replyMessage) {
     return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 5),
-        width: double.infinity,
-        color: Colors.grey[200],
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                replyMessage.senderName == 'You'
-                    ? 'Phản hồi lại chính bạn'
-                    : 'Phản hồi lại ${replyMessage.senderName}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 5),
+      width: double.infinity,
+      color: Colors.grey[200],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  replyMessage.senderName == 'You'
+                      ? 'Phản hồi chính bạn'
+                      : 'Phản hồi lại ${replyMessage.senderName}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 5.0),
-              Text(
-                replyMessage.content != null && replyMessage.content!.isNotEmpty
-                    ? replyMessage.content!
-                    : replyMessage.videoUrl != null
-                        ? replyMessage.videoUrl!
-                        : replyMessage.imageUrls != null &&
-                                replyMessage.imageUrls!.isNotEmpty
-                            ? replyMessage.imageUrls!.join('\n')
-                            : replyMessage.audioUrl ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.black,
+                const SizedBox(height: 5.0),
+                Text(
+                  replyMessage.content != null &&
+                          replyMessage.content!.isNotEmpty
+                      ? replyMessage.content!
+                      : replyMessage.videoUrl != null
+                          ? replyMessage.videoUrl!
+                          : replyMessage.imageUrls != null &&
+                                  replyMessage.imageUrls!.isNotEmpty
+                              ? replyMessage.imageUrls!.join('\n')
+                              : replyMessage.audioUrl ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.grey),
@@ -668,6 +718,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
               });
             },
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }
