@@ -1,11 +1,17 @@
+import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
-import 'package:flutter/material.dart';
 
 class TransactionPendingTab extends StatelessWidget {
-  const TransactionPendingTab({super.key});
+  final bool isApproveTransactionPage;
+
+  const TransactionPendingTab(
+      {super.key, this.isApproveTransactionPage = false});
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +92,49 @@ class TransactionPendingTab extends StatelessWidget {
           child: Text('Không có giao dịch nào đang chờ duyệt.'));
     }
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: pendingTransactions.length,
-      itemBuilder: (context, index) {
-        final transaction = pendingTransactions[index];
-        return TransactionItem(transaction: transaction);
-      },
+    return Scaffold(
+      appBar: isApproveTransactionPage ? const CustomAppBar() : null,
+      body: Container(
+          color: AppColors.greyBackGround,
+          child: Column(
+            children: [
+              if (isApproveTransactionPage)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'Các giao dịch đang chờ duyệt',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.greenButton,
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: pendingTransactions.length,
+                  itemBuilder: (context, index) {
+                    final transaction = pendingTransactions[index];
+                    return TransactionItem(
+                      transaction: transaction,
+                      onPress: isApproveTransactionPage
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ApproveTransactionPage(
+                                      transaction: transaction),
+                                ),
+                              );
+                            }
+                          : null,
+                    );
+                  },
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

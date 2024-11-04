@@ -1,7 +1,7 @@
-import 'package:carbon_credit_trading/pages/profile_page.dart';
-import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class IntermediaryPage extends StatelessWidget {
@@ -9,6 +9,7 @@ class IntermediaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey userInfoKey = GlobalKey();
     return PopScope(
         canPop: false,
         child: Scaffold(
@@ -21,13 +22,16 @@ class IntermediaryPage extends StatelessWidget {
               children: [
                 // User Info Section
                 GestureDetector(
+                  key: userInfoKey,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ),
-                    );
+                    RenderBox renderBox = userInfoKey.currentContext!
+                        .findRenderObject() as RenderBox;
+                    Offset offset = renderBox.localToGlobal(Offset.zero);
+                    double left = offset.dx;
+                    double top = offset.dy + renderBox.size.height;
+
+                    CustomMenuWidget.showCustomMenu(context,
+                        left: left, top: top);
                   },
                   child: Container(
                     color: AppColors.greyBackGround,
@@ -52,7 +56,7 @@ class IntermediaryPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'hami@forest.com',
+                                'hami@gmail.com',
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ],
@@ -88,7 +92,8 @@ class IntermediaryPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const TransactionReviewPage(),
+                                      const TransactionPendingTab(
+                                          isApproveTransactionPage: true),
                                 ),
                               );
                             }),
@@ -114,10 +119,7 @@ class IntermediaryPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(0.0),
       child: InkWell(
-        onTap: onTapped ??
-            () {
-              // Thao tác mặc định khi không có hành động nào được truyền vào
-            },
+        onTap: onTapped ?? () {},
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

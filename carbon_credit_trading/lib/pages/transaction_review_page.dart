@@ -18,7 +18,7 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tìm kiếm'),
+        title: const Text('Giao dịch'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

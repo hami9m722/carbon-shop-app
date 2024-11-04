@@ -12,6 +12,7 @@ class SearchTab extends StatelessWidget {
         title: "Tìm kiếm",
       ),
       body: ListView(
+        physics: const BouncingScrollPhysics(),
         children: const [
           ProjectItem(
               title: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',

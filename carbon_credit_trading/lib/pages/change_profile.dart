@@ -1,6 +1,6 @@
+import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/custom_emailfield.dart';
 import 'package:flutter/material.dart';
 
 class ChangeProfilePage extends StatefulWidget {
@@ -58,8 +58,13 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                   controller: companyNameController,
                 ),
                 const SizedBox(height: 15),
-                // Custom Email Field
-                CustomEmailField(controller: emailController),
+                TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) => Validators.validateEmail(value)),
                 const SizedBox(height: 15),
                 const TextField(
                   decoration: InputDecoration(

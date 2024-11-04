@@ -9,9 +9,10 @@ class FavoriteTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Tìm kiếm",
+        title: "Yêu thích",
       ),
       body: ListView(
+        physics: const BouncingScrollPhysics(),
         children: const [
           ProjectItem(
               title: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',

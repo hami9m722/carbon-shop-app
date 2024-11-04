@@ -218,22 +218,6 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.greenButton,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child: const Text(
-                                    'Tải xuống',
-                                    style: AppTextStyles.normalText,
-                                  ),
-                                ),
-                              )),
                           const SizedBox(height: 15.0),
                           const Text(
                             'Hình ảnh tín chỉ',
@@ -249,22 +233,6 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.greenButton,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child: const Text(
-                                    'Tải xuống',
-                                    style: AppTextStyles.normalText,
-                                  ),
-                                ),
-                              )),
                         ])),
               ],
             ),

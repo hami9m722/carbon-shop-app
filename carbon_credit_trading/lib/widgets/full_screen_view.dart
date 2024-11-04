@@ -6,7 +6,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:share_plus/share_plus.dart';
 import 'video_player_widget.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as p;
 
 // Check image
 bool isImageFile(String filePath) {
@@ -175,7 +174,7 @@ Future<void> downloadPath(BuildContext context, String mediaUrl) async {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Lỗi khi tải xuống tệp: $e'),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ),
       );
     }

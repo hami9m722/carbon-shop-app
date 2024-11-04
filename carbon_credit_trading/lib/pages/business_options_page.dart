@@ -1,6 +1,8 @@
+import 'package:carbon_credit_trading/pages/buyer_page.dart';
 import 'package:carbon_credit_trading/pages/seller_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class BusinessOptionsPage extends StatelessWidget {
@@ -8,60 +10,111 @@ class BusinessOptionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey userInfoKey = GlobalKey();
     return PopScope(
         canPop: false,
         child: Scaffold(
           appBar: const CustomAppBar(title: "Chọn kênh"),
           body: Container(
             color: AppColors.greyBackGround,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Column(
               children: <Widget>[
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SellerPage(),
+                GestureDetector(
+                  key: userInfoKey,
+                  onTap: () {
+                    RenderBox renderBox = userInfoKey.currentContext!
+                        .findRenderObject() as RenderBox;
+                    Offset offset = renderBox.localToGlobal(Offset.zero);
+                    double left = offset.dx;
+                    double top = offset.dy + renderBox.size.height;
+
+                    CustomMenuWidget.showCustomMenu(context,
+                        left: left, top: top);
+                  },
+                  child: Container(
+                    color: AppColors.greyBackGround,
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.grey[400],
+                          child: const Icon(Icons.person, size: 30),
                         ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: AppColors.greenButton,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text(
-                      'Kênh người bán',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                        const SizedBox(width: 20),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Renewable Biomass Energy Ventures',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'andi@renewablebiomass.id',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BusinessOptionsPage(),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SellerPage(),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: AppColors.greenButton,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text(
+                            'Kênh người bán',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                         ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: AppColors.greenButton,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text(
-                      'Kênh người mua',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BuyerPage(),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: AppColors.greenButton,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text(
+                            'Kênh người mua',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
               ],
             ),
           ),

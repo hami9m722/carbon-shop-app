@@ -17,10 +17,10 @@ class UserService {
 
     for (var user in _fakeUsers) {
       if (user.email == email && user.password == password) {
-        return user; // Trả về người dùng nếu tìm thấy
+        return user;
       }
     }
 
-    return null; // Không tìm thấy người dùng
+    return null; 
   }
 }

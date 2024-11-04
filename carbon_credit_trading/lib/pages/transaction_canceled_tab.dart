@@ -43,7 +43,7 @@ class TransactionCanceledTab extends StatelessWidget {
               'Credit Card',
               'Bank Transfer'
             ]),
-        status: 'approved',
+        status: 'canceled',
       ),
       Transaction(
         transactionId: '022',
