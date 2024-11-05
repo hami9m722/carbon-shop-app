@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/pages/transaction_detail_page.dart';
+import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,10 @@ import 'package:carbon_credit_trading/models/transaction.dart';
 class TransactionItem extends StatelessWidget {
   final Transaction transaction;
   final VoidCallback? onPress;
-  final String typeOfButton;
+  final String? searchQuery;
 
   const TransactionItem(
-      {super.key,
-      required this.transaction,
-      this.onPress,
-      this.typeOfButton = ''});
+      {super.key, required this.transaction, this.onPress, this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +33,21 @@ class TransactionItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            customRichText(
-              title: 'Mã giao dịch:',
-              value: transaction.transactionId,
+            RichText(
+              text: TextSpan(
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: 'Mã giao dịch: ',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    ...highlightMatches(transaction.transactionId,
+                        searchQuery ?? '', Colors.yellow)
+                  ]),
             ),
             customRichText(
               title: 'Số hợp đồng:',

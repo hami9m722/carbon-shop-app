@@ -1,24 +1,34 @@
 import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
-import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 
-class TransactionPendingTab extends StatelessWidget {
+class TransactionPendingTab extends StatefulWidget {
   final String previousPage;
+  final String? searchQuery;
 
-  const TransactionPendingTab({super.key, this.previousPage = ''});
+  const TransactionPendingTab(
+      {super.key, this.previousPage = '', this.searchQuery});
+
+  @override
+  createState() => _TransactionPendingTabState();
+}
+
+class _TransactionPendingTabState extends State<TransactionPendingTab> {
+  bool _isSearching = false;
+  String _searchQuery = '';
+  final FocusNode _searchFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     // Create a list of pending transactions
     final List<Transaction> pendingTransactions = [
       Transaction(
-        transactionId: '021',
+        transactionId: '033',
         contractNumber: '',
         contractDate: '',
         projectName: 'REDD+ Bảo tồn rừng ngập mặn',
@@ -83,58 +93,125 @@ class TransactionPendingTab extends StatelessWidget {
       ),
     ];
 
+    List<Transaction> getFilteredTransactions(List<Transaction> transactions) {
+      final searchQuery = widget.previousPage != ''
+          ? _searchQuery.trim()
+          : widget.searchQuery?.trim() ?? '';
+
+      return transactions.where((transaction) {
+        return transaction.transactionId.contains(searchQuery);
+      }).toList();
+    }
+
+    final filteredTransactions = getFilteredTransactions(pendingTransactions);
+
     return Scaffold(
-      appBar: previousPage != '' ? const CustomAppBar() : null,
+      appBar: widget.previousPage != ''
+          ? AppBar(
+              centerTitle: true,
+              title: _isSearching
+                  ? TextField(
+                      focusNode: _searchFocusNode,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Tìm mã giao dịch...',
+                      ),
+                    )
+                  : const Text(
+                      'Giao dịch',
+                      style: AppTextStyles.heading,
+                    ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (_isSearching) {
+                          _isSearching = false;
+                          _searchQuery = '';
+                          _searchFocusNode.unfocus();
+                        } else {
+                          _isSearching = true;
+                          _searchFocusNode.requestFocus();
+                        }
+                      });
+                    },
+                    child: _isSearching
+                        ? const Text(
+                            'Hủy',
+                            style: TextStyle(
+                                color: AppColors.greenButton, fontSize: 16),
+                          )
+                        : const Icon(
+                            Icons.search,
+                            color: AppColors.greenButton,
+                          ),
+                  ),
+                ),
+              ],
+            )
+          : null,
       body: Container(
-          color: AppColors.greyBackGround,
-          child: pendingTransactions.isEmpty
-              ? const Center(
-                  child: Text(
+        color: AppColors.greyBackGround,
+        child: filteredTransactions.isEmpty
+            ? const Center(
+                child: Text(
                   'Không có giao dịch nào đang chờ duyệt',
                   textAlign: TextAlign.center,
                   softWrap: true,
                   style: AppTextStyles.normalText,
-                ))
-              : Column(
-                  children: [
-                    if (previousPage != '')
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Text(
-                          'Các giao dịch đang chờ duyệt',
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.greenButton,
-                          ),
+                ),
+              )
+            : Column(
+                children: [
+                  if (widget.previousPage.isNotEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'Các giao dịch đang chờ duyệt',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.greenButton,
                         ),
                       ),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: pendingTransactions.length,
-                        itemBuilder: (context, index) {
-                          final transaction = pendingTransactions[index];
-                          return TransactionItem(
-                            transaction: transaction,
-                            onPress: previousPage == 'intermediary'
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ApproveTransactionPage(
-                                                transaction: transaction),
-                                      ),
-                                    );
-                                  }
-                                : null,
-                          );
-                        },
-                      ),
                     ),
-                  ],
-                )),
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: filteredTransactions.length,
+                      itemBuilder: (context, index) {
+                        final transaction = filteredTransactions[index];
+                        return TransactionItem(
+                          transaction: transaction,
+                          searchQuery: widget.previousPage != ''
+                              ? _searchQuery
+                              : widget.searchQuery,
+                          onPress: widget.previousPage == 'intermediary'
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ApproveTransactionPage(
+                                              transaction: transaction),
+                                    ),
+                                  );
+                                }
+                              : null,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

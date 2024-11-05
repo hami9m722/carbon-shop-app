@@ -35,5 +35,3 @@ List<TextSpan> highlightMatches(
 
   return spans;
 }
-
-

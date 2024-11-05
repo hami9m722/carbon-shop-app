@@ -1,7 +1,7 @@
 import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
-import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class AddInfoProjectPage extends StatefulWidget {
@@ -117,21 +117,36 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              CustomTextFormField(
+              TextFormField(
                 controller: _projectNameController,
-                labelText: 'Tên dự án',
+                decoration: const InputDecoration(
+                  labelText: 'Tên dự án',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Tên dự án', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _locationController,
-                labelText: 'Vị trí',
+                decoration: const InputDecoration(
+                  labelText: 'Vị trí',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Vị trí', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _scaleController,
-                labelText: 'Quy mô',
+                decoration: const InputDecoration(
+                  labelText: 'Quy mô',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Quy mô', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
@@ -151,41 +166,70 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
                 },
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _scopeController,
-                labelText: 'Phạm vi',
+                decoration: const InputDecoration(
+                  labelText: 'Phạm vi',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Phạm vi', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _partnersController,
-                labelText: 'Đối tác',
+                decoration: const InputDecoration(
+                  labelText: 'Đối tác',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Đối tác', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _issuerController,
-                labelText: 'Tổ chức cấp',
+                decoration: const InputDecoration(
+                  labelText: 'Tổ chức cấp',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Tổ chức cấp', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _availableCreditsController,
-                labelText: 'Số lượng tín chỉ có sẵn',
+                decoration: const InputDecoration(
+                  labelText: 'Số lượng tín chỉ có sẵn',
+                  border: OutlineInputBorder(),
+                ),
                 keyboardType: TextInputType.number,
+                validator: (value) => Validators.validateRequiredField(
+                    'Số lượng tín chỉ có sẵn', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _certificatesController,
-                labelText: 'Giấy chứng nhận',
+                decoration: const InputDecoration(
+                  labelText: 'Giấy chứng nhận',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Giấy chứng nhận', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _priceController,
-                labelText: 'Giá bán (USD/tín chỉ)',
-                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Giá bán (USD/tín chỉ)',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => Validators.validateRequiredField(
+                    'Giá bán (USD/tín chỉ)', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),

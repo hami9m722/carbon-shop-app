@@ -1,5 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
+
 
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
@@ -42,7 +41,6 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   @override
   void initState() {
     super.initState();
-    // Initialize fields if an existing project is provided
     if (widget.initialProject != null) {
       _projectName = widget.initialProject!.projectName;
       _startDate = widget.initialProject!.startDate;
