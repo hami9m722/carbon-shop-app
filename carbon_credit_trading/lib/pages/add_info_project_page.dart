@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class AddInfoProjectPage extends StatefulWidget {
   final VoidCallback onNext;
   final void Function(Project data) onProjectDataChanged;
-  final Project? initialProject; // Use a Project object to hold initial data
+  final Project? initialProject; 
 
   const AddInfoProjectPage({
     super.key,

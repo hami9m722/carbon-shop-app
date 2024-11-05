@@ -13,6 +13,14 @@ class FavoriteTab extends StatefulWidget {
 
 class _FavoriteTabState extends State<FavoriteTab> {
   final FocusNode _searchFocusNode = FocusNode();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isRedSelected = true;
+  bool isWhiteSelected = false;
+  bool isBlueSelected = false;
+  double minPrice = 0;
+  double maxPrice = 2400;
+
   String _searchQuery = '';
   bool _isSearching = false;
 
@@ -63,6 +71,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
 
     final filteredProjects = getFilteredTransactions(projects);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: _isSearching
@@ -84,30 +93,47 @@ class _FavoriteTabState extends State<FavoriteTab> {
               ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  if (_isSearching) {
-                    _isSearching = false;
-                    _searchQuery = '';
-                    _searchFocusNode.unfocus();
-                  } else {
-                    _isSearching = true;
-                    _searchFocusNode.requestFocus();
-                  }
-                });
-              },
-              child: _isSearching
-                  ? const Text(
-                      'Hủy',
-                      style:
-                          TextStyle(color: AppColors.greenButton, fontSize: 16),
-                    )
-                  : const Icon(
-                      Icons.search,
-                      color: AppColors.greenButton,
-                    ),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_isSearching) {
+                        _isSearching = false;
+                        _searchQuery = '';
+                        _searchFocusNode.unfocus();
+                      } else {
+                        _isSearching = true;
+                        _searchFocusNode.requestFocus();
+                      }
+                    });
+                  },
+                  child: _isSearching
+                      ? const Text(
+                          'Hủy',
+                          style: TextStyle(
+                              color: AppColors.greenButton, fontSize: 16),
+                        )
+                      : const Icon(
+                          Icons.search,
+                          color: AppColors.greenButton,
+                        ),
+                ),
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      icon: const Icon(
+                        Icons.filter_list,
+                        color: AppColors.greenButton,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ],
@@ -132,6 +158,115 @@ class _FavoriteTabState extends State<FavoriteTab> {
                   );
                 },
               ),
+      ),
+      endDrawer: _buildFilterDrawer(),
+    );
+  }
+
+  Widget _buildFilterDrawer() {
+    return Container(
+      width: 300,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Filters',
+            ),
+          ),
+          const Divider(),
+          _buildBrandFilter(),
+          const Divider(),
+          _buildPriceFilter(),
+          const Divider(),
+          // Add other filters like Series, Colors here
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                // Handle reset action
+              },
+              child: const Text('Reset All'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBrandFilter() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Brands'),
+          CheckboxListTile(
+            title: const Text('Red'),
+            value: isRedSelected,
+            onChanged: (value) {
+              setState(() {
+                isRedSelected = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('White'),
+            value: isWhiteSelected,
+            onChanged: (value) {
+              setState(() {
+                isWhiteSelected = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Blue'),
+            value: isBlueSelected,
+            onChanged: (value) {
+              setState(() {
+                isBlueSelected = value!;
+              });
+            },
+          ),
+          // Add more brands as needed
+          TextButton(
+            onPressed: () {
+              // Show more brands action
+            },
+            child: const Text('Show more brands'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPriceFilter() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Price'),
+          RangeSlider(
+            values: RangeValues(minPrice, maxPrice),
+            min: 0,
+            max: 2400,
+            divisions: 24,
+            labels: RangeLabels(
+              '\$${minPrice.toInt()}',
+              '\$${maxPrice.toInt()}',
+            ),
+            onChanged: (values) {
+              setState(() {
+                minPrice = values.start;
+                maxPrice = values.end;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
