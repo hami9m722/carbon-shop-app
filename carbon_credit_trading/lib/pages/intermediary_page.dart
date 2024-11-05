@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/project_pending_tab.dart';
 import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
@@ -80,9 +81,15 @@ class IntermediaryPage extends StatelessWidget {
                           SizedBox(
                             width: constraints.maxWidth / 3 - 5,
                             child: _buildActionCard(
-                              Icons.file_copy,
-                              'Duyệt dự án',
-                            ),
+                                Icons.file_copy, 'Duyệt dự án', onTapped: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProjectPendingTab(
+                                      previousPage: 'intermediary'),
+                                ),
+                              );
+                            }),
                           ),
                           SizedBox(
                             width: constraints.maxWidth / 3 - 5,

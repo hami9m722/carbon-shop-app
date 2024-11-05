@@ -56,19 +56,19 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
 
   void _updateProjectData() {
     widget.onProjectDataChanged(Project(
-      projectName: _projectNameController.text,
-      startDate: _startDateController.text,
-      endDate: _endDateController.text,
-      location: _locationController.text,
-      scale: _scaleController.text,
-      scope: _scopeController.text,
-      partners: _partnersController.text,
-      issuer: _issuerController.text,
-      availableCredits: _availableCreditsController.text,
-      certificates: _certificatesController.text,
-      price: _priceController.text,
-      paymentMethods: _selectedPaymentMethodList,
-    ));
+        projectName: _projectNameController.text,
+        startDate: _startDateController.text,
+        endDate: _endDateController.text,
+        location: _locationController.text,
+        scale: _scaleController.text,
+        scope: _scopeController.text,
+        partners: _partnersController.text,
+        issuer: _issuerController.text,
+        availableCredits: _availableCreditsController.text,
+        certificates: _certificatesController.text,
+        price: _priceController.text,
+        paymentMethods: _selectedPaymentMethodList,
+        status: 'pending'));
   }
 
   @override

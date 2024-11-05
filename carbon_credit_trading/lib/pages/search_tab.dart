@@ -11,39 +11,37 @@ class SearchTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Project> projects = [
       Project(
-        projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-        startDate: '01/01/2023',
-        endDate: '01/01/2025',
-        location: 'Việt Nam',
-        scale: 'Lớn',
-        scope: 'Toàn quốc',
-        partners: 'Công ty ABC',
-        issuer: 'Chính phủ',
-        availableCredits: '1000',
-        certificates: 'ISO 9001',
-        price: '1000 VND',
-        projectImages: [
-          'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
-        ],
-        creditImages: [],
-        paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
-      ),
+          projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
+          startDate: '01/01/2023',
+          endDate: '01/01/2025',
+          location: 'Việt Nam',
+          scale: 'Lớn',
+          scope: 'Toàn quốc',
+          partners: 'Công ty ABC',
+          issuer: 'Chính phủ',
+          availableCredits: '1000',
+          certificates: 'ISO 9001',
+          price: '1000',
+          projectImages: [
+            'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
+          ],
+          paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
+          status: 'approved'),
       Project(
-        projectName: 'Dự án năng lượng mặt trời',
-        startDate: '01/06/2023',
-        endDate: '01/06/2024',
-        location: 'Việt Nam',
-        scale: 'Trung bình',
-        scope: 'Khu vực miền Trung',
-        partners: 'Công ty XYZ',
-        issuer: 'Công ty TNHH',
-        availableCredits: '500',
-        certificates: 'ISO 14001',
-        price: '800 VND',
-        projectImages: ['https://via.placeholder.com/150'],
-        creditImages: [],
-        paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
-      ),
+          projectName: 'Dự án năng lượng mặt trời',
+          startDate: '01/06/2023',
+          endDate: '01/06/2024',
+          location: 'Việt Nam',
+          scale: 'Trung bình',
+          scope: 'Khu vực miền Trung',
+          partners: 'Công ty XYZ',
+          issuer: 'Công ty TNHH',
+          availableCredits: '500',
+          certificates: 'ISO 14001',
+          price: '800',
+          projectImages: ['https://via.placeholder.com/150'],
+          paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
+          status: 'approved'),
     ];
 
     return Scaffold(
@@ -56,12 +54,9 @@ class SearchTab extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: projects.length,
           itemBuilder: (context, index) {
+            final project = projects[index];
             return ProjectItem(
-              title: projects[index].projectName,
-              subtitle: projects[index].availableCredits,
-              imageUrl: projects[index].projectImages.isNotEmpty
-                  ? projects[index].projectImages[0]
-                  : 'https://via.placeholder.com/150',
+              project: project,
             );
           },
         ),

@@ -88,7 +88,6 @@ class TransactionItem extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => TransactionDetailPage(
                           transaction: transaction,
-                          typeOfButton: typeOfButton,
                         ),
                       ),
                     );

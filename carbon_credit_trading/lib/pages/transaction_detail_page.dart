@@ -1,6 +1,8 @@
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/pages/add_feedback_page.dart';
 import 'package:carbon_credit_trading/pages/project_detail_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_feedback_page.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -12,9 +14,8 @@ import 'package:flutter/material.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
-  final String typeOfButton;
-  const TransactionDetailPage(
-      {super.key, required this.transaction, required this.typeOfButton});
+
+  const TransactionDetailPage({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {
@@ -237,28 +238,43 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          if (typeOfButton != '')
+                          if (!(businessOption == 'seller' &&
+                              transaction.status == 'canceled'))
                             Column(children: [
                               const SizedBox(height: 20),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 child: TextButton(
                                   onPressed: () {
-                                    if (typeOfButton == 'pending') {
-                                    } else if (typeOfButton == 'feedback') {
+                                    if (transaction.status == 'pending') {
+                                    } else if (transaction.status ==
+                                        'approved') {
+                                      if (businessOption == 'buyer') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddFeedbackPage(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TransactionFeedbackPage(),
+                                          ),
+                                        );
+                                      }
+                                    } else if (transaction.status ==
+                                        'canceled') {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const AddFeedbackPage(),
-                                        ),
-                                      );
-                                    } else if (typeOfButton == 'bought') {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ProjectDetailPage(),
+                                              ProjectDetailPage(
+                                                  project:
+                                                      transaction.projectInfo),
                                         ),
                                       );
                                     }
@@ -269,11 +285,14 @@ class TransactionDetailPage extends StatelessWidget {
                                         vertical: 12),
                                   ),
                                   child: Text(
-                                    typeOfButton == 'pending'
+                                    transaction.status == 'pending'
                                         ? 'Hủy'
-                                        : typeOfButton == 'feedback'
-                                            ? 'Đánh giá'
-                                            : typeOfButton == 'bought'
+                                        : transaction.status == 'approved'
+                                            ? businessOption ==
+                                                    'buyer' // or check userID = buyer userID
+                                                ? 'Đánh giá'
+                                                : 'Xem đánh giá'
+                                            : transaction.status == 'canceled'
                                                 ? 'Mua lại'
                                                 : '',
                                     style: const TextStyle(

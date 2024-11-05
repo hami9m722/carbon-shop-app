@@ -13,6 +13,7 @@ class Project {
   final List<dynamic> projectImages;
   final List<dynamic> creditImages;
   final List<String> paymentMethods;
+  final String status;
 
   Project({
     required this.projectName,
@@ -29,5 +30,6 @@ class Project {
     this.projectImages = const [],
     this.creditImages = const [],
     this.paymentMethods = const [],
+    required this.status,
   });
 }

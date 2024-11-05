@@ -1,17 +1,11 @@
+import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/project_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class ProjectItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String imageUrl;
-
-  const ProjectItem({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.imageUrl,
-  });
+  final Project project;
+  final String previousPage;
+  const ProjectItem({super.key, required this.project, this.previousPage = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +21,10 @@ class ProjectItem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ProjectDetailPage(),
+                builder: (context) => ProjectDetailPage(
+                  previousPage: previousPage,
+                  project: project
+                ),
               ),
             )
           },
@@ -48,7 +45,7 @@ class ProjectItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            title,
+                            project.projectName,
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
@@ -58,7 +55,7 @@ class ProjectItem extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              '$subtitle USD',
+                              '${project.price} USD',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -70,28 +67,29 @@ class ProjectItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(8.0),
-                        bottomRight: Radius.circular(8.0),
-                      ),
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(
-                              Icons.broken_image,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                          );
-                        },
+                  if (project.projectImages.isNotEmpty)
+                    Expanded(
+                      flex: 3,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0),
+                        ),
+                        child: Image.network(
+                          project.projectImages[0],
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                size: 50,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

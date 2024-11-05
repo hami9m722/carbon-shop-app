@@ -7,8 +7,6 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
-import 'dart:developer';
-
 class ProjectRegistrationPage extends StatefulWidget {
   const ProjectRegistrationPage({super.key});
 
@@ -16,7 +14,8 @@ class ProjectRegistrationPage extends StatefulWidget {
   createState() => _ProjectRegistrationPageState();
 }
 
-class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>  with AutomaticKeepAliveClientMixin {
+class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
   final PageController _pageController = PageController();
@@ -64,36 +63,21 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>  with
 
   void _saveProject() {
     final project = Project(
-      projectName: _projectName,
-      startDate: _startDate,
-      endDate: _endDate,
-      location: _location,
-      scale: _scale,
-      scope: _scope,
-      partners: _partners,
-      issuer: _issuer,
-      availableCredits: _availableCredits,
-      certificates: _certificates,
-      price: _price,
-      projectImages: _projectImages,
-      creditImages: _creditImages,
-      paymentMethods: _selectedPaymentMethodList,
-    );
-    log('Project Details: \n'
-        'Project Name: ${project.projectName}\n'
-        'Start Date: ${project.startDate}\n'
-        'End Date: ${project.endDate}\n'
-        'Location: ${project.location}\n'
-        'Scale: ${project.scale}\n'
-        'Scope: ${project.scope}\n'
-        'Partners: ${project.partners}\n'
-        'Issuer: ${project.issuer}\n'
-        'Available Credits: ${project.availableCredits}\n'
-        'Certificates: ${project.certificates}\n'
-        'Price: ${project.price}\n'
-        'Payment Methods: ${project.paymentMethods.join(', ')}\n'
-        'Project Images: ${project.projectImages.map((file) => file.path).toList()}\n'
-        'Credit Images: ${project.creditImages.map((file) => file.path).toList()}');
+        projectName: _projectName,
+        startDate: _startDate,
+        endDate: _endDate,
+        location: _location,
+        scale: _scale,
+        scope: _scope,
+        partners: _partners,
+        issuer: _issuer,
+        availableCredits: _availableCredits,
+        certificates: _certificates,
+        price: _price,
+        projectImages: _projectImages,
+        creditImages: _creditImages,
+        paymentMethods: _selectedPaymentMethodList,
+        status: 'pedning');
   }
 
   @override

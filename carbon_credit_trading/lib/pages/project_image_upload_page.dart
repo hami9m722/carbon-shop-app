@@ -5,8 +5,8 @@ import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:flutter/material.dart';
 
 class ProjectImageUploadPage extends StatefulWidget {
-  final VoidCallback onPrevious; // Callback for the Previous button
-  final Function(List<File>) onNext; // Callback for the Next button
+  final VoidCallback onPrevious;
+  final Function(List<File>) onNext;
 
   const ProjectImageUploadPage({
     super.key,
