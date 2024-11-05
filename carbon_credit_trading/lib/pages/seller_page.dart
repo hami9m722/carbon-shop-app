@@ -1,5 +1,6 @@
 import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
+import 'package:carbon_credit_trading/pages/projects_seller_page.dart';
 import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
 import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
 import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
@@ -209,7 +210,13 @@ class SellerPage extends StatelessWidget {
                           Icons.check,
                           'Các dự án',
                           onTapped: () {
-                            // Thêm hành động cho widget này nếu cần
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ProjectsSellerPage(),
+                              ),
+                            );
                           },
                         ),
                       ),

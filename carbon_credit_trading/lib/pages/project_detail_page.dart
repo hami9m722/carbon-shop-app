@@ -129,39 +129,48 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                        onPressed: () => {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.greenButton,
+                          shape: BoxShape.circle,
                         ),
-                        child: const Text(
-                          'Inbox',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Lưu',
-                          style: TextStyle(fontSize: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.message_outlined,
+                              color: Colors.white),
+                          onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const ChatPage(
+                            //         contactName:
+                            //             'Renewable Biomass Energy Ventures',
+                            //         contactAvatar: ''),
+                            //   ),
+                            // );
+                          },
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: showPurchaseDialog,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.greenButton,
+                          shape: BoxShape.circle,
                         ),
-                        child: const Text(
-                          'Mua',
-                          style: TextStyle(fontSize: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.favorite, color: Colors.white),
+                          onPressed: () {},
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.greenButton,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.shopping_cart,
+                              color: Colors.white),
+                          onPressed: showPurchaseDialog,
                         ),
                       ),
                     ],

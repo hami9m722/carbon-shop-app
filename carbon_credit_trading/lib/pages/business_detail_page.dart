@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/models/comment.dart';
+import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
@@ -37,6 +38,44 @@ class BusinessDetailPage extends StatelessWidget {
         userImage: 'assets/user2.png',
       ),
     ];
+
+    final List<Project> projects = [
+      Project(
+        projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
+        startDate: '01/01/2023',
+        endDate: '01/01/2025',
+        location: 'Việt Nam',
+        scale: 'Lớn',
+        scope: 'Toàn quốc',
+        partners: 'Công ty ABC',
+        issuer: 'Chính phủ',
+        availableCredits: '1000',
+        certificates: 'ISO 9001',
+        price: '1000 VND',
+        projectImages: [
+          'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
+        ],
+        creditImages: [],
+        paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
+      ),
+      Project(
+        projectName: 'Dự án năng lượng mặt trời',
+        startDate: '01/06/2023',
+        endDate: '01/06/2024',
+        location: 'Việt Nam',
+        scale: 'Trung bình',
+        scope: 'Khu vực miền Trung',
+        partners: 'Công ty XYZ',
+        issuer: 'Công ty TNHH',
+        availableCredits: '500',
+        certificates: 'ISO 14001',
+        price: '800 VND',
+        projectImages: ['https://via.placeholder.com/150'],
+        creditImages: [],
+        paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
+      ),
+    ];
+
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Trang cá nhân",
@@ -52,7 +91,6 @@ class BusinessDetailPage extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    // Decrease the height of the white container to make it lower
                     Container(
                       margin: const EdgeInsets.only(top: 70), // Move it down
                       color: Colors.white,
@@ -61,8 +99,7 @@ class BusinessDetailPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                                height: 20), // Extra space for the top
+                            const SizedBox(height: 20),
                             customRichText(
                               title: 'Tên doanh nghiệp:',
                               value: 'Renewable Biomass Energy Ventures',
@@ -109,7 +146,7 @@ class BusinessDetailPage extends StatelessWidget {
                     ),
                     Positioned(
                       top: 5,
-                      left: 20, // Position the CircleAvatar at the top
+                      left: 20,
                       child: GestureDetector(
                         key: userInfoKey,
                         onTap: () {
@@ -141,44 +178,30 @@ class BusinessDetailPage extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Danh sách dự án đăng bán",
-                    textAlign:
-                        TextAlign.left, // Căn chỉnh văn bản sang bên trái
+                    textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontSize: 17, // Tăng kích thước font chữ
-                      fontWeight: FontWeight.bold, // Làm chữ đậm
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              ListView(
+              SizedBox(
+                  child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
-                physics:
-                    const NeverScrollableScrollPhysics(), // Prevent scrolling of ListView
-                children: const [
-                  ProjectItem(
-                      title:
-                          'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-                      subtitle: 15,
-                      imageUrl:
-                          'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
-                  ProjectItem(
-                      title:
-                          'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-                      subtitle: 11,
-                      imageUrl: 'https://via.placeholder.com/150'),
-                  ProjectItem(
-                      title:
-                          'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-                      subtitle: 13,
-                      imageUrl: 'https://via.placeholder.com/150'),
-                  ProjectItem(
-                      title:
-                          'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-                      subtitle: 10,
-                      imageUrl: 'https://via.placeholder.com/150'),
-                ],
-              ),
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  return ProjectItem(
+                    title: projects[index].projectName,
+                    subtitle: projects[index].availableCredits,
+                    imageUrl: projects[index].projectImages.isNotEmpty
+                        ? projects[index].projectImages[0]
+                        : 'https://via.placeholder.com/150',
+                  );
+                },
+              )),
               const SizedBox(height: 25),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
@@ -186,11 +209,10 @@ class BusinessDetailPage extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Đánh giá doanh nghiệp",
-                    textAlign:
-                        TextAlign.left, // Căn chỉnh văn bản sang bên trái
+                    textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontSize: 17, // Tăng kích thước font chữ
-                      fontWeight: FontWeight.bold, // Làm chữ đậm
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

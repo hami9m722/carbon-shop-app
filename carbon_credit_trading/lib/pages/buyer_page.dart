@@ -1,7 +1,7 @@
 import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:carbon_credit_trading/pages/favorite_tab.dart';
-import 'package:carbon_credit_trading/pages/profile_page.dart';
 import 'package:carbon_credit_trading/pages/search_tab.dart';
+import 'package:carbon_credit_trading/pages/setting_page.dart';
 import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +24,7 @@ class _BuyerPageState extends State<BuyerPage> {
   }
 
   void onTabTapped(int index) {
-    pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    pageController.jumpToPage(index);
     setState(() {
       currentIndex = index;
     });
@@ -53,7 +52,7 @@ class _BuyerPageState extends State<BuyerPage> {
                 TransactionReviewPage(),
                 ContactPage(),
                 FavoriteTab(),
-                ProfilePage(),
+                SettingsPage(),
               ],
             ),
           ),

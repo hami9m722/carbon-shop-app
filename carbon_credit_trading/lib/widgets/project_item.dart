@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ProjectItem extends StatelessWidget {
   final String title;
-  final int subtitle;
+  final String subtitle;
   final String imageUrl;
 
   const ProjectItem({

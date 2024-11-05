@@ -44,7 +44,7 @@ class _ProjectsSellerPage extends State<ProjectsSellerPage>
           indicatorColor: Colors.green,
           tabs: const [
             Tab(text: 'Chờ duyệt'),
-            Tab(text: 'Dự án đã duyệt'),
+            Tab(text: 'Đã duyệt'),
             Tab(text: 'Đã hủy'),
           ],
         ),
