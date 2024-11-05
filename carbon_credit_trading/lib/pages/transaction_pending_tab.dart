@@ -8,10 +8,9 @@ import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 
 class TransactionPendingTab extends StatelessWidget {
-  final bool isApproveTransactionPage;
+  final String previousPage;
 
-  const TransactionPendingTab(
-      {super.key, this.isApproveTransactionPage = false});
+  const TransactionPendingTab({super.key, this.previousPage = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +92,14 @@ class TransactionPendingTab extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: isApproveTransactionPage ? const CustomAppBar() : null,
+      appBar: previousPage != '' ? const CustomAppBar() : null,
       body: Container(
           color: AppColors.greyBackGround,
           child: Column(
             children: [
-              if (isApproveTransactionPage)
+              if (previousPage != '')
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
                     'Các giao dịch đang chờ duyệt',
                     style: TextStyle(
@@ -118,7 +117,8 @@ class TransactionPendingTab extends StatelessWidget {
                     final transaction = pendingTransactions[index];
                     return TransactionItem(
                       transaction: transaction,
-                      onPress: isApproveTransactionPage
+                      typeOfButton: "pending",
+                      onPress: previousPage == 'intermediary'
                           ? () {
                               Navigator.push(
                                 context,

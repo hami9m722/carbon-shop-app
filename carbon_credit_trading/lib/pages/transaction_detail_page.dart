@@ -1,4 +1,6 @@
 import 'package:carbon_credit_trading/models/transaction.dart';
+import 'package:carbon_credit_trading/pages/add_feedback_page.dart';
+import 'package:carbon_credit_trading/pages/project_detail_page.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -10,7 +12,9 @@ import 'package:flutter/material.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
-  const TransactionDetailPage({super.key, required this.transaction});
+  final String typeOfButton;
+  const TransactionDetailPage(
+      {super.key, required this.transaction, required this.typeOfButton});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,7 @@ class TransactionDetailPage extends StatelessWidget {
                   color: Colors.green,
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Giao dịch ${transaction.transactionId} đã tiến hành $transactionStatusMessage',
+                    'Giao dịch ${transaction.transactionId} $transactionStatusMessage',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -233,6 +237,52 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
+                          if (typeOfButton != '')
+                            Column(children: [
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (typeOfButton == 'pending') {
+                                    } else if (typeOfButton == 'feedback') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AddFeedbackPage(),
+                                        ),
+                                      );
+                                    } else if (typeOfButton == 'bought') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProjectDetailPage(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: AppColors.greenButton,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
+                                  ),
+                                  child: Text(
+                                    typeOfButton == 'pending'
+                                        ? 'Hủy'
+                                        : typeOfButton == 'feedback'
+                                            ? 'Đánh giá'
+                                            : typeOfButton == 'bought'
+                                                ? 'Mua lại'
+                                                : '',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          const SizedBox(height: 10),
                         ])),
               ],
             ),

@@ -7,8 +7,13 @@ import 'package:carbon_credit_trading/models/transaction.dart';
 class TransactionItem extends StatelessWidget {
   final Transaction transaction;
   final VoidCallback? onPress;
+  final String typeOfButton;
 
-  const TransactionItem({super.key, required this.transaction, this.onPress});
+  const TransactionItem(
+      {super.key,
+      required this.transaction,
+      this.onPress,
+      this.typeOfButton = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +86,10 @@ class TransactionItem extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            TransactionDetailPage(transaction: transaction),
+                        builder: (context) => TransactionDetailPage(
+                          transaction: transaction,
+                          typeOfButton: typeOfButton,
+                        ),
                       ),
                     );
                   }

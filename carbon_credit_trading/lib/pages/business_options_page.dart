@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/pages/buyer_page.dart';
 import 'package:carbon_credit_trading/pages/seller_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -72,6 +73,7 @@ class BusinessOptionsPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: TextButton(
                           onPressed: () {
+                            businessOption = 'seller';
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -94,6 +96,7 @@ class BusinessOptionsPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: TextButton(
                           onPressed: () {
+                            businessOption = 'buyer';
                             Navigator.push(
                               context,
                               MaterialPageRoute(

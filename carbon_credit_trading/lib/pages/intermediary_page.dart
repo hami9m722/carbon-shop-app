@@ -93,7 +93,7 @@ class IntermediaryPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       const TransactionPendingTab(
-                                          isApproveTransactionPage: true),
+                                          previousPage: 'intermediary'),
                                 ),
                               );
                             }),

@@ -1,6 +1,9 @@
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/models/user.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 
@@ -86,13 +89,39 @@ class TransactionCanceledTab extends StatelessWidget {
           child: Text('Không có giao dịch nào đang chờ duyệt.'));
     }
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: pendingTransactions.length,
-      itemBuilder: (context, index) {
-        final transaction = pendingTransactions[index];
-        return TransactionItem(transaction: transaction);
-      },
+    return Scaffold(
+      appBar: businessOption == 'seller' ? const CustomAppBar() : null,
+      body: Container(
+          color: AppColors.greyBackGround,
+          child: Column(
+            children: [
+              if (businessOption == 'seller')
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Text(
+                    'Các giao dịch đã hủy',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.greenButton,
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: pendingTransactions.length,
+                  itemBuilder: (context, index) {
+                    final transaction = pendingTransactions[index];
+                    return TransactionItem(
+                        transaction: transaction,
+                        typeOfButton:
+                            businessOption == 'buyer' ? 'bought' : '');
+                  },
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
