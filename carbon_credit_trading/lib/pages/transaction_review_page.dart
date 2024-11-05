@@ -17,7 +17,7 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
   int _currentIndex = 0;
   bool _isSearching = false;
   String _searchQuery = '';
-  final FocusNode _searchFocusNode = FocusNode(); // FocusNode cho ô tìm kiếm
+  final FocusNode _searchFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,7 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,
+                  hintText: 'Tìm mã giao dịch...',
                 ),
               )
             : const Text(

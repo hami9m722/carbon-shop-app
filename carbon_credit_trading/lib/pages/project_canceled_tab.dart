@@ -8,7 +8,8 @@ import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 
 class ProjectCanceledTab extends StatelessWidget {
-  const ProjectCanceledTab({super.key});
+  final String? searchQuery;
+  const ProjectCanceledTab({super.key, this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +50,18 @@ class ProjectCanceledTab extends StatelessWidget {
           status: 'canceled'),
     ];
 
+    List<Project> getFilteredTransactions(List<Project> transactions) {
+      return projects.where((project) {
+        return project.projectName.contains(searchQuery?.trim() ?? '');
+      }).toList();
+    }
+
+    final filteredProjects = getFilteredTransactions(projects);
+
     return Scaffold(
       body: Container(
         color: AppColors.greyBackGround,
-        child: projects.isEmpty
+        child: filteredProjects.isEmpty
             ? const Center(
                 child: Text(
                 'Không có dự án nào đã hủy',
@@ -62,11 +71,12 @@ class ProjectCanceledTab extends StatelessWidget {
               ))
             : ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: projects.length,
+                itemCount: filteredProjects.length,
                 itemBuilder: (context, index) {
-                  final project = projects[index];
+                  final project = filteredProjects[index];
                   return ProjectItem(
                     project: project,
+                    searchQuery: searchQuery,
                   );
                 },
               ),
