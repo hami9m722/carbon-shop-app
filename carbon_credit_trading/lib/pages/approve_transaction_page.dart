@@ -65,25 +65,25 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       }
     }
 
-    void addCreditImage(List<File> newImage) {
+    void addCreditImage(List<File> newImages) {
       setState(() {
-        creditImages.addAll(newImage);
+        creditImages.addAll(newImages);
       });
     }
 
-    void removeCreditImage(File image) {
+    void removeCreditImage(dynamic image) {
       setState(() {
         creditImages.remove(image);
       });
     }
 
-    void addBillImage(List<File> newImage) {
+    void addBillImage(List<File> newImages) {
       setState(() {
-        billImages.addAll(newImage);
+        billImages.addAll(newImages);
       });
     }
 
-    void removeBillImage(File image) {
+    void removeBillImage(dynamic image) {
       setState(() {
         billImages.remove(image);
       });

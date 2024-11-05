@@ -30,8 +30,10 @@ class ProjectPendingTab extends StatelessWidget {
           projectImages: [
             'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
           ],
-          creditImages: [],
-          paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
+          creditImages: [
+            'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
+          ],
+          paymentMethods: ['Thẻ tín dụng', 'Chuyển khoản nội địa'],
           status: 'pending'),
       Project(
           projectName: 'Dự án năng lượng mặt trời',
@@ -47,7 +49,7 @@ class ProjectPendingTab extends StatelessWidget {
           price: '800',
           projectImages: ['https://via.placeholder.com/150'],
           creditImages: [],
-          paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
+          paymentMethods: ['Thẻ tín dụng', 'Chuyển khoản nội địa'],
           status: 'pending'),
     ];
 

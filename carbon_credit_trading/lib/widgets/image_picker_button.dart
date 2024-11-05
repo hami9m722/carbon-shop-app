@@ -4,7 +4,7 @@ import 'dart:io';
 
 class ImagePickerButton extends StatefulWidget {
   final Function(List<File>) onImagesSelected;
-  final List<File> imageFiles;
+  final List<dynamic> imageFiles;
   final Widget child;
 
   const ImagePickerButton({
@@ -24,8 +24,6 @@ class _ImagePickerButtonState extends State<ImagePickerButton> {
     final ImagePicker picker = ImagePicker();
     final List<XFile> pickedFiles = await picker.pickMultiImage();
 
-    
-
     List<File> newFiles = [];
     int duplicateCount = 0;
 
@@ -33,16 +31,18 @@ class _ImagePickerButtonState extends State<ImagePickerButton> {
       File newFile = File(pickedFile.path);
 
       // Check for duplicates
-      if (!widget.imageFiles.any((file) =>
-          file.uri.pathSegments.last == newFile.uri.pathSegments.last)) {
-        newFiles.add(newFile); // Add to the newFiles list
+      if (!widget.imageFiles
+          .whereType<File>() // Only consider File types
+          .any((file) =>
+              file.path.split('/').last == newFile.path.split('/').last)) {
+        newFiles.add(newFile);
       } else {
         duplicateCount++;
       }
     }
 
     if (newFiles.isNotEmpty) {
-      widget.onImagesSelected(newFiles); // Send all new files at once
+      widget.onImagesSelected(newFiles);
     }
 
     if (duplicateCount > 0 && mounted) {

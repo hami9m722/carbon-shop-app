@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class ImageUploadSection extends StatelessWidget {
-  final List<File> imageFiles;
-  final Function(File) onRemoveImage;
+  final List<dynamic> imageFiles;
+  final Function(dynamic) onRemoveImage;
 
   const ImageUploadSection(
       {super.key, required this.imageFiles, required this.onRemoveImage});
@@ -46,7 +46,10 @@ class ImageUploadSection extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
-                              image: FileImage(imageFiles[index]),
+                              image: imageFiles[index] is File
+                                  ? FileImage(imageFiles[index])
+                                  : NetworkImage(imageFiles[
+                                      index]), // Handle network images
                               fit: BoxFit.cover,
                             ),
                           ),

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:carbon_credit_trading/models/project.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
 class ProjectRegistrationPage extends StatefulWidget {
-  const ProjectRegistrationPage({super.key});
+  final Project? initialProject;
+  const ProjectRegistrationPage({super.key, this.initialProject});
 
   @override
   createState() => _ProjectRegistrationPageState();
@@ -34,8 +36,30 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   String _certificates = '';
   String _price = '';
   List<String> _selectedPaymentMethodList = [];
-  List<File> _projectImages = [];
-  List<File> _creditImages = [];
+  List<dynamic> _projectImages = [];
+  List<dynamic> _creditImages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize fields if an existing project is provided
+    if (widget.initialProject != null) {
+      _projectName = widget.initialProject!.projectName;
+      _startDate = widget.initialProject!.startDate;
+      _endDate = widget.initialProject!.endDate;
+      _location = widget.initialProject!.location;
+      _scale = widget.initialProject!.scale;
+      _scope = widget.initialProject!.scope;
+      _partners = widget.initialProject!.partners;
+      _issuer = widget.initialProject!.issuer;
+      _availableCredits = widget.initialProject!.availableCredits;
+      _certificates = widget.initialProject!.certificates;
+      _price = widget.initialProject!.price;
+      _selectedPaymentMethodList = widget.initialProject!.paymentMethods;
+      _projectImages = widget.initialProject!.projectImages;
+      _creditImages = widget.initialProject!.creditImages;
+    }
+  }
 
   void _nextPage() {
     if (_currentIndex < 2) {
@@ -77,7 +101,13 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         projectImages: _projectImages,
         creditImages: _creditImages,
         paymentMethods: _selectedPaymentMethodList,
-        status: 'pedning');
+        status: 'pending');
+
+    if (widget.initialProject != null) {
+      // update project
+    } else {
+      // create project
+    }
   }
 
   @override
@@ -97,6 +127,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         },
         children: [
           AddInfoProjectPage(
+            initialProject: widget.initialProject,
             onNext: _nextPage,
             onProjectDataChanged: (Project data) {
               setState(() {
@@ -116,6 +147,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
             },
           ),
           ProjectImageUploadPage(
+            initialImages: _projectImages,
             onPrevious: _previousPage,
             onNext: (images) {
               setState(() {
@@ -125,8 +157,9 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
             },
           ),
           CreditImageUploadPage(
+            initialImages: _creditImages,
             onPrevious: _previousPage,
-            onSave: (List<File> creditImages) {
+            onSave: (creditImages) {
               setState(() {
                 _creditImages = creditImages;
               });

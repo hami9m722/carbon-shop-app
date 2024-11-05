@@ -1,6 +1,7 @@
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/feedback_page.dart';
+import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
@@ -196,7 +197,16 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                                     child: IconButton(
                                       icon: const Icon(Icons.edit,
                                           color: Colors.white),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProjectRegistrationPage(
+                                                      initialProject:
+                                                          widget.project,
+                                                    )));
+                                      },
                                     ),
                                   ),
                                   const SizedBox(width: 10),

@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 
 class CreditImageUploadPage extends StatefulWidget {
   final VoidCallback onPrevious;
-  final Function(List<File>) onSave;
+  final Function(List<dynamic>) onSave;
+  final List<dynamic>? initialImages;
 
-  const CreditImageUploadPage({
-    super.key,
-    required this.onPrevious,
-    required this.onSave,
-  });
+  const CreditImageUploadPage(
+      {super.key,
+      required this.onPrevious,
+      required this.onSave,
+      this.initialImages});
 
   @override
   createState() => _CreditImageUploadPageState();
@@ -22,15 +23,23 @@ class _CreditImageUploadPageState extends State<CreditImageUploadPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final List<File> _imageFiles = [];
+  List<dynamic> _imageFiles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialImages != null) {
+      _imageFiles = List.from(widget.initialImages!);
+    }
+  }
 
   void _addImage(List<File> newImages) {
     setState(() {
-      _imageFiles.addAll(newImages);
+      _imageFiles.addAll(newImages.whereType<File>().cast<File>());
     });
   }
 
-  void _removeImage(File image) {
+  void _removeImage(dynamic image) {
     setState(() {
       _imageFiles.remove(image);
     });

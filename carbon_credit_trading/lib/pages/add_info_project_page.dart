@@ -7,27 +7,31 @@ import 'package:flutter/material.dart';
 class AddInfoProjectPage extends StatefulWidget {
   final VoidCallback onNext;
   final void Function(Project data) onProjectDataChanged;
+  final Project? initialProject; // Use a Project object to hold initial data
 
-  const AddInfoProjectPage(
-      {super.key, required this.onNext, required this.onProjectDataChanged});
+  const AddInfoProjectPage({
+    super.key,
+    required this.onNext,
+    required this.onProjectDataChanged,
+    this.initialProject,
+  });
 
   @override
   createState() => _AddInfoProjectPage();
 }
 
 class _AddInfoProjectPage extends State<AddInfoProjectPage> {
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _projectNameController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _scaleController = TextEditingController();
-  final TextEditingController _scopeController = TextEditingController();
-  final TextEditingController _partnersController = TextEditingController();
-  final TextEditingController _issuerController = TextEditingController();
-  final TextEditingController _availableCreditsController =
-      TextEditingController();
-  final TextEditingController _certificatesController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  late TextEditingController _projectNameController;
+  late TextEditingController _startDateController;
+  late TextEditingController _endDateController;
+  late TextEditingController _locationController;
+  late TextEditingController _scaleController;
+  late TextEditingController _scopeController;
+  late TextEditingController _partnersController;
+  late TextEditingController _issuerController;
+  late TextEditingController _availableCreditsController;
+  late TextEditingController _certificatesController;
+  late TextEditingController _priceController;
   final List<String> _paymentMethods = [
     'Chuyển khoản quốc tế',
     'PayPal',
@@ -36,6 +40,36 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
   ];
 
   final List<String> _selectedPaymentMethodList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with initial project data if provided
+    _projectNameController =
+        TextEditingController(text: widget.initialProject?.projectName);
+    _startDateController =
+        TextEditingController(text: widget.initialProject?.startDate);
+    _endDateController =
+        TextEditingController(text: widget.initialProject?.endDate);
+    _locationController =
+        TextEditingController(text: widget.initialProject?.location);
+    _scaleController =
+        TextEditingController(text: widget.initialProject?.scale);
+    _scopeController =
+        TextEditingController(text: widget.initialProject?.scope);
+    _partnersController =
+        TextEditingController(text: widget.initialProject?.partners);
+    _issuerController =
+        TextEditingController(text: widget.initialProject?.issuer);
+    _availableCreditsController =
+        TextEditingController(text: widget.initialProject?.availableCredits);
+    _certificatesController =
+        TextEditingController(text: widget.initialProject?.certificates);
+    _priceController =
+        TextEditingController(text: widget.initialProject?.price);
+    _selectedPaymentMethodList
+        .addAll(widget.initialProject?.paymentMethods ?? []);
+  }
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller) async {
@@ -56,19 +90,20 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
 
   void _updateProjectData() {
     widget.onProjectDataChanged(Project(
-        projectName: _projectNameController.text,
-        startDate: _startDateController.text,
-        endDate: _endDateController.text,
-        location: _locationController.text,
-        scale: _scaleController.text,
-        scope: _scopeController.text,
-        partners: _partnersController.text,
-        issuer: _issuerController.text,
-        availableCredits: _availableCreditsController.text,
-        certificates: _certificatesController.text,
-        price: _priceController.text,
-        paymentMethods: _selectedPaymentMethodList,
-        status: 'pending'));
+      projectName: _projectNameController.text,
+      startDate: _startDateController.text,
+      endDate: _endDateController.text,
+      location: _locationController.text,
+      scale: _scaleController.text,
+      scope: _scopeController.text,
+      partners: _partnersController.text,
+      issuer: _issuerController.text,
+      availableCredits: _availableCreditsController.text,
+      certificates: _certificatesController.text,
+      price: _priceController.text,
+      paymentMethods: _selectedPaymentMethodList,
+      status: 'pending',
+    ));
   }
 
   @override
@@ -198,7 +233,7 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
               method,
               style: const TextStyle(fontSize: 16),
             ),
-            selected: _selectedPaymentMethodList.contains(method),
+            selected: isSelected,
             selectedColor: AppColors.greenButton,
             checkmarkColor: Colors.white,
             labelStyle: TextStyle(
@@ -219,39 +254,4 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
       ),
     );
   }
-  // Widget _buildPaymentMethodDropdown() {
-  //   return DropdownButtonHideUnderline(
-  //     child: InputDecorator(
-  //       decoration: const InputDecoration(
-  //         labelText: 'Hình thức thanh toán',
-  //         border: OutlineInputBorder(),
-  //         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-  //       ),
-  //       isEmpty: _selectedPaymentMethod == null,
-  //       child: DropdownButton<String>(
-  //         iconSize: 30,
-  //         isExpanded: true,
-  //         value: _selectedPaymentMethod,
-  //         onChanged: (newValue) {
-  //           setState(() {
-  //             _selectedPaymentMethod = newValue;
-  //           });
-  //         },
-  //         items: _paymentMethods.map((method) {
-  //           return DropdownMenuItem<String>(
-  //             value: method,
-  //             child: Container(
-  //               alignment: Alignment.centerLeft,
-  //               child: Text(
-  //                 method,
-  //                 style: const TextStyle(
-  //                     fontSize: 16, fontWeight: FontWeight.normal),
-  //               ),
-  //             ),
-  //           );
-  //         }).toList(),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

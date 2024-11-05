@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 
 class ProjectImageUploadPage extends StatefulWidget {
   final VoidCallback onPrevious;
-  final Function(List<File>) onNext;
+  final Function(List<dynamic>) onNext;
+  final List<dynamic>? initialImages;
 
   const ProjectImageUploadPage({
     super.key,
     required this.onPrevious,
     required this.onNext,
+    this.initialImages,
   });
 
   @override
@@ -22,15 +24,23 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final List<File> _imageFiles = [];
+  List<dynamic> _imageFiles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialImages != null) {
+      _imageFiles = List.from(widget.initialImages!);
+    }
+  }
 
   void _addImage(List<File> newImages) {
     setState(() {
-      _imageFiles.addAll(newImages);
+      _imageFiles.addAll(newImages.whereType<File>().cast<File>());
     });
   }
 
-  void _removeImage(File image) {
+  void _removeImage(dynamic image) {
     setState(() {
       _imageFiles.remove(image);
     });
