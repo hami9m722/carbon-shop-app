@@ -1,13 +1,13 @@
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
+import 'package:carbon_credit_trading/widgets/custom_year_picker.dart';
 import 'package:flutter/material.dart';
 
 class AddInfoProjectPage extends StatefulWidget {
   final VoidCallback onNext;
   final void Function(Project data) onProjectDataChanged;
-  final Project? initialProject; 
+  final Project? initialProject;
 
   const AddInfoProjectPage({
     super.key,
@@ -44,7 +44,6 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with initial project data if provided
     _projectNameController =
         TextEditingController(text: widget.initialProject?.projectName);
     _startDateController =
@@ -71,21 +70,17 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
         .addAll(widget.initialProject?.paymentMethods ?? []);
   }
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController controller) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        controller.text =
-            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-      });
-      _updateProjectData();
+  String? _validateStartEndDate() {
+    final startYear = int.tryParse(_startDateController.text);
+    final endYear = int.tryParse(_endDateController.text);
+
+    if (startYear != null && endYear != null) {
+      if (startYear > endYear) {
+        return 'Thời gian bắt đầu phải nhỏ hơn hoặc bằng thời gian kết thúc';
+      }
     }
+
+    return null;
   }
 
   void _updateProjectData() {
@@ -150,20 +145,20 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomDatePickerField(
+              CustomYearPicker(
                 controller: _startDateController,
                 labelText: 'Thời gian bắt đầu',
-                onTap: (context) {
-                  _selectDate(context, _startDateController);
-                },
+                startYear: DateTime.now().year,
+                endYear: DateTime.now().year + 100,
+                onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomDatePickerField(
+              CustomYearPicker(
                 controller: _endDateController,
                 labelText: 'Thời gian kết thúc',
-                onTap: (context) {
-                  _selectDate(context, _endDateController);
-                },
+                startYear: DateTime.now().year,
+                endYear: DateTime.now().year + 100,
+                onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
               TextFormField(
@@ -243,7 +238,14 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    widget.onNext();
+                    String? error = _validateStartEndDate();
+                    if (error != null) {
+                      // Hiển thị lỗi nếu có
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(error)));
+                    } else {
+                      widget.onNext();
+                    }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.greenButton,

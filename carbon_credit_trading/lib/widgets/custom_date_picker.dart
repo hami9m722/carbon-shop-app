@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 
-class CustomDatePickerField extends StatelessWidget {
+class CustomDatePicker extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
-  final Function(BuildContext) onTap;
 
-  const CustomDatePickerField({
+  const CustomDatePicker({
     super.key,
     required this.controller,
     required this.labelText,
-    required this.onTap,
   });
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      controller.text =
+          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(context),
+      onTap: () => _selectDate(context),
       child: AbsorbPointer(
         child: TextFormField(
           controller: controller,

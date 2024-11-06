@@ -2,7 +2,6 @@ import 'package:carbon_credit_trading/models/project.dart';
 
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
-import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 
 import 'package:carbon_credit_trading/widgets/project_item.dart';
 
@@ -31,8 +30,8 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
     final List<Project> projects = [
       Project(
           projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-          startDate: '01/01/2023',
-          endDate: '01/01/2025',
+          startDate: '2023',
+          endDate: '2025',
           location: 'Việt Nam',
           scale: 'Lớn',
           scope: 'Toàn quốc',
@@ -51,8 +50,8 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
           status: 'pending'),
       Project(
           projectName: 'Dự án năng lượng mặt trời',
-          startDate: '01/06/2023',
-          endDate: '01/06/2024',
+          startDate: '2023',
+          endDate: '2024',
           location: 'Việt Nam',
           scale: 'Trung bình',
           scope: 'Khu vực miền Trung',

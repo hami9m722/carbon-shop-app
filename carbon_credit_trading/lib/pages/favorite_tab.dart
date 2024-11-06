@@ -1,6 +1,7 @@
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
+import 'package:carbon_credit_trading/widgets/filter_drawer.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 
@@ -159,115 +160,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
                 },
               ),
       ),
-      endDrawer: _buildFilterDrawer(),
-    );
-  }
-
-  Widget _buildFilterDrawer() {
-    return Container(
-      width: 300,
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Filters',
-            ),
-          ),
-          const Divider(),
-          _buildBrandFilter(),
-          const Divider(),
-          _buildPriceFilter(),
-          const Divider(),
-          // Add other filters like Series, Colors here
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle reset action
-              },
-              child: const Text('Reset All'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBrandFilter() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Brands'),
-          CheckboxListTile(
-            title: const Text('Red'),
-            value: isRedSelected,
-            onChanged: (value) {
-              setState(() {
-                isRedSelected = value!;
-              });
-            },
-          ),
-          CheckboxListTile(
-            title: const Text('White'),
-            value: isWhiteSelected,
-            onChanged: (value) {
-              setState(() {
-                isWhiteSelected = value!;
-              });
-            },
-          ),
-          CheckboxListTile(
-            title: const Text('Blue'),
-            value: isBlueSelected,
-            onChanged: (value) {
-              setState(() {
-                isBlueSelected = value!;
-              });
-            },
-          ),
-          // Add more brands as needed
-          TextButton(
-            onPressed: () {
-              // Show more brands action
-            },
-            child: const Text('Show more brands'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPriceFilter() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Price'),
-          RangeSlider(
-            values: RangeValues(minPrice, maxPrice),
-            min: 0,
-            max: 2400,
-            divisions: 24,
-            labels: RangeLabels(
-              '\$${minPrice.toInt()}',
-              '\$${maxPrice.toInt()}',
-            ),
-            onChanged: (values) {
-              setState(() {
-                minPrice = values.start;
-                maxPrice = values.end;
-              });
-            },
-          ),
-        ],
-      ),
+      endDrawer: const FilterDrawer(),
     );
   }
 }

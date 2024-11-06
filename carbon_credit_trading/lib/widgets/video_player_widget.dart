@@ -23,7 +23,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       _controller = VideoPlayerController.file(widget.file);
     } else if (widget.file is String) {
       _controller =
-          VideoPlayerController.networkUrl(widget.file); // Correct method
+          VideoPlayerController.networkUrl(widget.file); 
     } else {
       throw Exception('Invalid video source type');
     }
