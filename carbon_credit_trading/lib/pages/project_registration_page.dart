@@ -41,20 +41,22 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   @override
   void initState() {
     super.initState();
-    _projectName = widget.initialProject!.projectName;
-    _startDate = widget.initialProject!.startDate;
-    _endDate = widget.initialProject!.endDate;
-    _location = widget.initialProject!.location;
-    _scale = widget.initialProject!.scale;
-    _scope = widget.initialProject!.scope;
-    _partners = widget.initialProject!.partners;
-    _issuer = widget.initialProject!.issuer;
-    _availableCredits = widget.initialProject!.availableCredits;
-    _certificates = widget.initialProject!.certificates;
-    _price = widget.initialProject!.price;
-    _selectedPaymentMethodList = widget.initialProject!.paymentMethods;
-    _projectImages = widget.initialProject!.projectImages;
-    _creditImages = widget.initialProject!.creditImages;
+    if (widget.initialProject != null) {
+      _projectName = widget.initialProject!.projectName;
+      _startDate = widget.initialProject!.startDate;
+      _endDate = widget.initialProject!.endDate;
+      _location = widget.initialProject!.location;
+      _scale = widget.initialProject!.scale;
+      _scope = widget.initialProject!.scope;
+      _partners = widget.initialProject!.partners;
+      _issuer = widget.initialProject!.issuer;
+      _availableCredits = widget.initialProject!.availableCredits;
+      _certificates = widget.initialProject!.certificates;
+      _price = widget.initialProject!.price;
+      _selectedPaymentMethodList = widget.initialProject!.paymentMethods;
+      _projectImages = widget.initialProject!.projectImages;
+      _creditImages = widget.initialProject!.creditImages;
+    }
   }
 
   void _nextPage() {

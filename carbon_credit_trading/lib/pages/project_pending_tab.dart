@@ -158,6 +158,7 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
                     final project = filteredProjects[index];
                     return ProjectItem(
                       project: project,
+                      previousPage: widget.previousPage,
                       searchQuery: widget.previousPage != ''
                           ? _searchQuery
                           : widget.searchQuery,

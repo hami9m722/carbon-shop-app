@@ -19,11 +19,16 @@ class _FavoriteTabState extends State<FavoriteTab> {
   bool isRedSelected = true;
   bool isWhiteSelected = false;
   bool isBlueSelected = false;
-  double minPrice = 0;
-  double maxPrice = 2400;
 
   String _searchQuery = '';
   bool _isSearching = false;
+
+  String selectedPaymentMethod = '';
+  String selectedRating = '';
+  double selectedMinPrice = 0;
+  double selectedMaxPrice = 0;
+
+  String _sortOption = 'Giá tăng dần';
 
   final List<Project> projects = [
     Project(
@@ -37,7 +42,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
       issuer: 'Chính phủ',
       availableCredits: '1000',
       certificates: 'ISO 9001',
-      price: '1000',
+      price: '800',
       projectImages: [
         'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
       ],
@@ -55,22 +60,54 @@ class _FavoriteTabState extends State<FavoriteTab> {
       issuer: 'Công ty TNHH',
       availableCredits: '500',
       certificates: 'ISO 14001',
-      price: '800',
+      price: '1000',
       projectImages: ['https://via.placeholder.com/150'],
       paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
       status: 'approved',
     ),
   ];
 
+  void _sortProjects() {
+    setState(() {
+      if (_sortOption == 'Giá tăng dần') {
+        projects.sort(
+            (a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
+      } else if (_sortOption == 'Giá giảm dần') {
+        projects.sort(
+            (a, b) => double.parse(b.price).compareTo(double.parse(a.price)));
+      } else if (_sortOption == 'Đánh giá tăng dần') {
+        // Assuming you have ratings, replace this with actual sorting logic
+        // projects.sort((a, b) => a.rating.compareTo(b.rating));
+      } else if (_sortOption == 'Đánh giá giảm dần') {
+        // Assuming you have ratings, replace this with actual sorting logic
+        // projects.sort((a, b) => b.rating.compareTo(a.rating));
+      }
+    });
+  }
+
+  List<Project> getFilteredProjects(List<Project> projects) {
+    return projects.where((project) {
+      bool matchesSearchQuery = project.projectName
+          .toLowerCase()
+          .contains(_searchQuery.trim().toLowerCase());
+      // bool matchesPriceRange =
+      //     double.parse(project.price) >= selectedMinPrice &&
+      //         double.parse(project.price) <= selectedMaxPrice;
+      // bool matchesPaymentMethod =
+      //     project.paymentMethods.contains(selectedPaymentMethod);
+      // bool matchesRating =
+      //     project.rating == selectedRating; // Assuming rating is available
+
+      return matchesSearchQuery;
+      // && matchesPriceRange &&
+      //     matchesPaymentMethod &&
+      //     matchesRating;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Project> getFilteredTransactions(List<Project> transactions) {
-      return projects.where((project) {
-        return project.projectName.contains(_searchQuery.trim());
-      }).toList();
-    }
-
-    final filteredProjects = getFilteredTransactions(projects);
+    final filteredProjects = getFilteredProjects(projects);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -140,27 +177,100 @@ class _FavoriteTabState extends State<FavoriteTab> {
         ],
       ),
       body: Container(
-        color: AppColors.greyBackGround,
-        child: filteredProjects.isEmpty
-            ? const Center(
-                child: Text(
-                  'Không có dự án nào',
-                  style: AppTextStyles.normalText,
+          color: AppColors.greyBackGround,
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _sortOption = _sortOption == 'Giá tăng dần'
+                          ? 'Giá giảm dần'
+                          : 'Giá tăng dần';
+                    });
+                    _sortProjects();
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom:
+                            BorderSide(color: AppColors.greenButton, width: 2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Giá',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.greenButton,
+                          ),
+                        ),
+                        Icon(
+                          _sortOption == 'Giá tăng dần'
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: AppColors.greenButton,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              )
-            : ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: filteredProjects.length,
-                itemBuilder: (context, index) {
-                  final project = filteredProjects[index];
-                  return ProjectItem(
-                    project: project,
-                    searchQuery: _searchQuery,
-                  );
-                },
-              ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: AppColors.greenButton, width: 2)),
+                  ),
+                  child: const Row(
+                    children: [
+                      Text(
+                        'Đánh giá',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.greenButton,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_upward,
+                        color: AppColors.greenButton,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+                child: filteredProjects.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Không có dự án nào',
+                          style: AppTextStyles.normalText,
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: filteredProjects.length,
+                        itemBuilder: (context, index) {
+                          final project = filteredProjects[index];
+                          return ProjectItem(
+                            project: project,
+                            searchQuery: _searchQuery,
+                          );
+                        },
+                      )),
+          ])),
+      endDrawer: FilterDrawer(
+        onApplyFilters: (filters) {
+          // Handle the filter logic here (e.g., apply the filter to your data source)
+          print(filters); // You can use this to filter your data
+        },
       ),
-      endDrawer: const FilterDrawer(),
     );
   }
 }
