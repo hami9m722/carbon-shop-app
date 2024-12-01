@@ -40,6 +40,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   bool get wantKeepAlive => true;
   final PageController _pageController = PageController();
   int _currentIndex = 0;
+  Future<void>? processing;
 
 // info registered project
   String _projectName = '';
@@ -102,7 +103,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
     }
   }
 
-  void _saveProject() async {
+  Future<void> _saveProject() async {
     try {
       await sellerControllerApi.registerProject(SellerRegisterProjectDTO(
         name: _projectName,
@@ -133,86 +134,103 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
       appBar: const CustomAppBar(
         title: "Đăng ký dự án",
       ),
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(), // Disable swiping
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        children: [
-          AddInfoProjectPage(
-            initialProject: Project(
-                projectName: _projectName,
-                startDate: _startDate,
-                endDate: _endDate,
-                location: _location,
-                scale: _scale,
-                scope: _scope,
-                partners: _partners,
-                issuer: _issuer,
-                availableCredits: _availableCredits,
-                certificates: _certificates,
-                price: _price,
-                paymentMethods: _selectedPaymentMethodList,
-                status: 'pending',
-                companyUser: null,
-                company: null),
-            onNext: _nextPage,
-            onProjectDataChanged: (data) {
-              setState(() {
-                _projectName = data.projectName;
-                _startDate = data.startDate;
-                _endDate = data.endDate;
-                _location = data.location;
-                _scale = data.scale;
-                _scope = data.scope;
-                _partners = data.partners;
-                _issuer = data.issuer;
-                _availableCredits = data.availableCredits;
-                _certificates = data.certificates;
-                _price = data.price;
-                _selectedPaymentMethodList = data.paymentMethods;
-              });
-            },
-          ),
-          // ProjectImageUploadPage(
-          //   initialImages: _projectImages,
-          //   onPrevious: _previousPage,
-          //   onNext: (images) async {
-          //     List<int> imageIds = [];
-          //     for (final image in images) {
-          //       if (image is File) {
-          //         final imageId = await fileControllerApi.uploadFile(image);
-          //         imageIds.add(imageId);
-          //       }
-          //     }
-          //     setState(() {
-          //       _projectImages = imageIds;
-          //     });
-          //     _nextPage();
-          //   },
-          // ),
-          CreditImageUploadPage(
-            initialImages: _creditImages,
-            onPrevious: _previousPage,
-            onSave: (creditImages) async {
-              List<int> imageIds = [];
-              for (final image in creditImages) {
-                if (image is File) {
-                  final imageId = await fileControllerApi.uploadFile(image);
-                  imageIds.add(imageId);
-                }
+      body: processing == null ? buildPageView() : FutureBuilder(future: processing, builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Có lỗi xảy ra: ${snapshot.error}"),
+          );
+        }
+        Navigator.pop(context);
+        return const Center(
+          child: Text("Đăng ký dự án thành công"),
+        );h
+      }),
+    );
+  }
+
+  PageView buildPageView() {
+    return PageView(
+      controller: _pageController,
+      physics: const NeverScrollableScrollPhysics(), // Disable swiping
+      onPageChanged: (index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      children: [
+        AddInfoProjectPage(
+          initialProject: Project(
+              projectName: _projectName,
+              startDate: _startDate,
+              endDate: _endDate,
+              location: _location,
+              scale: _scale,
+              scope: _scope,
+              partners: _partners,
+              issuer: _issuer,
+              availableCredits: _availableCredits,
+              certificates: _certificates,
+              price: _price,
+              paymentMethods: _selectedPaymentMethodList,
+              status: 'pending',
+              companyUser: null,
+              company: null),
+          onNext: _nextPage,
+          onProjectDataChanged: (data) {
+            setState(() {
+              _projectName = data.projectName;
+              _startDate = data.startDate;
+              _endDate = data.endDate;
+              _location = data.location;
+              _scale = data.scale;
+              _scope = data.scope;
+              _partners = data.partners;
+              _issuer = data.issuer;
+              _availableCredits = data.availableCredits;
+              _certificates = data.certificates;
+              _price = data.price;
+              _selectedPaymentMethodList = data.paymentMethods;
+            });
+          },
+        ),
+        // ProjectImageUploadPage(
+        //   initialImages: _projectImages,
+        //   onPrevious: _previousPage,
+        //   onNext: (images) async {
+        //     List<int> imageIds = [];
+        //     for (final image in images) {
+        //       if (image is File) {
+        //         final imageId = await fileControllerApi.uploadFile(image);
+        //         imageIds.add(imageId);
+        //       }
+        //     }
+        //     setState(() {
+        //       _projectImages = imageIds;
+        //     });
+        //     _nextPage();
+        //   },
+        // ),
+        CreditImageUploadPage(
+          initialImages: _creditImages,
+          onPrevious: _previousPage,
+          onSave: (creditImages) async {
+            List<int> imageIds = [];
+            for (final image in creditImages) {
+              if (image is File) {
+                final imageId = await fileControllerApi.uploadFile(image);
+                imageIds.add(imageId);
               }
-              setState(() {
-                _creditImages = imageIds;
-              });
-              _saveProject();
-            },
-          )
-        ],
-      ),
+            }
+            processing = _saveProject();
+            setState(() {
+              _creditImages = imageIds;
+            });
+          },
+        )
+      ],
     );
   }
 }

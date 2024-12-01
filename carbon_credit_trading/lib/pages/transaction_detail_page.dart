@@ -216,9 +216,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              child: Text(widget
-                                  .transaction.rootDto.paymentBillFile!
-                                  .toFilePath()),
+                              child: Text(widget.transaction.rootDto.paymentBillFile?.toFilePath() ?? ''),
                             ),
                           ),
                           const SizedBox(height: 15.0),

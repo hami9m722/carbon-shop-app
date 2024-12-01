@@ -71,6 +71,12 @@ extension OrderDTOMapper on OrderDTO {
     var buyerUser = await userControllerApi.viewUser(createdBy!);
     var buyerCompany =
         await userControllerApi.viewCompany(buyerUser?.company ?? 0);
+    String total = '1';
+    try {
+      total = (int.parse(project.price!) * creditAmount!).toString();
+    } catch (e) {
+      print(e);
+    }
     return Transaction(
       this,
       transactionId: orderId ?? 0,
@@ -78,7 +84,7 @@ extension OrderDTOMapper on OrderDTO {
       contractDate: DateTime.timestamp().toString(),
       projectName: project.name ?? '',
       creditAmount: creditAmount.toString(),
-      totalAmount: total.toString(),
+      totalAmount: total,
       seller: ownerCompanyUser!.toUser(),
       buyer: buyerUser!.toUser(),
       buyerCompany: buyerCompany,
