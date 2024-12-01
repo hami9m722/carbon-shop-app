@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class CustomPasswordField extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final String labelText; // Thêm thuộc tính cho label text
 
   const CustomPasswordField({
     super.key,
     this.controller,
     this.validator,
+    this.labelText = 'Mật khẩu', // Giá trị mặc định
   });
 
   @override
@@ -28,7 +30,7 @@ class CustomPasswordFieldState extends State<CustomPasswordField> {
       },
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        labelText: 'Mật khẩu',
+        labelText: widget.labelText, // Sử dụng labelText ở đây
         suffixIcon: IconButton(
           icon: Icon(
             obscureText ? Icons.visibility : Icons.visibility_off,
@@ -40,6 +42,7 @@ class CustomPasswordFieldState extends State<CustomPasswordField> {
           },
         ),
       ),
+      obscureText: obscureText, // Truyền trạng thái ẩn hiện
     );
   }
 }

@@ -3,17 +3,16 @@ import 'package:carbon_credit_trading/services/user_service.dart'; // Đảm b�
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custome_appbar.dart';
 import 'package:carbon_credit_trading/theme/custome_emailfield.dart';
-import 'package:carbon_credit_trading/theme/custome_passwordfield.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ForgetPassPage extends StatefulWidget {
+  const ForgetPassPage({super.key});
 
   @override
-  createState() => _LoginPageState();
+  createState() => _ForgetPassPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgetPassPage extends State<ForgetPassPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final UserService userService = UserService();
@@ -26,8 +25,6 @@ class _LoginPageState extends State<LoginPage> {
     User? user = await userService.checkUser(email, password);
 
     if (!mounted) return; // Kiểm tra xem widget có còn mounted không
-
-    // validate fields empty
 
     if (user != null) {
       // Kiểm tra loại người dùng và điều hướng
@@ -47,44 +44,19 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Đăng nhập",
+        title: "Quên mật khẩu",
       ),
       body: Container(
         color: AppColors.greyBackGround,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 10),
-            // Custom Email Field
-            CustomEmailField(controller: emailController),
+            const Text(
+                "Vui lòng nhập địa chỉ email của bạn. Bạn sẽ nhận được một liên kết để tạo mật khẩu mới qua email.",
+                textAlign: TextAlign.justify),
             const SizedBox(height: 15),
-            // Custom Password Field
-            CustomPasswordField(controller: passwordController),
-            const SizedBox(height: 10),
-            if (errorMessage != null)
-              Text(
-                errorMessage!,
-                style: const TextStyle(color: Colors.red),
-              ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/forgetpass');
-                },
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Quên mật khẩu?',
-                        style: TextStyle(color: Colors.black)),
-                    SizedBox(width: 7),
-                    Icon(Icons.arrow_forward, color: Colors.red),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
+            CustomEmailField(controller: emailController),
+            const SizedBox(height: 40),
             // Đăng nhập Button
             SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -95,20 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
                 child: const Text(
-                  'Đăng nhập',
+                  'Gửi',
                   style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: const Text(
-                  'Nếu chưa có tài khoản, vui lòng đăng ký!',
-                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
