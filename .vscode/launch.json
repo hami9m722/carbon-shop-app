@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "carbon_credit_trading",
+            "cwd": "carbon_credit_trading",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "carbon_credit_trading (profile mode)",
+            "cwd": "carbon_credit_trading",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "carbon_credit_trading (release mode)",
+            "cwd": "carbon_credit_trading",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
