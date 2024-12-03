@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       title: 'Carbon Credit Trading',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
+        useMaterial3: true, // should be changed
       ),
-      initialRoute: '/change_profile',
+      initialRoute: '/profile',
       routes: {
         '/login': (context) => const LoginPage(),
         '/business_options': (context) => const BusinessOptionsPage(),

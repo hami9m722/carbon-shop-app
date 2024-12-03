@@ -4,8 +4,10 @@ import 'package:carbon_credit_trading/pages/project_pending_tab.dart';
 import 'package:flutter/material.dart';
 
 class ProjectsSellerPage extends StatefulWidget {
+  const ProjectsSellerPage({super.key});
+
   @override
-  _ProjectsSellerPage createState() => _ProjectsSellerPage();
+  createState() => _ProjectsSellerPage();
 }
 
 class _ProjectsSellerPage extends State<ProjectsSellerPage>
@@ -23,15 +25,15 @@ class _ProjectsSellerPage extends State<ProjectsSellerPage>
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Tìm kiếm'),
+        title: const Text('Tìm kiếm'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               // Implement search logic here
             },
@@ -40,7 +42,7 @@ class _ProjectsSellerPage extends State<ProjectsSellerPage>
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.green,
-          tabs: [
+          tabs: const [
             Tab(text: 'Chờ duyệt'),
             Tab(text: 'Dự án đã duyệt'),
             Tab(text: 'Đã hủy'),
@@ -49,7 +51,7 @@ class _ProjectsSellerPage extends State<ProjectsSellerPage>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           ProjectPendingTab(),
           ProjectApprovedTab(),
           ProjectCanceledTab(),

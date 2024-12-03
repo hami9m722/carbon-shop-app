@@ -28,6 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       child: AppBar(
+        forceMaterialTransparency: true, // not tined color
         title: Text(title),
         titleTextStyle: AppTextStyles.heading,
         automaticallyImplyLeading: automaticallyImplyLeading,

@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 20),
                 const Text(
                   "Thông tin người đại diện",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                 ),
                 const SizedBox(height: 15),
                 const TextField(
@@ -108,8 +108,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 if (errorMessage != null)
                   Container(
                     width: double
-                        .infinity, // Đảm bảo container rộng bằng toàn bộ chiều rộng màn hình
-                    alignment: Alignment.center, // Căn giữa nội dung bên trong
+                        .infinity, // Ensure container width equal to window's width
+                    alignment: Alignment.center,
                     child: Text(
                       errorMessage!,
                       style: const TextStyle(color: Colors.red),
@@ -138,6 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 // Đăng nhập Button
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
+                   
                   child: TextButton(
                     onPressed: _signUp,
                     style: TextButton.styleFrom(
@@ -148,6 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       'Đăng ký',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
+                    
                   ),
                 ),
                 const SizedBox(height: 10),
