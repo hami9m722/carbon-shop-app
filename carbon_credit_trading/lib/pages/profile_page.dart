@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white, // Đặt màu nền của container
+                  color: Colors.white, // Màu nền của container
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -35,99 +35,39 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.grey[300],
-                              child: const Icon(Icons.person, size: 30),
-                            ),
-                            const SizedBox(width: 20),
-                            const Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Renewable Biomass Energy Ventures',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'andi@renewablebiomass.id',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        // Hình đại diện lớn và ở giữa
+                        const Center(
+                          // Căn giữa
+                          child: CircleAvatar(
+                            radius: 50, // Kích thước hình đại diện
+                            backgroundColor: Color.fromARGB(255, 200, 200,
+                                200), // Màu nền của hình đại diện
+                            child: Icon(Icons.person,
+                                size: 50), // Kích thước icon lớn hơn
+                          ),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'Tên doanh nghiệp: Renewable Biomass Energy Ventures',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Mã số thuế: 1029384756',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Địa chỉ: Jakarta, Indonesia',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Ngành nghề kinh doanh: Năng lượng sinh khối và tái tạo',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Email: andi@renewablebiomass.id',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        _buildRichText('Tên doanh nghiệp:',
+                            'Renewable Biomass Energy Ventures'),
+                        const SizedBox(height: 20),
+                        _buildRichText('Mã số thuế:', '1029384756'),
+                        const SizedBox(height: 20),
+                        _buildRichText('Địa chỉ:', 'Jakarta, Indonesia'),
+                        const SizedBox(height: 20),
+                        _buildRichText('Ngành nghề kinh doanh:',
+                            'Năng lượng sinh khối và tái tạo'),
+                        const SizedBox(height: 20),
+                        _buildRichText('Email:', 'andi@renewablebiomass.id'),
                         const SizedBox(height: 20),
                         const Text(
                           'Thông tin người đại diện:',
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
+                              fontSize: 17, fontStyle: FontStyle.italic),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
-                          'Họ và tên: Andi Pratama',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        _buildRichText('Họ và tên:', 'Andi Pratama'),
                         const SizedBox(height: 10),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Text(
-                          'Số điện thoại: +62 21 987 6543',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        _buildRichText('Số điện thoại:', '+62 21 987 6543'),
                       ],
                     ),
                   ),
@@ -159,7 +99,8 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: () =>
+                          {Navigator.pushNamed(context, '/change_pass')},
                       style: TextButton.styleFrom(
                         backgroundColor: AppColors.greenButton,
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -175,6 +116,32 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Hàm giúp xây dựng RichText cho các hàng thông tin
+  Widget _buildRichText(String title, String value) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold, // In đậm cho chỉ mục
+              fontSize: 21,
+              color: Colors.black, // Màu chữ
+            ),
+          ),
+          const TextSpan(text: ' '), // Khoảng cách giữa chỉ mục và giá trị
+          TextSpan(
+            text: value,
+            style: const TextStyle(
+              fontSize: 21, // Không in đậm
+              color: Colors.black, // Màu chữ
+            ),
+          ),
+        ],
       ),
     );
   }

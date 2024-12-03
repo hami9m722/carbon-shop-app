@@ -1,5 +1,6 @@
 import 'package:carbon_credit_trading/pages/business_options_page.dart';
 import 'package:carbon_credit_trading/pages/buyer_page.dart';
+import 'package:carbon_credit_trading/pages/change_pass.dart';
 import 'package:carbon_credit_trading/pages/change_profile.dart';
 
 import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true, // should be changed
       ),
-      initialRoute: '/profile',
+      initialRoute: '/change_profile',
       routes: {
         '/login': (context) => const LoginPage(),
         '/business_options': (context) => const BusinessOptionsPage(),
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/seller': (context) => const SellerPage(),
         '/profile': (context) => const ProfilePage(),
         '/change_profile': (context) => const ChangeProfilePage(),
+        '/change_pass': (context) => const ChangePassPage(),
       },
     );
   }
