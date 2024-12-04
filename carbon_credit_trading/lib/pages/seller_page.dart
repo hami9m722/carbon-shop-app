@@ -16,12 +16,11 @@ class SellerPage extends StatelessWidget {
             // User Info Section
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
-                    context, '/profile'); // Điều hướng đến trang profile
+                Navigator.pushNamed(context, '/profile');
               },
               child: Container(
                 color: AppColors.greyBackGround,
-                padding: const EdgeInsets.all(15), // Optional: add some padding
+                padding: const EdgeInsets.all(15),
                 child: Row(
                   children: [
                     CircleAvatar(
@@ -57,8 +56,7 @@ class SellerPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(15),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Align children to the start
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
@@ -80,14 +78,14 @@ class SellerPage extends StatelessWidget {
                             child: _buildTransactionCard(
                                 'Giao dịch đang chờ duyệt', '0'),
                           ),
-                          const SizedBox(width: 10), // Khoảng cách giữa các thẻ
+                          const SizedBox(width: 10),
                           Expanded(
                             child: _buildTransactionCard(
                                 'Giao dịch đã hoàn thành', '0'),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10), // Khoảng cách giữa các hàng
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -109,23 +107,27 @@ class SellerPage extends StatelessWidget {
             ),
 
             const ColoredBox(
-              color: AppColors.greyBackGround, // Set background color
+              color: AppColors.greyBackGround,
               child: SizedBox(
                 height: 20,
                 width: double.infinity,
-              ), // Use SizedBox for height
+              ),
             ),
+
             // Action Buttons Section
             Flexible(
               child: GridView.count(
                 crossAxisCount: 4,
                 padding: const EdgeInsets.all(15),
                 childAspectRatio: 0.5,
-                shrinkWrap: true, // not take up too much space
-                physics: const NeverScrollableScrollPhysics(), // not scroll
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: 5,
                 children: [
-                  _buildActionCard(Icons.file_copy, 'Đăng ký dự án'),
+                  _buildActionCard(Icons.file_copy, 'Đăng ký dự án',
+                      onTapped: () {
+                    Navigator.pushNamed(context, '/register_project');
+                  }),
                   _buildActionCard(Icons.check, 'Dự án đã duyệt'),
                   _buildActionCard(Icons.contact_page, 'Liên hệ'),
                   _buildActionCard(Icons.bar_chart, 'Thống kê doanh thu'),
@@ -145,8 +147,7 @@ class SellerPage extends StatelessWidget {
         color: Colors.green[100],
         borderRadius: BorderRadius.circular(8),
       ),
-      margin: const EdgeInsets.symmetric(
-          horizontal: 5), // Khoảng cách giữa các card
+      margin: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -155,23 +156,25 @@ class SellerPage extends StatelessWidget {
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          Text(title, textAlign: TextAlign.center), // Căn giữa text
+          Text(title, textAlign: TextAlign.center),
         ],
       ),
     );
   }
 
-  Widget _buildActionCard(IconData icon, String label) {
+  Widget _buildActionCard(IconData icon, String label,
+      {VoidCallback? onTapped}) {
     return Container(
       margin: const EdgeInsets.all(0.0),
       child: InkWell(
-        onTap: () {
-          // Thao tác khi nhấn
-        },
+        onTap: onTapped ??
+            () {
+              // Thao tác mặc định khi không có hành động nào được truyền vào
+            },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, size: 50, color: Colors.green), // Tăng kích thước icon
+            Icon(icon, size: 50, color: Colors.green),
             const SizedBox(height: 10),
             Text(label,
                 style: const TextStyle(fontSize: 15),
