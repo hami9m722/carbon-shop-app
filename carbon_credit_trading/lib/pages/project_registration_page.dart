@@ -1,67 +1,176 @@
-import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/theme/custom_datepicker.dart';
+import 'package:carbon_credit_trading/theme/custom_textformfield.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
-class ProjectRegistrationPage extends StatelessWidget {
+class ProjectRegistrationPage extends StatefulWidget {
   const ProjectRegistrationPage({super.key});
+
+  @override
+  createState() => _ProjectRegistrationPageState();
+}
+
+class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+  final TextEditingController _projectNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _scaleController = TextEditingController();
+  final TextEditingController _scopeController = TextEditingController();
+  final TextEditingController _partnersController = TextEditingController();
+  final TextEditingController _certificatesController = TextEditingController();
+  final TextEditingController _issuerController = TextEditingController();
+  final TextEditingController _availableCreditsController =
+      TextEditingController();
+  final TextEditingController _certificateIdController =
+      TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  String? _selectedPaymentMethod;
+  final List<String> _paymentMethods = [
+    'Chuyển khoản quốc tế',
+    'Thẻ tín dụng',
+    'PayPal',
+    'Chuyển khoản nội địa',
+  ];
+
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        controller.text =
+            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Đăng ký dự án'),
+      appBar: const CustomAppBar(
+        title: "Đăng ký dự án",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildTextField('Tên dự án', 'REDD+ Bảo vệ rừng Amazon tại Acre'),
-            _buildTextField('Vị trí', 'Bang Acre, Brazil'),
-            _buildTextField('Quy mô', '150,000 ha rừng nhiệt đới Amazon'),
-            _buildTextField('Thời gian bắt đầu', '2019'),
-            _buildTextField('Thời gian kết thúc tín chỉ', ''),
-            _buildTextField('Phạm vi', 'Giảm 200,000 tấn CO2/năm'),
-            _buildTextField('Đối tác', 'UNDP, Chính phủ Brazil'),
-            _buildTextField('Chứng chỉ tín chỉ carbon:', ''),
-            _buildTextField('Tổ chức cấp', 'REDD+ Bảo vệ rừng Amazon tại Acre'),
-            _buildTextField('Số lượng tín chỉ có sẵn', '100,000'),
-            _buildTextField('Giấy chứng nhận', 'GS-2022-AM-Acre123'),
-            _buildTextField('Thời gian bắt đầu dự án', '2019'),
-            _buildTextField('Thông tin khác:', ''),
-            _buildTextField('Giá bán (USD/tín chỉ)', '15'),
-            _buildTextField('Hình thức thanh toán', 'Chuyển khoản quốc tế'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProjectImageUploadPage(),
-                  ),
-                );
-              },
-              child: const Text('Tiếp theo'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              CustomTextFormField(
+                  controller: _projectNameController, labelText: 'Tên dự án'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _locationController, labelText: 'Vị trí'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _scaleController, labelText: 'Quy mô'),
+              const SizedBox(height: 15),
+              CustomDatePickerField(
+                controller: _startDateController,
+                labelText: 'Thời gian bắt đầu',
+                onTap: (context) {
+                  _selectDate(context, _startDateController);
+                },
+              ),
+              const SizedBox(height: 15),
+              CustomDatePickerField(
+                controller: _startDateController,
+                labelText: 'Thời gian kết thúc',
+                onTap: (context) {
+                  _selectDate(context, _endDateController);
+                },
+              ),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _scopeController, labelText: 'Phạm vi'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _partnersController, labelText: 'Đối tác'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _certificatesController,
+                  labelText: 'Chứng chỉ tín chỉ carbon'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                  controller: _issuerController, labelText: 'Tổ chức cấp'),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                // Sử dụng CustomDigitField cho số lượng tín chỉ
+                controller: _availableCreditsController,
+                labelText: 'Số lượng tín chỉ có sẵn',
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                controller: _certificateIdController,
+                labelText: 'Giấy chứng nhận',
+              ),
+              const SizedBox(height: 15),
+              CustomTextFormField(
+                // Sử dụng CustomDigitField cho số lượng tín chỉ
+                controller: _priceController,
+                labelText: 'Giá bán (USD/tín chỉ)',
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 15),
+              _buildPaymentMethodDropdown(),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProjectImageUploadPage(),
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColors.greenButton,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12, horizontal: 28), // Padding chiều ngang
+                ),
+                child: const Text(
+                  'Tiếp theo',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField(String label, String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: placeholder,
-          border: const OutlineInputBorder(),
-        ),
+  Widget _buildPaymentMethodDropdown() {
+    return DropdownButton2(
+      hint: const Text('Chọn hình thức thanh toán'),
+      items: _paymentMethods.map((method) {
+        return DropdownMenuItem<String>(
+          value: method,
+          child: Text(method),
+        );
+      }).toList(),
+      value: _selectedPaymentMethod,
+      onChanged: (value) {
+        setState(() {
+          _selectedPaymentMethod = value;
+        });
+      },
+      buttonStyleData: const ButtonStyleData(
+        height: 40,
+        padding: EdgeInsets.only(left: 14, right: 14),
+      ),
+      menuItemStyleData: const MenuItemStyleData(
+        height: 40,
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class BuyerPage extends StatelessWidget {
@@ -6,15 +7,13 @@ class BuyerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Kênh người bán'),
-        centerTitle: true,
+      appBar: const CustomAppBar(
+        title: "Kênh người bán",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // User Info Section
             Row(
               children: [
                 CircleAvatar(

@@ -1,5 +1,5 @@
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custome_appbar.dart';
+import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class SellerPage extends StatelessWidget {
