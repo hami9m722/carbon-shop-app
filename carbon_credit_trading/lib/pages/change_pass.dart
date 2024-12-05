@@ -1,8 +1,7 @@
-import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:carbon_credit_trading/theme/custom_emailfield.dart';
+import 'package:carbon_credit_trading/theme/custom_passwordfield.dart';
 import 'package:flutter/material.dart';
 
 class ChangePassPage extends StatefulWidget {
@@ -13,61 +12,49 @@ class ChangePassPage extends StatefulWidget {
 }
 
 class _ChangePassPage extends State<ChangePassPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController newPasswordAgainController =
+      TextEditingController();
   final UserService userService = UserService();
   String? errorMessage;
 
-  void _login() async {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-
-    User? user = await userService.checkUser(email, password);
-
-    if (!mounted) return; // Kiểm tra xem widget có còn mounted không
-
-    if (user != null) {
-      // Kiểm tra loại người dùng và điều hướng
-      if (user.type == 'doanh_nghiep') {
-        Navigator.pushNamed(context, '/business_options');
-      } else {
-        Navigator.pushNamed(context, '/intermediary');
-      }
-    } else {
-      setState(() {
-        errorMessage = 'Email hoặc mật khẩu không đúng';
-      });
-    }
-  }
+  void _changePass() async {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Quên mật khẩu",
+        title: "Thay đổi mật khẩu",
       ),
       body: Container(
         color: AppColors.greyBackGround,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: <Widget>[
-            const Text(
-                "Vui lòng nhập địa chỉ email của bạn. Bạn sẽ nhận được một liên kết để tạo mật khẩu mới qua email.",
-                textAlign: TextAlign.justify),
+            CustomPasswordField(
+                controller: currentPasswordController,
+                labelText: 'Nhập mật khẩu hiện tại'),
             const SizedBox(height: 15),
-            CustomEmailField(controller: emailController),
-            const SizedBox(height: 40),
-            // Đăng nhập Button
+            CustomPasswordField(
+                controller: newPasswordController,
+                labelText: 'Nhập mật khẩu mới'),
+            const SizedBox(height: 15),
+            CustomPasswordField(
+                controller: newPasswordAgainController,
+                labelText: 'Nhập lại mật khẩu mới'),
+            const SizedBox(height: 30),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: _login,
+                onPressed: _changePass,
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
                 child: const Text(
-                  'Gửi',
+                  'Lưu',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),

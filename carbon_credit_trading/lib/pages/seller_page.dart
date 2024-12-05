@@ -1,3 +1,5 @@
+import 'package:carbon_credit_trading/pages/profile_page.dart';
+import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,12 @@ class SellerPage extends StatelessWidget {
             // User Info Section
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/profile');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfilePage(),
+                  ),
+                );
               },
               child: Container(
                 color: AppColors.greyBackGround,
@@ -126,7 +133,12 @@ class SellerPage extends StatelessWidget {
                 children: [
                   _buildActionCard(Icons.file_copy, 'Đăng ký dự án',
                       onTapped: () {
-                    Navigator.pushNamed(context, '/register_project');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProjectRegistrationPage(),
+                      ),
+                    );
                   }),
                   _buildActionCard(Icons.check, 'Dự án đã duyệt'),
                   _buildActionCard(Icons.contact_page, 'Liên hệ'),

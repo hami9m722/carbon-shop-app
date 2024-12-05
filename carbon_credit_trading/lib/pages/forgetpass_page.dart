@@ -1,4 +1,3 @@
-import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
@@ -14,31 +13,10 @@ class ForgetPassPage extends StatefulWidget {
 
 class _ForgetPassPage extends State<ForgetPassPage> {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final UserService userService = UserService();
   String? errorMessage;
 
-  void _login() async {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-
-    User? user = await userService.checkUser(email, password);
-
-    if (!mounted) return; // Kiểm tra xem widget có còn mounted không
-
-    if (user != null) {
-      // Kiểm tra loại người dùng và điều hướng
-      if (user.type == 'doanh_nghiep') {
-        Navigator.pushNamed(context, '/business_options');
-      } else {
-        Navigator.pushNamed(context, '/intermediary');
-      }
-    } else {
-      setState(() {
-        errorMessage = 'Email hoặc mật khẩu không đúng';
-      });
-    }
-  }
+  void _send() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +39,7 @@ class _ForgetPassPage extends State<ForgetPassPage> {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: _login,
+                onPressed: _send,
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
                   padding: const EdgeInsets.symmetric(vertical: 12),
