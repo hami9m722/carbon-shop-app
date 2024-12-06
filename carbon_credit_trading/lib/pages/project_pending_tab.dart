@@ -1,3 +1,7 @@
+import 'package:carbon_credit_trading/models/transaction.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/custom_ricktext.dart';
+import 'package:carbon_credit_trading/theme/transaction_item.dart';
 import 'package:flutter/material.dart';
 
 class ProjectPendingTab extends StatelessWidget {
@@ -5,33 +9,42 @@ class ProjectPendingTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Mã giao dịch: 021'),
-          const Text(
-            'Số hợp đồng: Đang chờ duyệt',
-            style: TextStyle(color: Colors.red),
-          ),
-          const Text(
-            'Ngày ký hợp đồng: Đang chờ duyệt',
-            style: TextStyle(color: Colors.red),
-          ),
-          const Text('Dự án mua: REDD+ Bảo tồn rừng ngập mặn'),
-          const Text('Số tín chỉ đăng ký mua: 10,000'),
-          const Text('Tổng tiền: 14,000,000 USD'),
-          const Text('Bên bán: EcoHome Building Corporation'),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to details page
-            },
-            child: const Text('Chi tiết'),
-          ),
-        ],
+    // Create a list of pending transactions
+    final List<Transaction> pendingTransactions = [
+      Transaction(
+        transactionId: '021',
+        contractNumber: '',
+        contractDate: '',
+        projectName: 'REDD+ Bảo tồn rừng ngập mặn',
+        creditAmount: '10,000',
+        totalAmount: '14,000,000 USD',
+        seller: 'EcoHome Building Corporation',
+        status: 'pending',
       ),
+      Transaction(
+        transactionId: '022',
+        contractNumber: '',
+        contractDate: '',
+        projectName: 'REDD+ Bảo tồn rừng ngập mặn',
+        creditAmount: '10,000',
+        totalAmount: '14,000,000 USD',
+        seller: 'EcoHome Building Corporation',
+        status: 'pending',
+      ),
+    ];
+
+    if (pendingTransactions.isEmpty) {
+      return const Center(
+          child: Text('Không có giao dịch nào đang chờ duyệt.'));
+    }
+
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: pendingTransactions.length,
+      itemBuilder: (context, index) {
+        final transaction = pendingTransactions[index];
+        return TransactionItem(transaction: transaction);
+      },
     );
   }
 }

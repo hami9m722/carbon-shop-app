@@ -28,12 +28,11 @@ class _LoginPageState extends State<LoginPage> {
 
     User? user = await userService.checkUser(email, password);
 
-    if (!mounted) return; // Kiểm tra xem widget có còn mounted không
+    if (!mounted) return;
 
     // validate fields empty
 
     if (user != null) {
-      // Kiểm tra loại người dùng và điều hướng
       if (user.type == 'doanh_nghiep') {
         Navigator.push(
           context,

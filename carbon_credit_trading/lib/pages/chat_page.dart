@@ -55,7 +55,7 @@ class _ChatPageState extends State<ChatPage> {
             isRead: true,
           ),
         );
-        _controller.clear(); // Clear the input field after sending
+        _controller.clear();
       });
     }
   }
@@ -64,6 +64,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: Row(
           children: [
             CircleAvatar(
@@ -102,8 +103,7 @@ class _ChatPageState extends State<ChatPage> {
                       const SizedBox(width: 8),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width *
-                              0.6,
+                          maxWidth: MediaQuery.of(context).size.width * 0.6,
                         ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -138,7 +138,7 @@ class _ChatPageState extends State<ChatPage> {
                       hintText: 'Type a message...',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.grey),
+                        borderSide: const BorderSide(color: Colors.grey),
                       ),
                     ),
                   ),

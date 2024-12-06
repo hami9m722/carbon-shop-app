@@ -1,8 +1,9 @@
 import 'package:carbon_credit_trading/pages/change_pass.dart';
 import 'package:carbon_credit_trading/pages/change_profile.dart';
 import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/custom_ricktext.dart';
+import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -49,17 +50,30 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        _buildRichText('Tên doanh nghiệp:',
-                            'Renewable Biomass Energy Ventures'),
+                        customRichText(
+                          title: 'Tên doanh nghiệp:',
+                          value: 'Renewable Biomass Energy Ventures',
+                        ),
                         const SizedBox(height: 20),
-                        _buildRichText('Mã số thuế:', '1029384756'),
+                        customRichText(
+                          title: 'Mã số thuế:',
+                          value: '1029384756',
+                        ),
                         const SizedBox(height: 20),
-                        _buildRichText('Địa chỉ:', 'Jakarta, Indonesia'),
+                        customRichText(
+                          title: 'Địa chỉ:',
+                          value: 'Jakarta, Indonesia',
+                        ),
                         const SizedBox(height: 20),
-                        _buildRichText('Ngành nghề kinh doanh:',
-                            'Năng lượng sinh khối và tái tạo'),
+                        customRichText(
+                          title: 'Ngành nghề kinh doanh:',
+                          value: 'Năng lượng sinh khối và tái tạo',
+                        ),
                         const SizedBox(height: 20),
-                        _buildRichText('Email:', 'andi@renewablebiomass.id'),
+                        customRichText(
+                          title: 'Email:',
+                          value: 'andi@renewablebiomass.id',
+                        ),
                         const SizedBox(height: 20),
                         const Text(
                           'Thông tin người đại diện:',
@@ -67,9 +81,15 @@ class ProfilePage extends StatelessWidget {
                               fontSize: 17, fontStyle: FontStyle.italic),
                         ),
                         const SizedBox(height: 10),
-                        _buildRichText('Họ và tên:', 'Andi Pratama'),
+                        customRichText(
+                          title: 'Họ và tên:',
+                          value: 'Andi Pratama',
+                        ),
                         const SizedBox(height: 10),
-                        _buildRichText('Số điện thoại:', '+62 21 987 6543'),
+                        customRichText(
+                          title: 'Số điện thoại:',
+                          value: '+62 21 987 6543',
+                        ),
                       ],
                     ),
                   ),
@@ -130,32 +150,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  // Hàm giúp xây dựng RichText cho các hàng thông tin
-  Widget _buildRichText(String title, String value) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold, // In đậm cho chỉ mục
-              fontSize: 21,
-              color: Colors.black, // Màu chữ
-            ),
-          ),
-          const TextSpan(text: ' '), // Khoảng cách giữa chỉ mục và giá trị
-          TextSpan(
-            text: value,
-            style: const TextStyle(
-              fontSize: 21, // Không in đậm
-              color: Colors.black, // Màu chữ
-            ),
-          ),
-        ],
       ),
     );
   }
