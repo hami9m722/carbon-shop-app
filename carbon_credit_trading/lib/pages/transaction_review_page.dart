@@ -1,16 +1,16 @@
-import 'package:carbon_credit_trading/pages/project_approved_tab.dart';
-import 'package:carbon_credit_trading/pages/project_canceled_tab.dart';
-import 'package:carbon_credit_trading/pages/project_pending_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:flutter/material.dart';
 
-class ProjectReviewPage extends StatefulWidget {
-  const ProjectReviewPage({super.key});
+class TransactionReviewPage extends StatefulWidget {
+  const TransactionReviewPage({super.key});
 
   @override
-  createState() => _ProjectReviewPage();
+  createState() => _ProjectReviewPageState();
 }
 
-class _ProjectReviewPage extends State<ProjectReviewPage> {
+class _ProjectReviewPageState extends State<TransactionReviewPage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 
@@ -47,9 +47,9 @@ class _ProjectReviewPage extends State<ProjectReviewPage> {
                 });
               },
               children: const [
-                ProjectPendingTab(),
-                ProjectApprovedTab(),
-                ProjectCanceledTab()
+                TransactionPendingTab(),
+                TransactionApprovedTab(),
+                TransactionCanceledTab()
               ],
             ),
           ),

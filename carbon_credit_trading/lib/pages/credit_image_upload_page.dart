@@ -19,9 +19,7 @@ class CreditImageUploadPage extends StatefulWidget {
 }
 
 class _CreditImageUploadPageState extends State<CreditImageUploadPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+   {
   final List<File> _imageFiles = [];
 
   void _addImage(File newImage) {
@@ -38,7 +36,6 @@ class _CreditImageUploadPageState extends State<CreditImageUploadPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),

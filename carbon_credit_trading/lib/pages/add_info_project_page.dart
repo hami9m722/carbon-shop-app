@@ -15,11 +15,7 @@ class AddInfoProjectPage extends StatefulWidget {
   createState() => _AddInfoProjectPage();
 }
 
-class _AddInfoProjectPage extends State<AddInfoProjectPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _AddInfoProjectPage extends State<AddInfoProjectPage> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _projectNameController = TextEditingController();
@@ -77,7 +73,6 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

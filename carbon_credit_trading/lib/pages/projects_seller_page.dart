@@ -1,6 +1,6 @@
-import 'package:carbon_credit_trading/pages/project_approved_tab.dart';
-import 'package:carbon_credit_trading/pages/project_canceled_tab.dart';
-import 'package:carbon_credit_trading/pages/project_pending_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:flutter/material.dart';
 
 class ProjectsSellerPage extends StatefulWidget {
@@ -52,9 +52,9 @@ class _ProjectsSellerPage extends State<ProjectsSellerPage>
       body: TabBarView(
         controller: _tabController,
         children: const [
-          ProjectPendingTab(),
-          ProjectApprovedTab(),
-          ProjectCanceledTab(),
+          TransactionPendingTab(),
+          TransactionApprovedTab(),
+          TransactionCanceledTab(),
         ],
       ),
     );

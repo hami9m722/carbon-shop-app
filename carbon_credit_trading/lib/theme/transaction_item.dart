@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/transaction_details.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -38,17 +39,17 @@ class TransactionItem extends StatelessWidget {
                   ? 'Đang chờ duyệt'
                   : transaction.status == 'canceled'
                       ? 'Đã hủy'
-                      : transaction.contractNumber, 
+                      : transaction.contractNumber,
               valueColor: contractTextColor,
               valueWeight: valueFontWeight,
             ),
             customRichText(
               title: 'Ngày ký hợp đồng:',
               value: transaction.status == 'pending'
-                  ? 'Đang chờ duyệt' 
+                  ? 'Đang chờ duyệt'
                   : transaction.status == 'canceled'
                       ? 'Đã hủy'
-                      : transaction.contractNumber, 
+                      : transaction.contractNumber,
               valueColor: contractTextColor,
               valueWeight: valueFontWeight,
             ),
@@ -73,7 +74,13 @@ class TransactionItem extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                  // Action for details
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          TransactionDetail(transaction: transaction),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
