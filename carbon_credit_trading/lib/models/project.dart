@@ -28,8 +28,8 @@ class Project {
     required this.availableCredits,
     required this.certificates,
     required this.price,
-    this.projectImages = const [], // Default empty list
-    this.creditImages = const [], // Default empty list
+    this.projectImages = const [], 
+    this.creditImages = const [],
     this.paymentMethods = const [],
   });
 }

@@ -44,11 +44,6 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            ImagePickerButton(
-              onImageSelected: _addImage,
-              imageFiles: _imageFiles,
-            ),
-            const SizedBox(height: 15),
             Expanded(
               child: ImageUploadSection(
                 imageFiles: _imageFiles,
@@ -56,6 +51,33 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
               ),
             ),
             const SizedBox(height: 15),
+            ImagePickerButton(
+              onImageSelected: _addImage,
+              imageFiles: _imageFiles,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.green[100], // Background color
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.upload_rounded,
+                        color: AppColors.greenButton, size: 35),
+                    SizedBox(width: 8),
+                    Text(
+                      'Đăng tải ảnh dự án',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

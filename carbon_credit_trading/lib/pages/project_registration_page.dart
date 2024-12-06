@@ -89,7 +89,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
         'Available Credits: ${project.availableCredits}\n'
         'Certificates: ${project.certificates}\n'
         'Price: ${project.price}\n'
-        'Payment Methods: ${project.paymentMethods}\n'
+        'Payment Methods: ${project.paymentMethods.join(', ')}\n'
         'Project Images: ${project.projectImages.map((file) => file.path).toList()}\n'
         'Credit Images: ${project.creditImages.map((file) => file.path).toList()}');
   }
@@ -124,7 +124,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
                 _availableCredits = data.availableCredits;
                 _certificates = data.certificates;
                 _price = data.price;
-                _selectedPaymentMethodList = [];
+                _selectedPaymentMethodList = data.paymentMethods;
               });
             },
           ),
