@@ -1,8 +1,8 @@
 import 'package:carbon_credit_trading/pages/change_pass.dart';
 import 'package:carbon_credit_trading/pages/change_profile.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_ricktext.dart';
+import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {

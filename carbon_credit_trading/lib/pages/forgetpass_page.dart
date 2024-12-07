@@ -1,7 +1,7 @@
 import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
-import 'package:carbon_credit_trading/theme/custom_emailfield.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_emailfield.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPassPage extends StatefulWidget {

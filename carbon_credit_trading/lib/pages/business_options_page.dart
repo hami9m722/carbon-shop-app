@@ -1,6 +1,6 @@
 import 'package:carbon_credit_trading/pages/seller_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class BusinessOptionsPage extends StatelessWidget {

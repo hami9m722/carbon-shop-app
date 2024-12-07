@@ -1,5 +1,5 @@
 import 'package:carbon_credit_trading/models/transaction.dart';
-import 'package:carbon_credit_trading/theme/transaction_item.dart';
+import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCanceledTab extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/pages/chat_page.dart';
 import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

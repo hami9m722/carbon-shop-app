@@ -1,43 +1,13 @@
+import 'package:carbon_credit_trading/widgets/full_screen__view.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 class ImageUploadSection extends StatelessWidget {
   final List<File> imageFiles;
   final Function(File) onRemoveImage;
 
-  const ImageUploadSection({super.key, required this.imageFiles, required this.onRemoveImage});
-
-  void _showFullScreenImage(BuildContext context, int index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          backgroundColor: Colors.grey[850],
-          body: GestureDetector(
-            onVerticalDragUpdate: (details) {
-              if (details.delta.dy > 0) {
-                Navigator.pop(context);
-              }
-            },
-            child: PhotoViewGallery.builder(
-              itemCount: imageFiles.length,
-              builder: (context, index) {
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: FileImage(imageFiles[index]),
-                  minScale: PhotoViewComputedScale.contained,
-                  maxScale: PhotoViewComputedScale.covered * 2,
-                );
-              },
-              scrollPhysics: const BouncingScrollPhysics(),
-              pageController: PageController(initialPage: index),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  const ImageUploadSection(
+      {super.key, required this.imageFiles, required this.onRemoveImage});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +40,7 @@ class ImageUploadSection extends StatelessWidget {
                     alignment: Alignment.topRight,
                     children: [
                       GestureDetector(
-                        onTap: () => _showFullScreenImage(context, index),
+                        onTap: () => showFullScreen(context, imageFiles, index),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),

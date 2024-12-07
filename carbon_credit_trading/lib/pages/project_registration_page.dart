@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
 import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
-import 'package:carbon_credit_trading/theme/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
@@ -16,7 +16,9 @@ class ProjectRegistrationPage extends StatefulWidget {
   createState() => _ProjectRegistrationPageState();
 }
 
-class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
+class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>  with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 
@@ -96,6 +98,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Đăng ký dự án",
