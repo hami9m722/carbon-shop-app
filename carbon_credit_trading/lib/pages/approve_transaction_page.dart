@@ -89,7 +89,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       });
     }
 
-    Future<void> _selectDate(
+    Future<void> selectDate(
         BuildContext context, TextEditingController controller) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -357,7 +357,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                         controller: _startDateController,
                         labelText: 'Ngày ký thanh toán',
                         onTap: (context) {
-                          _selectDate(context, _startDateController);
+                          selectDate(context, _startDateController);
                         },
                       ),
                       const SizedBox(height: 15),
@@ -365,7 +365,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                         controller: _endDateController,
                         labelText: 'Ngày ký bàn giao tín chỉ',
                         onTap: (context) {
-                          _selectDate(context, _endDateController);
+                          selectDate(context, _endDateController);
                         },
                       ),
                       const SizedBox(height: 15),
