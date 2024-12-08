@@ -38,15 +38,15 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Hình đại diện lớn và ở giữa
+                        
                         const Center(
-                          // Căn giữa
+                      
                           child: CircleAvatar(
-                            radius: 50, // Kích thước hình đại diện
+                            radius: 50, 
                             backgroundColor: Color.fromARGB(255, 200, 200,
-                                200), // Màu nền của hình đại diện
+                                200), 
                             child: Icon(Icons.person,
-                                size: 50), // Kích thước icon lớn hơn
+                                size: 50), 
                           ),
                         ),
                         const SizedBox(height: 20),

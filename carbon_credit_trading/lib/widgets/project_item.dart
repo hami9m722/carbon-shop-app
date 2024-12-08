@@ -18,6 +18,7 @@ class ProjectItem extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: Card(
+        color: Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),

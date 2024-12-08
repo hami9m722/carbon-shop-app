@@ -1,9 +1,9 @@
 import 'package:carbon_credit_trading/pages/contact_page.dart';
-import 'package:carbon_credit_trading/pages/profile_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class SellerPage extends StatelessWidget {
@@ -11,6 +11,7 @@ class SellerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey userInfoKey = GlobalKey();
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Kênh người bán",
@@ -21,13 +22,15 @@ class SellerPage extends StatelessWidget {
           children: [
             // User Info Section
             GestureDetector(
+              key: userInfoKey,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage(),
-                  ),
-                );
+                RenderBox renderBox =
+                    userInfoKey.currentContext!.findRenderObject() as RenderBox;
+                Offset offset = renderBox.localToGlobal(Offset.zero);
+                double left = offset.dx;
+                double top = offset.dy + renderBox.size.height;
+
+                CustomMenuWidget.showCustomMenu(context, left: left, top: top);
               },
               child: Container(
                 color: AppColors.greyBackGround,
@@ -126,44 +129,87 @@ class SellerPage extends StatelessWidget {
             ),
 
             // Action Buttons Section
-            Flexible(
-              child: GridView.count(
-                crossAxisCount: 4,
-                padding: const EdgeInsets.all(15),
-                childAspectRatio: 0.5,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisSpacing: 5,
-                children: [
-                  _buildActionCard(Icons.file_copy, 'Đăng ký dự án',
-                      onTapped: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProjectRegistrationPage(),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  color: Colors.white,
+                  child: Wrap(
+                    spacing: 5,
+                    runSpacing: 10,
+                    alignment: WrapAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: (constraints.maxWidth / 4) - 5,
+                        child: _buildActionCard(
+                          Icons.file_copy,
+                          'Đăng ký dự án',
+                          onTapped: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ProjectRegistrationPage(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    );
-                  }),
-                  _buildActionCard(Icons.check, 'Các dự án'),
-                  _buildActionCard(Icons.check, 'Các giao dịch', onTapped: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TransactionReviewPage(),
+                      SizedBox(
+                        width: (constraints.maxWidth / 4) - 5,
+                        child: _buildActionCard(
+                          Icons.check,
+                          'Các dự án',
+                          onTapped: () {
+                            // Thêm hành động cho widget này nếu cần
+                          },
+                        ),
                       ),
-                    );
-                  }),
-                  _buildActionCard(Icons.contact_page, 'Liên hệ', onTapped: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ContactPage(),
+                      SizedBox(
+                        width: (constraints.maxWidth / 4) - 5,
+                        child: _buildActionCard(
+                          Icons.check,
+                          'Các giao dịch',
+                          onTapped: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const TransactionReviewPage(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    );
-                  }),
-                  _buildActionCard(Icons.bar_chart, 'Thống kê doanh thu'),
-                ],
-              ),
+                      SizedBox(
+                        width: (constraints.maxWidth / 4) - 5,
+                        child: _buildActionCard(
+                          Icons.bar_chart,
+                          'Liên hệ',
+                          onTapped: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ContactPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: (constraints.maxWidth / 4) - 5,
+                        child: _buildActionCard(
+                          Icons.bar_chart,
+                          'Thống kê doanh thu',
+                          onTapped: () {
+                            // Hành động cho thống kê doanh thu nếu cần
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -196,7 +242,7 @@ class SellerPage extends StatelessWidget {
   Widget _buildActionCard(IconData icon, String label,
       {VoidCallback? onTapped}) {
     return Container(
-      margin: const EdgeInsets.all(0.0),
+      margin: const EdgeInsets.symmetric(horizontal: 5.0),
       child: InkWell(
         onTap: onTapped ??
             () {
