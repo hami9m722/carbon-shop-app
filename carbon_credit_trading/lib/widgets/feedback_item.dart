@@ -1,5 +1,5 @@
 import 'package:carbon_credit_trading/models/comment.dart';
-import 'package:carbon_credit_trading/widgets/full_screen__view.dart';
+import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackItem extends StatelessWidget {
