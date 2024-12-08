@@ -1,4 +1,4 @@
-import 'package:carbon_credit_trading/pages/transaction_detail_page.dart';
+import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class TransactionItem extends StatelessWidget {
 
     FontWeight valueFontWeight =
         (transaction.status == 'pending' || transaction.status == 'canceled')
-            ? FontWeight.bold 
+            ? FontWeight.bold
             : FontWeight.normal;
 
     return Card(
@@ -67,7 +67,7 @@ class TransactionItem extends StatelessWidget {
             ),
             customRichText(
               title: 'Bên bán:',
-              value: transaction.seller,
+              value: transaction.seller?.businessName ?? '',
             ),
             const SizedBox(height: 10),
             Align(
@@ -78,13 +78,12 @@ class TransactionItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          TransactionDetailPage(transaction: transaction),
+                          ApproveTransactionPage(transaction: transaction),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppColors.greenButton,
+                  backgroundColor: AppColors.greenButton,
                   foregroundColor: Colors.white,
                 ),
                 child: const Text(

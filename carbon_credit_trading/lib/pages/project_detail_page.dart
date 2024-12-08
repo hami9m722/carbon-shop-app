@@ -3,6 +3,7 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
+import 'package:carbon_credit_trading/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailPage extends StatefulWidget {
@@ -13,8 +14,7 @@ class ProjectDetailPage extends StatefulWidget {
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
+  
 
   final List<String> _imagePaths = [
     'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
@@ -22,22 +22,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     '/path/to/local/image2.jpg',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page!.round();
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,72 +39,13 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Image carousel
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: SizedBox(
-                      height: 250,
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          PageView.builder(
-                            controller: _pageController,
-                            itemCount: _imagePaths.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () => showFullScreen(
-                                    context, _imagePaths, index),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    _imagePaths[index],
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Center(
-                                        child: Icon(
-                                          Icons.broken_image,
-                                          size: 50,
-                                          color: Colors.grey,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Positioned(
-                            bottom: 10,
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children:
-                                    List.generate(_imagePaths.length, (index) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentPage == index
-                                          ? Colors.green
-                                          : Colors.white,
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          offset: Offset(0, 2),
-                                          blurRadius: 4,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                })),
-                          ),
-                        ],
-                      ),
-                    ),
+                  ImageCarousel(
+                    imagePaths: _imagePaths,
+                    onImageTap: (context, images, index) {
+                      showFullScreen(context, images, index);
+                    },
                   ),
                   const SizedBox(height: 25),
-
 
                   const Text(
                     'Thông tin dự án:',
@@ -161,7 +87,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       value: 'TƯV SÜD (Tổ chức giám sát độc lập)'),
                   const SizedBox(height: 25),
 
-  
                   const Text(
                     'Thông tin chi tiết:',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
@@ -176,7 +101,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                           'Sử dụng công nghệ vệ tinh để theo dõi diện tích rừng và đảm bảo rừng không bị khai thác.'),
                   const SizedBox(height: 25),
 
-               
                   const Text(
                     'Doanh nghiệp bảo trợ:',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
@@ -195,10 +119,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       ElevatedButton(
                         onPressed: () => {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppColors.greenButton, 
-                          foregroundColor:
-                              Colors.white,
+                          backgroundColor: AppColors.greenButton,
+                          foregroundColor: Colors.white,
                         ),
                         child: const Text(
                           'Inbox',
@@ -209,10 +131,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppColors.greenButton,
-                          foregroundColor:
-                              Colors.white, 
+                          backgroundColor: AppColors.greenButton,
+                          foregroundColor: Colors.white,
                         ),
                         child: const Text(
                           'Lưu',
@@ -223,10 +143,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       ElevatedButton(
                         onPressed: () => {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppColors.greenButton, 
-                          foregroundColor:
-                              Colors.white,
+                          backgroundColor: AppColors.greenButton,
+                          foregroundColor: Colors.white,
                         ),
                         child: const Text(
                           'Mua',

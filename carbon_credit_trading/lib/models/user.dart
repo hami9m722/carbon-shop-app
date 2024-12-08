@@ -1,7 +1,8 @@
 class User {
-  final String email;
-  final String password;
-  final String type;
+  final String? businessName;
+  final String? email;
+  final String? password;
+  final String? type;
 
-  User({required this.email, required this.password, required this.type});
+  User({this.businessName, this.email, this.password, this.type});
 }
