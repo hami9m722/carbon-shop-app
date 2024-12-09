@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
+import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:flutter/material.dart';
+import 'package:carbon_credit_trading/widgets/add_video_button.dart';
+import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:voice_message_package/voice_message_package.dart';
 
 final List<Message> mockMessages = [
   Message(
@@ -54,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _sendMessage() {
+  void _sendTextMessage() {
     if (_controller.text.isNotEmpty) {
       setState(() {
         mockMessages.add(
@@ -69,7 +76,49 @@ class _ChatPageState extends State<ChatPage> {
           ),
         );
         _controller.clear();
-        _isSendButtonVisible = false;
+      });
+    }
+  }
+
+  Future<void> _sendMediaMessage({
+    List<String>? imageUrls,
+    String? videoUrl,
+    String? audioUrl,
+  }) async {
+    if (audioUrl != null) {
+      final audioDuration = await _getAudioDuration(audioUrl);
+      if (audioDuration.inSeconds > 0 && audioDuration.inSeconds < 60) {
+        setState(() {
+          mockMessages.add(
+            Message(
+              senderName: 'You',
+              senderAvatar: 'https://example.com/your_avatar.jpg',
+              receiverName: widget.contactName,
+              receiverAvatar: widget.contactAvatar,
+              audioUrl: audioUrl,
+              timestamp: DateTime.now(),
+              isRead: true,
+            ),
+          );
+        });
+      } else {
+        showErrorDialog(
+            'Thời gian ghi âm phải lớn hơn 0 giây và nhỏ hơn 60 giây.');
+      }
+    } else {
+      setState(() {
+        mockMessages.add(
+          Message(
+            senderName: 'You',
+            senderAvatar: 'https://example.com/your_avatar.jpg',
+            receiverName: widget.contactName,
+            receiverAvatar: widget.contactAvatar,
+            imageUrls: imageUrls,
+            videoUrl: videoUrl,
+            timestamp: DateTime.now(),
+            isRead: true,
+          ),
+        );
       });
     }
   }
@@ -79,6 +128,39 @@ class _ChatPageState extends State<ChatPage> {
       _isOptionsVisible = !_isOptionsVisible;
       FocusScope.of(context).unfocus();
     });
+  }
+
+  void onImageSelected(File image) {
+    _sendMediaMessage(imageUrls: [image.path]);
+  }
+
+  void onVideoSelected(File video) {
+    _sendMediaMessage(videoUrl: video.path);
+  }
+
+  Future<Duration> _getAudioDuration(String audioUrl) async {
+    final AudioPlayer audioPlayer = AudioPlayer();
+    await audioPlayer.setSourceUrl(audioUrl);
+    final Duration? duration = await audioPlayer.getDuration();
+    return duration!;
+  }
+
+  void showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -108,6 +190,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               child: ListView.builder(
@@ -116,44 +199,20 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: mockMessages.length,
                 itemBuilder: (context, index) {
                   final message = mockMessages[mockMessages.length - 1 - index];
-                  final isSender = message.senderName == 'You';
                   return Container(
-                    margin: EdgeInsets.only(
-                      top: 3,
-                      bottom: 3,
-                      left: isSender ? 50 : 8,
-                      right: isSender ? 8 : 50,
-                    ),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                     child: Row(
-                      mainAxisAlignment: isSender
+                      mainAxisAlignment: message.senderName == 'You'
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
                       children: [
-                        if (!isSender)
+                        if (message.senderName != 'You')
                           CircleAvatar(
                             backgroundImage: NetworkImage(message.senderAvatar),
                           ),
                         const SizedBox(width: 8),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.6,
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: isSender ? Colors.blue : Colors.grey[300],
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              message.content,
-                              style: TextStyle(
-                                color: isSender ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
+                        _buildMessageContent(message),
                       ],
                     ),
                   );
@@ -161,85 +220,82 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  AnimatedRotation(
-                    turns: _isOptionsVisible ? 0.5 : 0,
-                    duration: const Duration(milliseconds: 300),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
-                        _isOptionsVisible
-                            ? Icons.cancel_outlined
-                            : Icons.add_circle_outline_outlined,
-                        size: 40,
-                      ),
-                      onPressed: _toggleOptions,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      constraints: const BoxConstraints(
-                        maxHeight: 150,
-                      ),
-                      child: TextField(
-                        controller: _controller,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: 'Gửi tin nhắn ...',
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      AnimatedRotation(
+                        turns: _isOptionsVisible ? 0.5 : 0,
+                        duration: const Duration(milliseconds: 300),
+                        child: IconButton(
+                          icon: Icon(
+                            _isOptionsVisible
+                                ? Icons.cancel_outlined
+                                : Icons.add_circle_outline_outlined,
+                            size: 40,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
+                          onPressed: _toggleOptions,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Gửi tin nhắn ...',
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 12,
                             ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade500,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade500),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  if (_isSendButtonVisible)
-                    IconButton(
-                      icon: const Icon(
-                        Icons.send,
-                        color: AppColors.greenButton,
-                      ),
-                      onPressed: _sendMessage,
-                    ),
-                ],
-              ),
-            ),
-            if (_isOptionsVisible)
-              AnimatedSlide(
-                  offset: _isOptionsVisible ? Offset.zero : const Offset(0, 1),
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  child: AnimatedOpacity(
-                      opacity: _isOptionsVisible ? 1 : 0,
-                      duration: const Duration(milliseconds: 300),
-                      child: Container(
-                        color: Colors.grey[200],
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildOptionItem(Icons.image, 'Thư viện'),
-                            _buildOptionItem(Icons.camera_alt, 'Máy ảnh'),
-                            _buildOptionItem(Icons.video_call, 'Máy quay'),
-                            _buildOptionItem(Icons.mic, 'Ghi âm'),
-                          ],
+                      if (_isSendButtonVisible)
+                        IconButton(
+                          icon: const Icon(Icons.send,
+                              color: AppColors.greenButton),
+                          onPressed: _sendTextMessage,
                         ),
-                      ))),
+                    ],
+                  ),
+                  if (_isOptionsVisible)
+                    Container(
+                      color: Colors.grey[200],
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImagePickerButton(
+                            onImageSelected: onImageSelected,
+                            child:
+                                _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
+                          ),
+                          AddVideoButton(
+                            picker: ImagePicker(),
+                            showErrorDialog: showErrorDialog,
+                            onVideoChanged: onVideoSelected,
+                            child: _buildOptionItem(
+                                Icons.video_call, 'Chọn video'),
+                          ),
+                          AudioRecorderButton(
+                            onAudioRecorded: (audioPath) {
+                              _sendMediaMessage(audioUrl: audioPath);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                ])),
           ],
         ),
       ),
@@ -248,19 +304,97 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildOptionItem(IconData icon, String label) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.8),
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.all(10),
           child: Icon(icon, size: 30),
         ),
         const SizedBox(height: 4),
         Text(label),
       ],
     );
+  }
+
+  Widget _buildMessageContent(Message message) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double maxWidth = screenWidth * 0.6;
+
+    if (message.videoUrl != null) {
+      return Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: const Center(
+          child: Text(
+            "Nhấp vào để xem",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+    } else if (message.imageUrls != null && message.imageUrls!.isNotEmpty) {
+      return Column(
+        children: message.imageUrls!.map((url) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.file(
+              File(url),
+              fit: BoxFit.cover,
+              width: 200,
+              height: 200,
+            ),
+          );
+        }).toList(),
+      );
+    } else if (message.content == null && message.audioUrl != null) {
+      return FutureBuilder<Duration>(
+          future: _getAudioDuration(message.audioUrl!),
+          builder: (context, snapshot) {
+            final audioDuration = snapshot.data ?? const Duration(seconds: 1);
+
+            return VoiceMessageView(
+              controller: VoiceController(
+                audioSrc: message.audioUrl!,
+                onComplete: () {
+                  // Do something on complete
+                },
+                onPause: () {
+                  // Do something on pause
+                },
+                onPlaying: () {
+                  // Do something on playing
+                },
+                onError: (err) {
+                  // Do something on error
+                },
+                maxDuration: audioDuration,
+                isFile: true,
+              ),
+              innerPadding: 12,
+              cornerRadius: 20,
+            );
+          });
+    } else {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        decoration: BoxDecoration(
+          color: message.senderName == 'You' ? Colors.blue : Colors.grey[300],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          message.content ?? '',
+          style: TextStyle(
+            color: message.senderName == 'You' ? Colors.white : Colors.black,
+          ),
+        ),
+      );
+    }
   }
 }
