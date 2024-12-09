@@ -49,6 +49,7 @@ dependencies:
   path_provider: 2.1.5
   audioplayers: 6.1.0 
   voice_message_package: 2.2.1
+  share_plus: 10.1.1
   
 
 dev_dependencies:
