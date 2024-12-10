@@ -3,6 +3,12 @@ class User {
   final String? email;
   final String? password;
   final String? type;
+  bool isInChat;
 
-  User({this.businessName, this.email, this.password, this.type});
+  User(
+      {this.businessName,
+      this.email,
+      this.password,
+      this.type,
+      this.isInChat = false});
 }

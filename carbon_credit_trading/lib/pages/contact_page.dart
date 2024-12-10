@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 
 final List<Message> mockMessages = [
   Message(
+    messageId: "msg001",
     senderName: 'John Doe',
     senderAvatar: 'https://example.com/avatar1.jpg',
     receiverName: 'You',
@@ -18,6 +19,7 @@ final List<Message> mockMessages = [
     isRead: true,
   ),
   Message(
+    messageId: "msg002",
     senderName: 'You',
     senderAvatar: 'https://example.com/your_avatar.jpg',
     receiverName: 'John Doe',
@@ -27,6 +29,7 @@ final List<Message> mockMessages = [
     isRead: true,
   ),
   Message(
+    messageId: "msg003",
     senderName: 'Jane Smith',
     senderAvatar: 'https://example.com/avatar2.jpg',
     receiverName: 'You',
@@ -50,6 +53,7 @@ class _ContactPageState extends State<ContactPage> {
   bool isSearching = false;
   bool hasResults = false;
   bool showPeopleTab = true;
+  
 
   @override
   void initState() {

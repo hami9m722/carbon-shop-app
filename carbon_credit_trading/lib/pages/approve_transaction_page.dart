@@ -65,9 +65,9 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       }
     }
 
-    void addCreditImage(File newImage) {
+    void addCreditImage(List<File> newImage) {
       setState(() {
-        creditImages.add(newImage);
+        creditImages.addAll(newImage);
       });
     }
 
@@ -77,9 +77,9 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       });
     }
 
-    void addBillImage(File newImage) {
+    void addBillImage(List<File> newImage) {
       setState(() {
-        billImages.add(newImage);
+        billImages.addAll(newImage);
       });
     }
 
@@ -294,7 +294,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                       ),
                       const SizedBox(height: 15),
                       ImagePickerButton(
-                        onImageSelected: addBillImage,
+                        onImagesSelected: addBillImage,
                         imageFiles: billImages,
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -327,7 +327,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                       ),
                       const SizedBox(height: 15),
                       ImagePickerButton(
-                        onImageSelected: addCreditImage,
+                        onImagesSelected: addCreditImage,
                         imageFiles: creditImages,
                         child: Align(
                           alignment: Alignment.centerRight,
