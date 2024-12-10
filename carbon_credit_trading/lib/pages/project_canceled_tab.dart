@@ -1,11 +1,14 @@
 import 'package:carbon_credit_trading/models/project.dart';
+
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/theme/text_styles.dart';
+
 import 'package:carbon_credit_trading/widgets/project_item.dart';
+
 import 'package:flutter/material.dart';
 
-class FavoriteTab extends StatelessWidget {
-  const FavoriteTab({super.key});
+class ProjectCanceledTab extends StatelessWidget {
+  const ProjectCanceledTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class FavoriteTab extends StatelessWidget {
           ],
           creditImages: [],
           paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
-          status: 'approved'),
+          status: 'canceled'),
       Project(
           projectName: 'Dự án năng lượng mặt trời',
           startDate: '01/06/2023',
@@ -43,25 +46,30 @@ class FavoriteTab extends StatelessWidget {
           projectImages: ['https://via.placeholder.com/150'],
           creditImages: [],
           paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
-          status: 'approved'),
+          status: 'canceled'),
     ];
 
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Yêu thích",
-      ),
       body: Container(
         color: AppColors.greyBackGround,
-        child: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: projects.length,
-          itemBuilder: (context, index) {
-            final project = projects[index];
-            return ProjectItem(
-              project: project,
-            );
-          },
-        ),
+        child: projects.isEmpty
+            ? const Center(
+                child: Text(
+                'Không có dự án nào đã hủy',
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: AppTextStyles.normalText,
+              ))
+            : ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  final project = projects[index];
+                  return ProjectItem(
+                    project: project,
+                  );
+                },
+              ),
       ),
     );
   }

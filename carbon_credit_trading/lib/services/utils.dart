@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 String getTransactionStatusMessage(String status) {
   if (status == 'approved') {
-    return 'đã thành công';
+    return 'đã tiến hành thành công';
   } else if (status == 'pending') {
     return 'đang được duyệt, trạng thái mới sẽ được cập nhật chậm nhất ngày 17/09/2024';
   } else if (status == 'canceled') {
@@ -31,6 +31,6 @@ bool isToday(String date) {
   final now = DateTime.now();
   final parsedDate = DateFormat('dd/MM/yyyy').parse(date);
   return now.year == parsedDate.year &&
-         now.month == parsedDate.month &&
-         now.day == parsedDate.day;
+      now.month == parsedDate.month &&
+      now.day == parsedDate.day;
 }

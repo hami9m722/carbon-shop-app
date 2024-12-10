@@ -1,7 +1,7 @@
+import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/custom_emailfield.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPassPage extends StatefulWidget {
@@ -33,9 +33,14 @@ class _ForgetPassPage extends State<ForgetPassPage> {
                 "Vui lòng nhập địa chỉ email của bạn. Bạn sẽ nhận được một liên kết để tạo mật khẩu mới qua email.",
                 textAlign: TextAlign.justify),
             const SizedBox(height: 15),
-            CustomEmailField(controller: emailController),
+            TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => Validators.validateEmail(value)),
             const SizedBox(height: 40),
-            // Đăng nhập Button
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: TextButton(

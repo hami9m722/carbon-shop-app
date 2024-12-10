@@ -3,6 +3,7 @@ class User {
   final String? email;
   final String? password;
   final String? type;
+  final String? image;
   bool isInChat;
 
   User(
@@ -10,5 +11,6 @@ class User {
       this.email,
       this.password,
       this.type,
+      this.image,
       this.isInChat = false});
 }

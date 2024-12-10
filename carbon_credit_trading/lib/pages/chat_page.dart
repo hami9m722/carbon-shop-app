@@ -15,29 +15,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 import 'package:uuid/uuid.dart';
 
-final List<Message> mockMessages = [
-  Message(
-    messageId: "msg001",
-    senderName: 'John Doe',
-    senderAvatar: 'https://example.com/avatar1.jpg',
-    receiverName: 'You',
-    receiverAvatar: 'https://example.com/your_avatar.jpg',
-    content: 'Hey, how are you?',
-    timestamp: DateTime.parse('2024-10-15 10:31:00'),
-    isRead: true,
-  ),
-  Message(
-    messageId: "msg002",
-    senderName: 'You',
-    senderAvatar: 'https://example.com/your_avatar.jpg',
-    receiverName: 'John Doe',
-    receiverAvatar: 'https://example.com/avatar1.jpg',
-    content: 'I\'m fine, thanks!',
-    timestamp: DateTime.parse('2024-10-20 10:32:00'),
-    isRead: true,
-  ),
-];
-
 class ChatPage extends StatefulWidget {
   final String contactName;
   final String contactAvatar;
@@ -60,6 +37,29 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   Message? _replyMessage;
   final ScrollController _scrollController = ScrollController();
   final Map<String, GlobalKey> _messageKeys = {};
+
+  final List<Message> mockMessages = [
+    Message(
+      messageId: "msg001",
+      senderName: 'John Doe',
+      senderAvatar: 'https://example.com/avatar1.jpg',
+      receiverName: 'You',
+      receiverAvatar: 'https://example.com/your_avatar.jpg',
+      content: 'Hey, how are you?',
+      timestamp: DateTime.parse('2024-10-15 10:31:00'),
+      isRead: true,
+    ),
+    Message(
+      messageId: "msg002",
+      senderName: 'You',
+      senderAvatar: 'https://example.com/your_avatar.jpg',
+      receiverName: 'John Doe',
+      receiverAvatar: 'https://example.com/avatar1.jpg',
+      content: 'I\'m fine, thanks!',
+      timestamp: DateTime.parse('2024-10-20 10:32:00'),
+      isRead: true,
+    ),
+  ];
 
   @override
   void initState() {

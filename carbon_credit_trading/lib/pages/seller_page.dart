@@ -1,6 +1,9 @@
 import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
-import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
+import 'package:carbon_credit_trading/pages/projects_seller_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
+import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
@@ -90,12 +93,36 @@ class SellerPage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildTransactionCard(
-                                'Giao dịch đang chờ duyệt', '0'),
+                              'Giao dịch đang chờ duyệt',
+                              '0',
+                              onTapped: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TransactionPendingTab(
+                                      previousPage: 'seller',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: _buildTransactionCard(
-                                'Giao dịch đã hoàn thành', '0'),
+                              'Giao dịch đã hoàn thành',
+                              '0',
+                              onTapped: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TransactionApprovedTab(),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -104,12 +131,34 @@ class SellerPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child:
-                                _buildTransactionCard('Giao dịch đã hủy', '0'),
+                            child: _buildTransactionCard(
+                              'Giao dịch đã hủy',
+                              '0',
+                              onTapped: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TransactionCanceledTab(),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
-                            child: _buildTransactionCard('Phản hồi', '0'),
+                            child: _buildTransactionCard(
+                              'Liên hệ',
+                              '0',
+                              onTapped: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ContactPage(),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -140,7 +189,7 @@ class SellerPage extends StatelessWidget {
                     alignment: WrapAlignment.start,
                     children: [
                       SizedBox(
-                        width: (constraints.maxWidth / 4) - 5,
+                        width: constraints.maxWidth / 3 - 5,
                         child: _buildActionCard(
                           Icons.file_copy,
                           'Đăng ký dự án',
@@ -156,48 +205,23 @@ class SellerPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: (constraints.maxWidth / 4) - 5,
+                        width: constraints.maxWidth / 3 - 5,
                         child: _buildActionCard(
                           Icons.check,
                           'Các dự án',
-                          onTapped: () {
-                            // Thêm hành động cho widget này nếu cần
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: (constraints.maxWidth / 4) - 5,
-                        child: _buildActionCard(
-                          Icons.check,
-                          'Các giao dịch',
                           onTapped: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const TransactionReviewPage(),
+                                    const ProjectsSellerPage(),
                               ),
                             );
                           },
                         ),
                       ),
                       SizedBox(
-                        width: (constraints.maxWidth / 4) - 5,
-                        child: _buildActionCard(
-                          Icons.bar_chart,
-                          'Liên hệ',
-                          onTapped: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ContactPage(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: (constraints.maxWidth / 4) - 5,
+                        width: constraints.maxWidth / 3 - 5,
                         child: _buildActionCard(
                           Icons.bar_chart,
                           'Thống kê doanh thu',
@@ -217,7 +241,8 @@ class SellerPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionCard(String title, String count) {
+  Widget _buildTransactionCard(String title, String count,
+      {VoidCallback? onTapped}) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -225,17 +250,23 @@ class SellerPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            count,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          Text(title, textAlign: TextAlign.center),
-        ],
-      ),
+      child: InkWell(
+          onTap: onTapped ??
+              () {
+                // Thao tác mặc định khi không có hành động nào được truyền vào
+              },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                count,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              Text(title, textAlign: TextAlign.center),
+            ],
+          )),
     );
   }
 

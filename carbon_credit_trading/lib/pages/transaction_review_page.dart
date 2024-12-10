@@ -18,7 +18,7 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tìm kiếm'),
+        title: const Text('Giao dịch'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +29,7 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildFilterButton(0, 'Đang duyệt', Colors.green),
+                  _buildFilterButton(0, 'Chờ duyệt', Colors.green),
                   const SizedBox(width: 5),
                   _buildFilterButton(1, 'Đã hoàn thành', Colors.green),
                   const SizedBox(width: 5),

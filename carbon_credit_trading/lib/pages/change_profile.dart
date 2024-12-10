@@ -1,7 +1,10 @@
+import 'dart:io';
+
+import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/custom_emailfield.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChangeProfilePage extends StatefulWidget {
   const ChangeProfilePage({super.key});
@@ -11,25 +14,22 @@ class ChangeProfilePage extends StatefulWidget {
 
 class _ChangeProfilePageState extends State<ChangeProfilePage> {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordAgainController = TextEditingController();
   final TextEditingController companyNameController =
       TextEditingController(text: "companyName");
   String? errorMessage;
-  void _changProfile() async {
-    String password = passwordController.text.trim();
-    String passwordAgain = passwordAgainController.text.trim();
-    if (password != passwordAgain) {
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
       setState(() {
-        errorMessage = "Mật khẩu không trùng khớp";
+        _image = File(image.path);
       });
-    } else {
-      setState(() {
-        errorMessage = null;
-      });
-      //actions when change profile successfully
     }
   }
+
+  void _changProfile() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,33 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(50),
+                            image: _image != null
+                                ? DecorationImage(
+                                    image: FileImage(_image!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const DecorationImage(
+                                    image: NetworkImage(
+                                        'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'), //change
+                                    fit: BoxFit.cover,
+                                  ),
+                          )),
+                    ),
+                  ),
+                ),
                 const Text(
-                  "Thay đổi thông tin doanh nghiệp",
+                  "Thông tin doanh nghiệp",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 20),
@@ -58,8 +83,13 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                   controller: companyNameController,
                 ),
                 const SizedBox(height: 15),
-                // Custom Email Field
-                CustomEmailField(controller: emailController),
+                TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) => Validators.validateEmail(value)),
                 const SizedBox(height: 15),
                 const TextField(
                   decoration: InputDecoration(

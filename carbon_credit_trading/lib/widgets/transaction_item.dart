@@ -1,4 +1,4 @@
-import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_detail_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +6,14 @@ import 'package:carbon_credit_trading/models/transaction.dart';
 
 class TransactionItem extends StatelessWidget {
   final Transaction transaction;
+  final VoidCallback? onPress;
+  final String typeOfButton;
 
-  const TransactionItem({super.key, required this.transaction});
+  const TransactionItem(
+      {super.key,
+      required this.transaction,
+      this.onPress,
+      this.typeOfButton = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +80,18 @@ class TransactionItem extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ApproveTransactionPage(transaction: transaction),
-                    ),
-                  );
+                  if (onPress != null) {
+                    onPress!();
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransactionDetailPage(
+                          transaction: transaction,
+                        ),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.greenButton,

@@ -1,4 +1,8 @@
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
+import 'package:carbon_credit_trading/pages/add_feedback_page.dart';
+import 'package:carbon_credit_trading/pages/project_detail_page.dart';
+import 'package:carbon_credit_trading/pages/transaction_feedback_page.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -10,6 +14,7 @@ import 'package:flutter/material.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
+
   const TransactionDetailPage({super.key, required this.transaction});
 
   @override
@@ -44,7 +49,7 @@ class TransactionDetailPage extends StatelessWidget {
                   color: Colors.green,
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Giao dịch ${transaction.transactionId} đã tiến hành $transactionStatusMessage',
+                    'Giao dịch ${transaction.transactionId} $transactionStatusMessage',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -218,22 +223,6 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.greenButton,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child: const Text(
-                                    'Tải xuống',
-                                    style: AppTextStyles.normalText,
-                                  ),
-                                ),
-                              )),
                           const SizedBox(height: 15.0),
                           const Text(
                             'Hình ảnh tín chỉ',
@@ -249,22 +238,70 @@ class TransactionDetailPage extends StatelessWidget {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
+                          if (!(businessOption == 'seller' &&
+                              transaction.status == 'canceled'))
+                            Column(children: [
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (transaction.status == 'pending') {
+                                    } else if (transaction.status ==
+                                        'approved') {
+                                      if (businessOption == 'buyer') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddFeedbackPage(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TransactionFeedbackPage(),
+                                          ),
+                                        );
+                                      }
+                                    } else if (transaction.status ==
+                                        'canceled') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProjectDetailPage(
+                                                  project:
+                                                      transaction.projectInfo),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
                                     backgroundColor: AppColors.greenButton,
-                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
                                   ),
-                                  child: const Text(
-                                    'Tải xuống',
-                                    style: AppTextStyles.normalText,
+                                  child: Text(
+                                    transaction.status == 'pending'
+                                        ? 'Hủy'
+                                        : transaction.status == 'approved'
+                                            ? businessOption ==
+                                                    'buyer' // or check userID = buyer userID
+                                                ? 'Đánh giá'
+                                                : 'Xem đánh giá'
+                                            : transaction.status == 'canceled'
+                                                ? 'Mua lại'
+                                                : '',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16),
                                   ),
                                 ),
-                              )),
+                              ),
+                            ]),
+                          const SizedBox(height: 10),
                         ])),
               ],
             ),

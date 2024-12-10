@@ -1,4 +1,7 @@
+import 'package:carbon_credit_trading/globals.dart';
+import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/feedback_page.dart';
+import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
@@ -8,7 +11,10 @@ import 'package:carbon_credit_trading/widgets/purchase_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailPage extends StatefulWidget {
-  const ProjectDetailPage({super.key});
+  final String previousPage;
+  final Project project;
+  const ProjectDetailPage(
+      {super.key, this.previousPage = '', required this.project});
 
   @override
   createState() => _ProjectDetailPageState();
@@ -126,75 +132,216 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                         color: AppColors.greenButton),
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Inbox',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Lưu',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: showPurchaseDialog,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.greenButton,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Mua',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
+                  if (widget.previousPage == '')
+                    businessOption == 'buyer'
+                        ? // check userID != sellerCompany
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.greenButton,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.message_outlined,
+                                      color: Colors.white),
+                                  onPressed: () {
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => const ChatPage(
+                                    //         contactName:
+                                    //             'Renewable Biomass Energy Ventures',
+                                    //         contactAvatar: ''),
+                                    //   ),
+                                    // );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.greenButton,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.favorite,
+                                      color: Colors.white),
+                                  onPressed: () {},
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.greenButton,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.shopping_cart,
+                                      color: Colors.white),
+                                  onPressed: showPurchaseDialog,
+                                ),
+                              ),
+                            ],
+                          )
+                        : widget.project.status == 'pending'
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.greenButton,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: IconButton(
+                                      icon: const Icon(Icons.edit,
+                                          color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProjectRegistrationPage(
+                                                      initialProject:
+                                                          widget.project,
+                                                    )));
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.greenButton,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: IconButton(
+                                      icon: const Icon(Icons.delete,
+                                          color: Colors.white),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                ],
+                              )
+                            : Align(
+                                alignment: Alignment.bottomRight,
+                                child: widget.project.status == 'approved'
+                                    ? Container(
+                                        decoration: const BoxDecoration(
+                                          color: AppColors.greenButton,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: IconButton(
+                                          icon: const Icon(Icons.archive,
+                                              color: Colors.white),
+                                          onPressed: () {},
+                                        ),
+                                      )
+                                    : widget.project.status == 'canceled'
+                                        ? Container(
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.greenButton,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.replay,
+                                                  color: Colors.white),
+                                              onPressed: () {},
+                                            ),
+                                          )
+                                        : const SizedBox()),
+
                   const SizedBox(height: 20.0),
                 ],
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FeedbackPage(),
+            widget.previousPage == 'intermediary' // can check by user type
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              // Handle project rejection logic here
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Từ chối',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              // Handle project approval logic here
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: AppColors.greenButton,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Duyệt',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ))
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: TextButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const FeedbackPage(),
+                            ),
+                          )
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColors.greenButton,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        child: const Text(
+                          'Xem đánh giá',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
-                    )
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppColors.greenButton,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                  child: const Text(
-                    'Xem đánh giá',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              ),
-            ),
+                    ))
           ],
         ),
       ),
