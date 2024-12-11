@@ -30,7 +30,117 @@ final List<Message> mockMessages = [
   ),
   Message(
     messageId: "msg003",
-    senderName: 'Jane Smith',
+    senderName: 'Jane Smithb',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smitb',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smithaaaa',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smithaa',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smitha',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith2345',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith345',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith32525',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith35234',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith234',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smith12433',
+    senderAvatar: 'https://example.com/avatar2.jpg',
+    receiverName: 'You',
+    receiverAvatar: 'https://example.com/your_avatar.jpg',
+    content: 'Let\'s catch up John later',
+    timestamp: DateTime.parse('2024-10-19 09:20:00'),
+    isRead: false,
+  ),
+  Message(
+    messageId: "msg003",
+    senderName: 'Jane Smth',
     senderAvatar: 'https://example.com/avatar2.jpg',
     receiverName: 'You',
     receiverAvatar: 'https://example.com/your_avatar.jpg',
@@ -53,7 +163,6 @@ class _ContactPageState extends State<ContactPage> {
   bool isSearching = false;
   bool hasResults = false;
   bool showPeopleTab = true;
-  
 
   @override
   void initState() {
@@ -91,14 +200,12 @@ class _ContactPageState extends State<ContactPage> {
 
   List<Map<String, dynamic>> getFilteredMessages() {
     final query = searchController.text.toLowerCase();
-    if (query.isEmpty) {
-      return groupedMessages;
-    }
+    if (query.isEmpty) return groupedMessages;
 
     return groupedMessages.where((message) {
-      final name = message['name'].toLowerCase();
-      final latestMessage = message['latestMessage'].toLowerCase();
-      return name.contains(query) || latestMessage.contains(query);
+      final content =
+          showPeopleTab ? message['name'] : message['latestMessage'];
+      return content.toLowerCase().contains(query);
     }).toList();
   }
 
@@ -115,13 +222,6 @@ class _ContactPageState extends State<ContactPage> {
     } else {
       return DateFormat('dd/MM/yy').format(timestamp);
     }
-  }
-
-  String truncateMessage(String message) {
-    if (message.length > 30) {
-      return '${message.substring(0, 30)}...';
-    }
-    return message;
   }
 
   @override
@@ -170,6 +270,7 @@ class _ContactPageState extends State<ContactPage> {
                         searchController.clear();
                         FocusScope.of(context).unfocus();
                         isSearching = false;
+                        showPeopleTab = true;
                       });
                     },
                     child: const Text(
@@ -183,32 +284,53 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ),
 
-          // Show people and message tab
-          // if (isSearching && hasResults)
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //     children: [
-          //       ElevatedButton(
-          //         onPressed: () {
-          //           // Logic tìm kiếm theo người
-          //         },
-          //         child: const Text("People"),
-          //       ),
-          //       ElevatedButton(
-          //         onPressed: () {
-          //           // Logic tìm kiếm theo tin nhắn
-          //         },
-          //         child: const Text("Messages"),
-          //       ),
-          //     ],
-          //   ),
+          // Show People and Messages tabs
+          if (searchController.text.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      showPeopleTab = true;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: showPeopleTab
+                          ? AppColors.greenButton
+                          : Colors.grey[500],
+                      foregroundColor: Colors.white),
+                  child: const Text("People"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      showPeopleTab = false;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: !showPeopleTab
+                          ? AppColors.greenButton
+                          : Colors.grey[500],
+                      foregroundColor: Colors.white),
+                  child: const Text("Messages"),
+                ),
+              ],
+            ),
+
           Expanded(
-            child: filteredMessages.isNotEmpty
+            child: hasResults
                 ? ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    itemCount: filteredMessages.length,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    itemCount: isSearching
+                        ? filteredMessages.length
+                        : groupedMessages.length,
                     itemBuilder: (context, index) {
-                      final message = filteredMessages[index];
+                      final message = isSearching
+                          ? filteredMessages[index]
+                          : groupedMessages[index];
 
                       return ListTile(
                         contentPadding:
@@ -227,10 +349,11 @@ class _ContactPageState extends State<ContactPage> {
                               fontSize: 22,
                             ),
                             children: highlightMatches(
-                              message['name'],
-                              searchController.text,
-                              Colors.yellow,
-                            ),
+                                message['name'],
+                                searchController.text,
+                                showPeopleTab
+                                    ? Colors.yellow
+                                    : Colors.transparent),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -249,10 +372,11 @@ class _ContactPageState extends State<ContactPage> {
                                     fontSize: 18,
                                   ),
                                   children: highlightMatches(
-                                    message['latestMessage'],
-                                    searchController.text,
-                                    Colors.yellow,
-                                  ),
+                                      message['latestMessage'],
+                                      searchController.text,
+                                      showPeopleTab
+                                          ? Colors.transparent
+                                          : Colors.yellow),
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -286,13 +410,17 @@ class _ContactPageState extends State<ContactPage> {
                               ),
                             ),
                           );
+                          FocusScope.of(context).requestFocus(FocusNode());
                         },
                       );
                     },
                   )
                 : const Center(
-                    child: Text('Không có kết quả',
-                        style: TextStyle(fontSize: 16))),
+                    child: Text(
+                      'Không có kết quả',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
           ),
         ],
       ),
