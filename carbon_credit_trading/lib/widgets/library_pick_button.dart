@@ -13,7 +13,6 @@ class LibraryPickButton extends StatelessWidget {
       onPressed: () async {
         final ImagePicker picker = ImagePicker();
 
-        // Hiện dialog cho phép người dùng chọn giữa hình ảnh và video
         final pickedOption = await showDialog<MediaType>(
           context: context,
           builder: (BuildContext context) {
@@ -38,15 +37,15 @@ class LibraryPickButton extends StatelessWidget {
           },
         );
 
-        if (pickedOption == null) return; // Người dùng đã hủy
+        if (pickedOption == null) return;
 
         List<XFile> selectedFiles = [];
 
-        // Tùy theo loại tệp đã chọn, mở thư viện tương ứng
+        // Choose file from library
         if (pickedOption == MediaType.image) {
           final List<XFile> selectedImages = await picker.pickMultiImage();
           selectedFiles.addAll(selectedImages);
-                } else if (pickedOption == MediaType.video) {
+        } else if (pickedOption == MediaType.video) {
           bool moreVideos = true;
           while (moreVideos) {
             final XFile? selectedVideo =
@@ -54,12 +53,11 @@ class LibraryPickButton extends StatelessWidget {
             if (selectedVideo != null) {
               selectedFiles.add(selectedVideo);
             } else {
-              moreVideos = false; // Người dùng không chọn video nào
+              moreVideos = false;
             }
           }
         }
 
-        // Gọi hàm onPickMedia với danh sách tệp đã chọn
         if (selectedFiles.isNotEmpty) {
           onPickMedia(selectedFiles);
         }
@@ -68,5 +66,4 @@ class LibraryPickButton extends StatelessWidget {
   }
 }
 
-// Enum để xác định loại media
 enum MediaType { image, video }

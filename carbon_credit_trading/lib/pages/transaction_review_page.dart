@@ -1,6 +1,8 @@
 import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
 import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
 import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
+import 'package:carbon_credit_trading/theme/colors.dart';
+import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class TransactionReviewPage extends StatefulWidget {
@@ -13,12 +15,58 @@ class TransactionReviewPage extends StatefulWidget {
 class _ProjectReviewPageState extends State<TransactionReviewPage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
+  bool _isSearching = false;
+  String _searchQuery = '';
+  final FocusNode _searchFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Giao dịch'),
+        centerTitle: true,
+        title: _isSearching
+            ? TextField(
+                focusNode: _searchFocusNode,
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Tìm mã giao dịch...',
+                ),
+              )
+            : const Text(
+                'Giao dịch',
+                style: AppTextStyles.heading,
+              ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    if (_isSearching) {
+                      _isSearching = false;
+                      _searchQuery = '';
+                      _searchFocusNode.unfocus();
+                    } else {
+                      _isSearching = true;
+                      _searchFocusNode.requestFocus();
+                    }
+                  });
+                },
+                child: _isSearching
+                    ? const Text('Hủy',
+                        style: TextStyle(
+                            color: AppColors.greenButton, fontSize: 16))
+                    : const Icon(
+                        Icons.search,
+                        color: AppColors.greenButton,
+                      ),
+              )),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +94,10 @@ class _ProjectReviewPageState extends State<TransactionReviewPage> {
                   _currentIndex = index;
                 });
               },
-              children: const [
-                TransactionPendingTab(),
-                TransactionApprovedTab(),
-                TransactionCanceledTab()
+              children: [
+                TransactionPendingTab(searchQuery: _searchQuery),
+                TransactionApprovedTab(searchQuery: _searchQuery),
+                TransactionCanceledTab(searchQuery: _searchQuery),
               ],
             ),
           ),

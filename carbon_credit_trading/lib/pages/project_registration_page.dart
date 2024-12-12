@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
@@ -42,23 +41,20 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   @override
   void initState() {
     super.initState();
-    // Initialize fields if an existing project is provided
-    if (widget.initialProject != null) {
-      _projectName = widget.initialProject!.projectName;
-      _startDate = widget.initialProject!.startDate;
-      _endDate = widget.initialProject!.endDate;
-      _location = widget.initialProject!.location;
-      _scale = widget.initialProject!.scale;
-      _scope = widget.initialProject!.scope;
-      _partners = widget.initialProject!.partners;
-      _issuer = widget.initialProject!.issuer;
-      _availableCredits = widget.initialProject!.availableCredits;
-      _certificates = widget.initialProject!.certificates;
-      _price = widget.initialProject!.price;
-      _selectedPaymentMethodList = widget.initialProject!.paymentMethods;
-      _projectImages = widget.initialProject!.projectImages;
-      _creditImages = widget.initialProject!.creditImages;
-    }
+    _projectName = widget.initialProject!.projectName;
+    _startDate = widget.initialProject!.startDate;
+    _endDate = widget.initialProject!.endDate;
+    _location = widget.initialProject!.location;
+    _scale = widget.initialProject!.scale;
+    _scope = widget.initialProject!.scope;
+    _partners = widget.initialProject!.partners;
+    _issuer = widget.initialProject!.issuer;
+    _availableCredits = widget.initialProject!.availableCredits;
+    _certificates = widget.initialProject!.certificates;
+    _price = widget.initialProject!.price;
+    _selectedPaymentMethodList = widget.initialProject!.paymentMethods;
+    _projectImages = widget.initialProject!.projectImages;
+    _creditImages = widget.initialProject!.creditImages;
   }
 
   void _nextPage() {
@@ -104,9 +100,9 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         status: 'pending');
 
     if (widget.initialProject != null) {
-      // update project
+      log(project.endDate);
     } else {
-      // create project
+      log(project.startDate);
     }
   }
 
@@ -127,9 +123,23 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         },
         children: [
           AddInfoProjectPage(
-            initialProject: widget.initialProject,
+            initialProject: Project(
+              projectName: _projectName,
+              startDate: _startDate,
+              endDate: _endDate,
+              location: _location,
+              scale: _scale,
+              scope: _scope,
+              partners: _partners,
+              issuer: _issuer,
+              availableCredits: _availableCredits,
+              certificates: _certificates,
+              price: _price,
+              paymentMethods: _selectedPaymentMethodList,
+              status: 'pending',
+            ),
             onNext: _nextPage,
-            onProjectDataChanged: (Project data) {
+            onProjectDataChanged: (data) {
               setState(() {
                 _projectName = data.projectName;
                 _startDate = data.startDate;

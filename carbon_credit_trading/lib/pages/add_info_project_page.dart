@@ -1,13 +1,13 @@
 import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
-import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
+import 'package:carbon_credit_trading/widgets/custom_year_picker.dart';
 import 'package:flutter/material.dart';
 
 class AddInfoProjectPage extends StatefulWidget {
   final VoidCallback onNext;
   final void Function(Project data) onProjectDataChanged;
-  final Project? initialProject; // Use a Project object to hold initial data
+  final Project? initialProject;
 
   const AddInfoProjectPage({
     super.key,
@@ -44,7 +44,6 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with initial project data if provided
     _projectNameController =
         TextEditingController(text: widget.initialProject?.projectName);
     _startDateController =
@@ -71,21 +70,17 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
         .addAll(widget.initialProject?.paymentMethods ?? []);
   }
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController controller) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        controller.text =
-            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-      });
-      _updateProjectData();
+  String? _validateStartEndDate() {
+    final startYear = int.tryParse(_startDateController.text);
+    final endYear = int.tryParse(_endDateController.text);
+
+    if (startYear != null && endYear != null) {
+      if (startYear > endYear) {
+        return 'Thời gian bắt đầu phải nhỏ hơn hoặc bằng thời gian kết thúc';
+      }
     }
+
+    return null;
   }
 
   void _updateProjectData() {
@@ -117,75 +112,119 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              CustomTextFormField(
+              TextFormField(
                 controller: _projectNameController,
-                labelText: 'Tên dự án',
+                decoration: const InputDecoration(
+                  labelText: 'Tên dự án',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Tên dự án', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _locationController,
-                labelText: 'Vị trí',
+                decoration: const InputDecoration(
+                  labelText: 'Vị trí',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Vị trí', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _scaleController,
-                labelText: 'Quy mô',
+                decoration: const InputDecoration(
+                  labelText: 'Quy mô',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Quy mô', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomDatePickerField(
+              CustomYearPicker(
                 controller: _startDateController,
                 labelText: 'Thời gian bắt đầu',
-                onTap: (context) {
-                  _selectDate(context, _startDateController);
-                },
+                startYear: DateTime.now().year,
+                endYear: DateTime.now().year + 100,
+                onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomDatePickerField(
+              CustomYearPicker(
                 controller: _endDateController,
                 labelText: 'Thời gian kết thúc',
-                onTap: (context) {
-                  _selectDate(context, _endDateController);
-                },
+                startYear: DateTime.now().year,
+                endYear: DateTime.now().year + 100,
+                onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _scopeController,
-                labelText: 'Phạm vi',
+                decoration: const InputDecoration(
+                  labelText: 'Phạm vi',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Phạm vi', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _partnersController,
-                labelText: 'Đối tác',
+                decoration: const InputDecoration(
+                  labelText: 'Đối tác',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Đối tác', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _issuerController,
-                labelText: 'Tổ chức cấp',
+                decoration: const InputDecoration(
+                  labelText: 'Tổ chức cấp',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Tổ chức cấp', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _availableCreditsController,
-                labelText: 'Số lượng tín chỉ có sẵn',
+                decoration: const InputDecoration(
+                  labelText: 'Số lượng tín chỉ có sẵn',
+                  border: OutlineInputBorder(),
+                ),
                 keyboardType: TextInputType.number,
+                validator: (value) => Validators.validateRequiredField(
+                    'Số lượng tín chỉ có sẵn', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _certificatesController,
-                labelText: 'Giấy chứng nhận',
+                decoration: const InputDecoration(
+                  labelText: 'Giấy chứng nhận',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    Validators.validateRequiredField('Giấy chứng nhận', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
-              CustomTextFormField(
+              TextFormField(
                 controller: _priceController,
-                labelText: 'Giá bán (USD/tín chỉ)',
-                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Giá bán (USD/tín chỉ)',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => Validators.validateRequiredField(
+                    'Giá bán (USD/tín chỉ)', value!),
                 onChanged: (value) => _updateProjectData(),
               ),
               const SizedBox(height: 15),
@@ -199,7 +238,14 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    widget.onNext();
+                    String? error = _validateStartEndDate();
+                    if (error != null) {
+                      // Hiển thị lỗi nếu có
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(error)));
+                    } else {
+                      widget.onNext();
+                    }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.greenButton,

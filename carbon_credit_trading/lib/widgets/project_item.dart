@@ -1,11 +1,17 @@
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/project_detail_page.dart';
+import 'package:carbon_credit_trading/services/format.dart';
 import 'package:flutter/material.dart';
 
 class ProjectItem extends StatelessWidget {
   final Project project;
   final String previousPage;
-  const ProjectItem({super.key, required this.project, this.previousPage = ''});
+  final String? searchQuery;
+  const ProjectItem(
+      {super.key,
+      required this.project,
+      this.previousPage = '',
+      this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +28,7 @@ class ProjectItem extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => ProjectDetailPage(
-                  previousPage: previousPage,
-                  project: project
-                ),
+                    previousPage: previousPage, project: project),
               ),
             )
           },
@@ -44,12 +48,19 @@ class ProjectItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            project.projectName,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                          RichText(
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
+                            text: TextSpan(
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold),
+                                children: highlightMatches(
+                                  project.projectName,
+                                  searchQuery ?? '',
+                                  Colors.yellow,
+                                )),
                           ),
                           const SizedBox(height: 4),
                           Align(

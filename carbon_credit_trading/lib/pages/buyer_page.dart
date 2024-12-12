@@ -39,6 +39,7 @@ class _BuyerPageState extends State<BuyerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.greyBackGround,
       body: Stack(
         children: [

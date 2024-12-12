@@ -5,7 +5,7 @@ import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/custom_datepicker.dart';
+import 'package:carbon_credit_trading/widgets/custom_date_picker.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
@@ -89,21 +89,6 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       });
     }
 
-    Future<void> selectDate(
-        BuildContext context, TextEditingController controller) async {
-      final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101),
-      );
-      if (pickedDate != null) {
-        setState(() {
-          controller.text =
-              "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-        });
-      }
-    }
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Duyệt hợp đồng"),
@@ -353,20 +338,14 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 15),
-                      CustomDatePickerField(
+                      CustomDatePicker(
                         controller: _startDateController,
                         labelText: 'Ngày ký thanh toán',
-                        onTap: (context) {
-                          selectDate(context, _startDateController);
-                        },
                       ),
                       const SizedBox(height: 15),
-                      CustomDatePickerField(
+                      CustomDatePicker(
                         controller: _endDateController,
                         labelText: 'Ngày ký bàn giao tín chỉ',
-                        onTap: (context) {
-                          selectDate(context, _endDateController);
-                        },
                       ),
                       const SizedBox(height: 15),
                       SizedBox(

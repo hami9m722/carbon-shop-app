@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/add_file_widget.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
+import 'package:carbon_credit_trading/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 
 class AddFeedbackPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class AddFeedbackPage extends StatefulWidget {
 class _AddFeedbackPageState extends State<AddFeedbackPage> {
   List<File> imageList = [];
   File? video;
+  double rating = 0.0;
 
   void _handleImageListChanged(List<File> newList) {
     setState(() {
@@ -24,6 +26,12 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
   void _handleVideoChanged(File? newVideo) {
     setState(() {
       video = newVideo;
+    });
+  }
+
+  void _handleRatingChanged(double newRating) {
+    setState(() {
+      rating = newRating;
     });
   }
 
@@ -117,6 +125,21 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
                   Text(
                     'Phạm vi: Giảm 60000 tấn CO2/năm, bảo vệ hệ sinh thái ven biển',
                     style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+              child: Row(
+                children: [
+                  const Text(
+                    'Thang điểm:',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                  StarRating(
+                    rating: rating,
+                    onRatingChanged: _handleRatingChanged,
                   ),
                 ],
               ),
