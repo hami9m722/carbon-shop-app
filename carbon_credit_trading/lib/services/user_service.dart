@@ -7,8 +7,16 @@ class UserService {
         password: 'Huda123456@',
         type: 'doanh_nghiep'),
     User(
+        email: '2',
+        password: '2',
+        type: 'doanh_nghiep'),
+    User(
         email: '21522425@gm.uit.edu.vn',
         password: 'Huda123456@',
+        type: 'cty_trung_gian'),
+    User(
+        email: '1',
+        password: '1',
         type: 'cty_trung_gian'),
   ];
 

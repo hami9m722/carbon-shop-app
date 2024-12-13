@@ -4,7 +4,7 @@ import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
 import 'package:carbon_credit_trading/pages/intermediary_page.dart';
 import 'package:carbon_credit_trading/pages/signup_page.dart';
 import 'package:carbon_credit_trading/services/check_validate.dart';
-import 'package:carbon_credit_trading/services/user_service.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_passwordfield.dart';
@@ -21,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final UserService userService = UserService();
   String? errorMessage;
 
   void _login() async {
