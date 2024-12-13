@@ -219,6 +219,7 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
               const SizedBox(height: 15),
               TextFormField(
                 controller: _priceController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Giá bán (USD/tín chỉ)',
                   border: OutlineInputBorder(),

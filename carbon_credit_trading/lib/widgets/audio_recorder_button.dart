@@ -57,30 +57,30 @@ class _AudioRecorderButtonState extends State<AudioRecorderButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleRecording,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
               _isRecording ? Icons.stop : Icons.mic,
               size: 30,
               color: _isRecording ? Colors.red : Colors.black,
             ),
-            const SizedBox(height: 5), 
-            Text(
-              'Ghi âm',
-              style: TextStyle(
-                color: _isRecording ? Colors.red : Colors.black,
-                fontSize: 16,
-              ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Ghi âm',
+            style: TextStyle(
+              color: _isRecording ? Colors.red : Colors.black,
+              fontSize: 16,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

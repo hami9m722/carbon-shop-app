@@ -161,6 +161,8 @@ class _TransactionApprovedTabState extends State<TransactionApprovedTab> {
                 child: Text(
                   'Không có giao dịch nào tiến hành thành công',
                   style: AppTextStyles.normalText,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
                 ),
               )
             : Column(

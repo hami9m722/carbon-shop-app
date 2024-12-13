@@ -3,7 +3,9 @@ import 'package:carbon_credit_trading/widgets/selectable_item.dart';
 import 'package:flutter/material.dart';
 
 class FilterDrawer extends StatefulWidget {
-  const FilterDrawer({super.key});
+  final Function(Map<String, dynamic>) onApplyFilters;
+
+  const FilterDrawer({super.key, required this.onApplyFilters});
 
   @override
   createState() => _FilterDrawerState();
@@ -12,6 +14,7 @@ class FilterDrawer extends StatefulWidget {
 class _FilterDrawerState extends State<FilterDrawer> {
   List<String> selectedPaymentMethods = [];
   List<String> selectedRatings = [];
+  DateTimeRange? selectedDateRange;
 
   final List<String> paymentMethods = [
     'Credit Card',
@@ -27,8 +30,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
     '4',
     '5',
   ];
-
-  DateTimeRange? selectedDateRange;
 
   TextEditingController minController = TextEditingController();
   TextEditingController maxController = TextEditingController();
@@ -60,6 +61,31 @@ class _FilterDrawerState extends State<FilterDrawer> {
       minYearController.clear();
       maxYearController.clear();
     });
+  }
+
+  void applyFilters() {
+    final filters = {
+      'paymentMethods': selectedPaymentMethods,
+      'ratings': selectedRatings,
+      'dateRange': selectedDateRange,
+      'priceRange': {
+        'min': minController.text.isNotEmpty
+            ? double.tryParse(minController.text)
+            : 0,
+        'max': maxController.text.isNotEmpty
+            ? double.tryParse(maxController.text)
+            : 0,
+      },
+      'yearRange': {
+        'min': minYearController.text.isNotEmpty
+            ? int.tryParse(minYearController.text)
+            : 0,
+        'max': maxYearController.text.isNotEmpty
+            ? int.tryParse(maxYearController.text)
+            : 0,
+      }
+    };
+    widget.onApplyFilters(filters);
   }
 
   @override
@@ -202,9 +228,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Apply the filters logic
-                  },
+                  onPressed: applyFilters,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
