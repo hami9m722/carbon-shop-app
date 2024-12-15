@@ -1,5 +1,7 @@
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/pages/login_page.dart';
 import 'package:carbon_credit_trading/services/check_validate.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_passwordfield.dart';
@@ -40,6 +42,19 @@ class _SignUpPageState extends State<SignUpPage> {
         errorMessage = "Mật khẩu không trùng khớp";
       });
     } else {
+      await registrationResourceApi.register(UserRegistrationRequest(
+        name: 'Dai dien ${companyNameController.text.trim()}',
+        email: emailController.text.trim(),
+        password: password,
+        phone: phoneNumberController.text.trim(),
+        companyName: companyNameController.text.trim(),
+        companyEmail: emailController.text.trim(),
+        companyAddress: addressController.text.trim(),
+        companyIndustry: businessSectorController.text.trim(),
+        companyPhone: phoneNumberController.text.trim(),
+        companyTaxCode: taxIdController.text.trim(),
+      ));
+
       setState(() {
         errorMessage = null;
       });

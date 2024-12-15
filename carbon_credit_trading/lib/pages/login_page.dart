@@ -10,6 +10,8 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_passwordfield.dart';
 import 'package:flutter/material.dart';
 
+import '../api/api.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -31,12 +33,13 @@ class _LoginPageState extends State<LoginPage> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    User? user = await userService.checkUser(email, password);
+    var authResp = await authService.authenticate(email, password);
+    var user = authResp.user;
 
     if (!mounted) return;
 
     if (user != null) {
-      if (user.type == 'doanh_nghiep') {
+      if (user.role == AppUserDTORoleEnum.SELLER_OR_BUYER) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

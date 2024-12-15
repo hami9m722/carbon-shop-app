@@ -8,7 +8,7 @@
 // ignore_for_file: constant_identifier_names
 // ignore_for_file: lines_longer_than_80_chars
 
-part of my_api_client;
+part of carbon_server_apis;
 
 
 class RegistrationResourceApi {
@@ -19,8 +19,8 @@ class RegistrationResourceApi {
   /// Performs an HTTP 'POST /register' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [RegistrationRequest] registrationRequest (required):
-  Future<Response> registerWithHttpInfo(RegistrationRequest registrationRequest,) async {
+  /// * [UserRegistrationRequest] registrationRequest (required):
+  Future<Response> registerWithHttpInfo(UserRegistrationRequest registrationRequest,) async {
     // ignore: prefer_const_declarations
     final path = r'/register';
 
@@ -47,8 +47,8 @@ class RegistrationResourceApi {
 
   /// Parameters:
   ///
-  /// * [RegistrationRequest] registrationRequest (required):
-  Future<void> register(RegistrationRequest registrationRequest,) async {
+  /// * [UserRegistrationRequest] registrationRequest (required):
+  Future<void> register(UserRegistrationRequest registrationRequest,) async {
     final response = await registerWithHttpInfo(registrationRequest,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
