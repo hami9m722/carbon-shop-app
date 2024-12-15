@@ -1,5 +1,4 @@
 import 'package:carbon_credit_trading/pages/login_page.dart';
-import 'package:carbon_credit_trading/pages/question_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -13,63 +14,69 @@ class ProjectCanceledTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Project> projects = [
-      Project(
-          projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-          startDate: '01/01/2023',
-          endDate: '01/01/2025',
-          location: 'Việt Nam',
-          scale: 'Lớn',
-          scope: 'Toàn quốc',
-          partners: 'Công ty ABC',
-          issuer: 'Chính phủ',
-          availableCredits: '1000',
-          certificates: 'ISO 9001',
-          price: '1000',
-          projectImages: [
-            'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
-          ],
-          creditImages: [],
-          paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
-          status: 'canceled'),
-      Project(
-          projectName: 'Dự án năng lượng mặt trời',
-          startDate: '01/06/2023',
-          endDate: '01/06/2024',
-          location: 'Việt Nam',
-          scale: 'Trung bình',
-          scope: 'Khu vực miền Trung',
-          partners: 'Công ty XYZ',
-          issuer: 'Công ty TNHH',
-          availableCredits: '500',
-          certificates: 'ISO 14001',
-          price: '800',
-          projectImages: ['https://via.placeholder.com/150'],
-          creditImages: [],
-          paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
-          status: 'canceled'),
-    ];
+    Future<List<Project>> getFilteredProjects() async {
+      try {
+        final pagedProjectDTO = await sellerControllerApi.viewAllProject1('');
 
-    List<Project> getFilteredTransactions(List<Project> transactions) {
-      return projects.where((project) {
-        return project.projectName.contains(searchQuery?.trim() ?? '');
-      }).toList();
+        if (pagedProjectDTO != null) {
+          return pagedProjectDTO.content.map((projectData) {
+                return Project(
+                  projectName: projectData.name ?? '',
+                  startDate: projectData.timeStart?.year.toString() ??
+                      DateTime.now().year.toString(),
+                  endDate: projectData.timeEnd?.year.toString() ??
+                      DateTime.now().year.toString(),
+                  location: projectData.address ?? '',
+                  scale: projectData.size ?? '',
+                  scope: projectData.produceCarbonRate ?? '',
+                  partners: projectData.partner ?? '',
+                  issuer: projectData.auditByOrg ?? '',
+                  availableCredits: (projectData.creditAmount != null)
+                      ? projectData.creditAmount.toString()
+                      : '0',
+                  certificates: projectData.cert ?? '',
+                  price: projectData.price ?? '0',
+                  projectImages:
+                      List<String>.from(projectData.projectImages ?? []),
+                  //creditImages: List<String>.from(projectData.creditImages ?? []),
+                  paymentMethods: List<String>.from(
+                      projectData.methodPayment?.split(',') ?? []),
+                  //status: projectData.status ?? '',
+                  //rating: projectData.rating,
+                );
+              }).toList() ??
+              [];
+        } else {
+          return [];
+        }
+      } catch (e) {
+        print("Error fetching projects: $e");
+        return [];
+      }
     }
-
-    final filteredProjects = getFilteredTransactions(projects);
 
     return Scaffold(
       body: Container(
         color: AppColors.greyBackGround,
-        child: filteredProjects.isEmpty
-            ? const Center(
+        child: FutureBuilder<List<Project>>(
+          future: getFilteredProjects(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Có lỗi xảy ra khi tải dự án'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
                 child: Text(
-                'Không có dự án nào đã hủy',
-                textAlign: TextAlign.center,
-                softWrap: true,
-                style: AppTextStyles.normalText,
-              ))
-            : ListView.builder(
+                  'Không có dự án nào bị hủy',
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: AppTextStyles.normalText,
+                ),
+              );
+            } else {
+              final filteredProjects = snapshot.data!;
+              return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: filteredProjects.length,
                 itemBuilder: (context, index) {
@@ -79,7 +86,10 @@ class ProjectCanceledTab extends StatelessWidget {
                     searchQuery: searchQuery,
                   );
                 },
-              ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

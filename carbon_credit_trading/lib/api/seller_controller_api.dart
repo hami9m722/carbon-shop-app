@@ -10,9 +10,9 @@
 
 part of carbon_server_apis;
 
-
 class SellerControllerApi {
-  SellerControllerApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+  SellerControllerApi([ApiClient? apiClient])
+      : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
@@ -20,7 +20,9 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [SellerRegisterProjectDTO] sellerRegisterProjectDTO (required):
-  Future<Response> registerProjectWithHttpInfo(SellerRegisterProjectDTO sellerRegisterProjectDTO,) async {
+  Future<Response> registerProjectWithHttpInfo(
+    SellerRegisterProjectDTO sellerRegisterProjectDTO,
+  ) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/project';
 
@@ -33,7 +35,6 @@ class SellerControllerApi {
 
     const contentTypes = <String>['application/json'];
 
-
     return apiClient.invokeAPI(
       path,
       'POST',
@@ -48,17 +49,24 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [SellerRegisterProjectDTO] sellerRegisterProjectDTO (required):
-  Future<ProjectDTO?> registerProject(SellerRegisterProjectDTO sellerRegisterProjectDTO,) async {
-    final response = await registerProjectWithHttpInfo(sellerRegisterProjectDTO,);
+  Future<ProjectDTO?> registerProject(
+    SellerRegisterProjectDTO sellerRegisterProjectDTO,
+  ) async {
+    final response = await registerProjectWithHttpInfo(
+      sellerRegisterProjectDTO,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProjectDTO',) as ProjectDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'ProjectDTO',
+      ) as ProjectDTO;
     }
     return null;
   }
@@ -69,10 +77,13 @@ class SellerControllerApi {
   /// * [int] companyId (required):
   ///
   /// * [SellerReviewCompany] sellerReviewCompany (required):
-  Future<Response> reviewCompanyWithHttpInfo(int companyId, SellerReviewCompany sellerReviewCompany,) async {
+  Future<Response> reviewCompanyWithHttpInfo(
+    int companyId,
+    SellerReviewCompany sellerReviewCompany,
+  ) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/company/{companyId}/review'
-      .replaceAll('{companyId}', companyId.toString());
+        .replaceAll('{companyId}', companyId.toString());
 
     // ignore: prefer_final_locals
     Object? postBody = sellerReviewCompany;
@@ -82,7 +93,6 @@ class SellerControllerApi {
     final formParams = <String, String>{};
 
     const contentTypes = <String>['application/json'];
-
 
     return apiClient.invokeAPI(
       path,
@@ -100,8 +110,14 @@ class SellerControllerApi {
   /// * [int] companyId (required):
   ///
   /// * [SellerReviewCompany] sellerReviewCompany (required):
-  Future<void> reviewCompany(int companyId, SellerReviewCompany sellerReviewCompany,) async {
-    final response = await reviewCompanyWithHttpInfo(companyId, sellerReviewCompany,);
+  Future<void> reviewCompany(
+    int companyId,
+    SellerReviewCompany sellerReviewCompany,
+  ) async {
+    final response = await reviewCompanyWithHttpInfo(
+      companyId,
+      sellerReviewCompany,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -111,7 +127,9 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [String] filter:
-  Future<Response> viewAllOrdersWithHttpInfo({ String? filter, }) async {
+  Future<Response> viewAllOrdersWithHttpInfo({
+    String? filter,
+  }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/orders';
 
@@ -128,7 +146,6 @@ class SellerControllerApi {
 
     const contentTypes = <String>[];
 
-
     return apiClient.invokeAPI(
       path,
       'GET',
@@ -143,17 +160,24 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [String] filter:
-  Future<PagedOrderDTO?> viewAllOrders({ String? filter, }) async {
-    final response = await viewAllOrdersWithHttpInfo( filter: filter, );
+  Future<PagedOrderDTO?> viewAllOrders({
+    String? filter,
+  }) async {
+    final response = await viewAllOrdersWithHttpInfo(
+      filter: filter,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedOrderDTO',) as PagedOrderDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PagedOrderDTO',
+      ) as PagedOrderDTO;
     }
     return null;
   }
@@ -162,7 +186,9 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [String] filter:
-  Future<Response> viewAllProject1WithHttpInfo({ String? filter, }) async {
+  Future<Response> viewAllProject1WithHttpInfo({
+    String? filter,
+  }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/projects';
 
@@ -179,7 +205,6 @@ class SellerControllerApi {
 
     const contentTypes = <String>[];
 
-
     return apiClient.invokeAPI(
       path,
       'GET',
@@ -194,17 +219,25 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [String] filter:
-  Future<PagedProjectDTO?> viewAllProject1({ String? filter, }) async {
-    final response = await viewAllProject1WithHttpInfo( filter: filter, );
+  Future<PagedProjectDTO?> viewAllProject1(
+    String? searchQuery, {
+    String? filter,
+  }) async {
+    final response = await viewAllProject1WithHttpInfo(
+      filter: filter,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedProjectDTO',) as PagedProjectDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PagedProjectDTO',
+      ) as PagedProjectDTO;
     }
     return null;
   }
@@ -213,10 +246,12 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] companyId (required):
-  Future<Response> viewCompanyWithHttpInfo(int companyId,) async {
+  Future<Response> viewCompanyWithHttpInfo(
+    int companyId,
+  ) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/company/{companyId}'
-      .replaceAll('{companyId}', companyId.toString());
+        .replaceAll('{companyId}', companyId.toString());
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -226,7 +261,6 @@ class SellerControllerApi {
     final formParams = <String, String>{};
 
     const contentTypes = <String>[];
-
 
     return apiClient.invokeAPI(
       path,
@@ -242,17 +276,24 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] companyId (required):
-  Future<CompanyDTO?> viewCompany(int companyId,) async {
-    final response = await viewCompanyWithHttpInfo(companyId,);
+  Future<CompanyDTO?> viewCompany(
+    int companyId,
+  ) async {
+    final response = await viewCompanyWithHttpInfo(
+      companyId,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'CompanyDTO',) as CompanyDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'CompanyDTO',
+      ) as CompanyDTO;
     }
     return null;
   }
@@ -261,10 +302,12 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] orderId (required):
-  Future<Response> viewOrderWithHttpInfo(int orderId,) async {
+  Future<Response> viewOrderWithHttpInfo(
+    int orderId,
+  ) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/order/{orderId}'
-      .replaceAll('{orderId}', orderId.toString());
+        .replaceAll('{orderId}', orderId.toString());
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -274,7 +317,6 @@ class SellerControllerApi {
     final formParams = <String, String>{};
 
     const contentTypes = <String>[];
-
 
     return apiClient.invokeAPI(
       path,
@@ -290,17 +332,24 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] orderId (required):
-  Future<OrderDTO?> viewOrder(int orderId,) async {
-    final response = await viewOrderWithHttpInfo(orderId,);
+  Future<OrderDTO?> viewOrder(
+    int orderId,
+  ) async {
+    final response = await viewOrderWithHttpInfo(
+      orderId,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'OrderDTO',) as OrderDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'OrderDTO',
+      ) as OrderDTO;
     }
     return null;
   }
@@ -309,10 +358,12 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<Response> viewProjectWithHttpInfo(int projectId,) async {
+  Future<Response> viewProjectWithHttpInfo(
+    int projectId,
+  ) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/project/{projectId}'
-      .replaceAll('{projectId}', projectId.toString());
+        .replaceAll('{projectId}', projectId.toString());
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -322,7 +373,6 @@ class SellerControllerApi {
     final formParams = <String, String>{};
 
     const contentTypes = <String>[];
-
 
     return apiClient.invokeAPI(
       path,
@@ -338,17 +388,24 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<ProjectDTO?> viewProject(int projectId,) async {
-    final response = await viewProjectWithHttpInfo(projectId,);
+  Future<ProjectDTO?> viewProject(
+    int projectId,
+  ) async {
+    final response = await viewProjectWithHttpInfo(
+      projectId,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProjectDTO',) as ProjectDTO;
-    
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'ProjectDTO',
+      ) as ProjectDTO;
     }
     return null;
   }

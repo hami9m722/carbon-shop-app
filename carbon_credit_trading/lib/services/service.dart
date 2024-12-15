@@ -3,7 +3,7 @@ import 'package:carbon_credit_trading/services/auth_service.dart';
 import 'package:carbon_credit_trading/services/transaction_service.dart';
 import 'package:carbon_credit_trading/services/user_service.dart';
 
-ApiClient apiClient = ApiClient(basePath: 'http://10.0.2.2:8080');
+ApiClient apiClient = ApiClient(basePath: 'http://34.126.176.49:8080');
 AuthenticationResourceApi authenticationResourceApi =
     AuthenticationResourceApi(apiClient);
 BuyerControllerApi buyerControllerApi = BuyerControllerApi(apiClient);

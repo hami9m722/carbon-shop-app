@@ -1,10 +1,6 @@
 import 'package:carbon_credit_trading/models/project.dart';
-import 'package:carbon_credit_trading/models/transaction.dart';
-
-import '../models/user.dart';
 
 class ProjectService {
-
   Future<List<Project>> getApprovedProjects() async {
     return [
       Project(
@@ -151,5 +147,4 @@ class ProjectService {
       ),
     ];
   }
-
 }

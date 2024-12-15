@@ -1,4 +1,6 @@
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/services/check_validate.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
@@ -16,7 +18,10 @@ class _ForgetPassPage extends State<ForgetPassPage> {
   final UserService userService = UserService();
   String? errorMessage;
 
-  void _send() async {}
+  void _send() async {
+    await passwordResetResourceApi
+        .start(PasswordResetRequest(email: emailController.text.trim()));
+  }
 
   @override
   Widget build(BuildContext context) {

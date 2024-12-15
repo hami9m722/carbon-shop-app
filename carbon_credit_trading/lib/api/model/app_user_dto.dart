@@ -14,9 +14,6 @@ class AppUserDTO {
   /// Returns a new [AppUserDTO] instance.
   AppUserDTO({
     this.userId,
-    required this.password,
-    this.resetPasswordUid,
-    this.resetPasswordStart,
     this.name,
     this.phone,
     this.email,
@@ -36,7 +33,7 @@ class AppUserDTO {
   ///
   int? userId;
 
-  String password;
+  String? password;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -109,40 +106,43 @@ class AppUserDTO {
   List<int> favoriteProjects;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AppUserDTO &&
-    other.userId == userId &&
-    other.password == password &&
-    other.resetPasswordUid == resetPasswordUid &&
-    other.resetPasswordStart == resetPasswordStart &&
-    other.name == name &&
-    other.phone == phone &&
-    other.email == email &&
-    other.role == role &&
-    other.approvedAt == approvedAt &&
-    other.rejectedAt == rejectedAt &&
-    other.status == status &&
-    other.company == company &&
-    _deepEquality.equals(other.favoriteProjects, favoriteProjects);
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppUserDTO &&
+          other.userId == userId &&
+          other.password == password &&
+          other.resetPasswordUid == resetPasswordUid &&
+          other.resetPasswordStart == resetPasswordStart &&
+          other.name == name &&
+          other.phone == phone &&
+          other.email == email &&
+          other.role == role &&
+          other.approvedAt == approvedAt &&
+          other.rejectedAt == rejectedAt &&
+          other.status == status &&
+          other.company == company &&
+          _deepEquality.equals(other.favoriteProjects, favoriteProjects);
 
   @override
   int get hashCode =>
-    // ignore: unnecessary_parenthesis
-    (userId == null ? 0 : userId!.hashCode) +
-    (password.hashCode) +
-    (resetPasswordUid == null ? 0 : resetPasswordUid!.hashCode) +
-    (resetPasswordStart == null ? 0 : resetPasswordStart!.hashCode) +
-    (name == null ? 0 : name!.hashCode) +
-    (phone == null ? 0 : phone!.hashCode) +
-    (email == null ? 0 : email!.hashCode) +
-    (role.hashCode) +
-    (approvedAt == null ? 0 : approvedAt!.hashCode) +
-    (rejectedAt == null ? 0 : rejectedAt!.hashCode) +
-    (status == null ? 0 : status!.hashCode) +
-    (company == null ? 0 : company!.hashCode) +
-    (favoriteProjects.hashCode);
+      // ignore: unnecessary_parenthesis
+      (userId == null ? 0 : userId!.hashCode) +
+      (password.hashCode) +
+      (resetPasswordUid == null ? 0 : resetPasswordUid!.hashCode) +
+      (resetPasswordStart == null ? 0 : resetPasswordStart!.hashCode) +
+      (name == null ? 0 : name!.hashCode) +
+      (phone == null ? 0 : phone!.hashCode) +
+      (email == null ? 0 : email!.hashCode) +
+      (role.hashCode) +
+      (approvedAt == null ? 0 : approvedAt!.hashCode) +
+      (rejectedAt == null ? 0 : rejectedAt!.hashCode) +
+      (status == null ? 0 : status!.hashCode) +
+      (company == null ? 0 : company!.hashCode) +
+      (favoriteProjects.hashCode);
 
   @override
-  String toString() => 'AppUserDTO[userId=$userId, password=$password, resetPasswordUid=$resetPasswordUid, resetPasswordStart=$resetPasswordStart, name=$name, phone=$phone, email=$email, role=$role, approvedAt=$approvedAt, rejectedAt=$rejectedAt, status=$status, company=$company, favoriteProjects=$favoriteProjects]';
+  String toString() =>
+      'AppUserDTO[userId=$userId, password=$password, resetPasswordUid=$resetPasswordUid, resetPasswordStart=$resetPasswordStart, name=$name, phone=$phone, email=$email, role=$role, approvedAt=$approvedAt, rejectedAt=$rejectedAt, status=$status, company=$company, favoriteProjects=$favoriteProjects]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -151,14 +151,15 @@ class AppUserDTO {
     } else {
       json[r'userId'] = null;
     }
-      json[r'password'] = this.password;
+    json[r'password'] = this.password;
     if (this.resetPasswordUid != null) {
       json[r'resetPasswordUid'] = this.resetPasswordUid;
     } else {
       json[r'resetPasswordUid'] = null;
     }
     if (this.resetPasswordStart != null) {
-      json[r'resetPasswordStart'] = this.resetPasswordStart!.toUtc().toIso8601String();
+      json[r'resetPasswordStart'] =
+          this.resetPasswordStart!.toUtc().toIso8601String();
     } else {
       json[r'resetPasswordStart'] = null;
     }
@@ -177,7 +178,7 @@ class AppUserDTO {
     } else {
       json[r'email'] = null;
     }
-      json[r'role'] = this.role;
+    json[r'role'] = this.role;
     if (this.approvedAt != null) {
       json[r'approvedAt'] = this.approvedAt!.toUtc().toIso8601String();
     } else {
@@ -198,7 +199,7 @@ class AppUserDTO {
     } else {
       json[r'company'] = null;
     }
-      json[r'favoriteProjects'] = this.favoriteProjects;
+    json[r'favoriteProjects'] = this.favoriteProjects;
     return json;
   }
 
@@ -214,17 +215,16 @@ class AppUserDTO {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AppUserDTO[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AppUserDTO[$key]" has a null value in JSON.');
+          assert(json.containsKey(key),
+              'Required key "AppUserDTO[$key]" is missing from JSON.');
+          assert(json[key] != null,
+              'Required key "AppUserDTO[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
       return AppUserDTO(
         userId: mapValueOfType<int>(json, r'userId'),
-        password: mapValueOfType<String>(json, r'password')!,
-        resetPasswordUid: mapValueOfType<String>(json, r'resetPasswordUid'),
-        resetPasswordStart: mapDateTime(json, r'resetPasswordStart', r''),
         name: mapValueOfType<String>(json, r'name'),
         phone: mapValueOfType<String>(json, r'phone'),
         email: mapValueOfType<String>(json, r'email'),
@@ -234,14 +234,19 @@ class AppUserDTO {
         status: AppUserDTOStatusEnum.fromJson(json[r'status']),
         company: mapValueOfType<int>(json, r'company'),
         favoriteProjects: json[r'favoriteProjects'] is Iterable
-            ? (json[r'favoriteProjects'] as Iterable).cast<int>().toList(growable: false)
+            ? (json[r'favoriteProjects'] as Iterable)
+                .cast<int>()
+                .toList(growable: false)
             : const [],
       );
     }
     return null;
   }
 
-  static List<AppUserDTO> listFromJson(dynamic json, {bool growable = false,}) {
+  static List<AppUserDTO> listFromJson(
+    dynamic json, {
+    bool growable = false,
+  }) {
     final result = <AppUserDTO>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -269,13 +274,19 @@ class AppUserDTO {
   }
 
   // maps a json object with a list of AppUserDTO-objects as value to a dart map
-  static Map<String, List<AppUserDTO>> mapListFromJson(dynamic json, {bool growable = false,}) {
+  static Map<String, List<AppUserDTO>> mapListFromJson(
+    dynamic json, {
+    bool growable = false,
+  }) {
     final map = <String, List<AppUserDTO>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AppUserDTO.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AppUserDTO.listFromJson(
+          entry.value,
+          growable: growable,
+        );
       }
     }
     return map;
@@ -283,11 +294,9 @@ class AppUserDTO {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'password',
     'role',
   };
 }
-
 
 class AppUserDTORoleEnum {
   /// Instantiate a new enum with the provided [value].
@@ -303,7 +312,8 @@ class AppUserDTORoleEnum {
 
   static const SELLER_OR_BUYER = AppUserDTORoleEnum._(r'SELLER_OR_BUYER');
   static const MEDIATOR = AppUserDTORoleEnum._(r'MEDIATOR');
-  static const unknownDefaultOpenApi = AppUserDTORoleEnum._(r'unknown_default_open_api');
+  static const unknownDefaultOpenApi =
+      AppUserDTORoleEnum._(r'unknown_default_open_api');
 
   /// List of all possible values in this [enum][AppUserDTORoleEnum].
   static const values = <AppUserDTORoleEnum>[
@@ -312,9 +322,13 @@ class AppUserDTORoleEnum {
     unknownDefaultOpenApi,
   ];
 
-  static AppUserDTORoleEnum? fromJson(dynamic value) => AppUserDTORoleEnumTypeTransformer().decode(value);
+  static AppUserDTORoleEnum? fromJson(dynamic value) =>
+      AppUserDTORoleEnumTypeTransformer().decode(value);
 
-  static List<AppUserDTORoleEnum> listFromJson(dynamic json, {bool growable = false,}) {
+  static List<AppUserDTORoleEnum> listFromJson(
+    dynamic json, {
+    bool growable = false,
+  }) {
     final result = <AppUserDTORoleEnum>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -331,7 +345,8 @@ class AppUserDTORoleEnum {
 /// Transformation class that can [encode] an instance of [AppUserDTORoleEnum] to String,
 /// and [decode] dynamic data back to [AppUserDTORoleEnum].
 class AppUserDTORoleEnumTypeTransformer {
-  factory AppUserDTORoleEnumTypeTransformer() => _instance ??= const AppUserDTORoleEnumTypeTransformer._();
+  factory AppUserDTORoleEnumTypeTransformer() =>
+      _instance ??= const AppUserDTORoleEnumTypeTransformer._();
 
   const AppUserDTORoleEnumTypeTransformer._();
 
@@ -348,9 +363,12 @@ class AppUserDTORoleEnumTypeTransformer {
   AppUserDTORoleEnum? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'SELLER_OR_BUYER': return AppUserDTORoleEnum.SELLER_OR_BUYER;
-        case r'MEDIATOR': return AppUserDTORoleEnum.MEDIATOR;
-        case r'unknown_default_open_api': return AppUserDTORoleEnum.unknownDefaultOpenApi;
+        case r'SELLER_OR_BUYER':
+          return AppUserDTORoleEnum.SELLER_OR_BUYER;
+        case r'MEDIATOR':
+          return AppUserDTORoleEnum.MEDIATOR;
+        case r'unknown_default_open_api':
+          return AppUserDTORoleEnum.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
@@ -363,8 +381,6 @@ class AppUserDTORoleEnumTypeTransformer {
   /// Singleton [AppUserDTORoleEnumTypeTransformer] instance.
   static AppUserDTORoleEnumTypeTransformer? _instance;
 }
-
-
 
 class AppUserDTOStatusEnum {
   /// Instantiate a new enum with the provided [value].
@@ -381,7 +397,8 @@ class AppUserDTOStatusEnum {
   static const INIT = AppUserDTOStatusEnum._(r'INIT');
   static const APPROVED = AppUserDTOStatusEnum._(r'APPROVED');
   static const REJECTED = AppUserDTOStatusEnum._(r'REJECTED');
-  static const unknownDefaultOpenApi = AppUserDTOStatusEnum._(r'unknown_default_open_api');
+  static const unknownDefaultOpenApi =
+      AppUserDTOStatusEnum._(r'unknown_default_open_api');
 
   /// List of all possible values in this [enum][AppUserDTOStatusEnum].
   static const values = <AppUserDTOStatusEnum>[
@@ -391,9 +408,13 @@ class AppUserDTOStatusEnum {
     unknownDefaultOpenApi,
   ];
 
-  static AppUserDTOStatusEnum? fromJson(dynamic value) => AppUserDTOStatusEnumTypeTransformer().decode(value);
+  static AppUserDTOStatusEnum? fromJson(dynamic value) =>
+      AppUserDTOStatusEnumTypeTransformer().decode(value);
 
-  static List<AppUserDTOStatusEnum> listFromJson(dynamic json, {bool growable = false,}) {
+  static List<AppUserDTOStatusEnum> listFromJson(
+    dynamic json, {
+    bool growable = false,
+  }) {
     final result = <AppUserDTOStatusEnum>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -410,7 +431,8 @@ class AppUserDTOStatusEnum {
 /// Transformation class that can [encode] an instance of [AppUserDTOStatusEnum] to String,
 /// and [decode] dynamic data back to [AppUserDTOStatusEnum].
 class AppUserDTOStatusEnumTypeTransformer {
-  factory AppUserDTOStatusEnumTypeTransformer() => _instance ??= const AppUserDTOStatusEnumTypeTransformer._();
+  factory AppUserDTOStatusEnumTypeTransformer() =>
+      _instance ??= const AppUserDTOStatusEnumTypeTransformer._();
 
   const AppUserDTOStatusEnumTypeTransformer._();
 
@@ -427,10 +449,14 @@ class AppUserDTOStatusEnumTypeTransformer {
   AppUserDTOStatusEnum? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'INIT': return AppUserDTOStatusEnum.INIT;
-        case r'APPROVED': return AppUserDTOStatusEnum.APPROVED;
-        case r'REJECTED': return AppUserDTOStatusEnum.REJECTED;
-        case r'unknown_default_open_api': return AppUserDTOStatusEnum.unknownDefaultOpenApi;
+        case r'INIT':
+          return AppUserDTOStatusEnum.INIT;
+        case r'APPROVED':
+          return AppUserDTOStatusEnum.APPROVED;
+        case r'REJECTED':
+          return AppUserDTOStatusEnum.REJECTED;
+        case r'unknown_default_open_api':
+          return AppUserDTOStatusEnum.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
@@ -443,5 +469,3 @@ class AppUserDTOStatusEnumTypeTransformer {
   /// Singleton [AppUserDTOStatusEnumTypeTransformer] instance.
   static AppUserDTOStatusEnumTypeTransformer? _instance;
 }
-
-

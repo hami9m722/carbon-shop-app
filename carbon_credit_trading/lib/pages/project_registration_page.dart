@@ -1,8 +1,8 @@
-import 'dart:developer';
-
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
 import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
@@ -83,29 +83,23 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
     }
   }
 
-  void _saveProject() {
-    final project = Project(
-        projectName: _projectName,
-        startDate: _startDate,
-        endDate: _endDate,
-        location: _location,
-        scale: _scale,
-        scope: _scope,
-        partners: _partners,
-        issuer: _issuer,
-        availableCredits: _availableCredits,
-        certificates: _certificates,
-        price: _price,
-        projectImages: _projectImages,
-        creditImages: _creditImages,
-        paymentMethods: _selectedPaymentMethodList,
-        status: 'pending');
-
-    if (widget.initialProject != null) {
-      log(project.endDate);
-    } else {
-      log(project.startDate);
-    }
+  void _saveProject() async {
+    await sellerControllerApi.registerProject(SellerRegisterProjectDTO(
+      name: _projectName,
+      timeStart: DateTime.tryParse(_startDate),
+      timeEnd: DateTime.tryParse(_endDate),
+      address: _location,
+      size: _scale,
+      produceCarbonRate: _scope,
+      partner: _partners,
+      auditByOrg: _issuer,
+      creditAmount: int.tryParse(_availableCredits),
+      cert: _certificates,
+      price: _price,
+      //projectImages: _projectImages.map((image) => int.parse(image)).toList(),
+      //creditImages
+      methodPayment: _selectedPaymentMethodList.join(","),
+    ));
   }
 
   @override
