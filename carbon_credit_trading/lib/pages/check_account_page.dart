@@ -8,27 +8,28 @@ class CheckAccountPage extends StatelessWidget {
   final Map<String, dynamic> accountDetails;
 
   const CheckAccountPage({super.key, required this.accountDetails});
+
+  void approveAcc() async {
+    try {
+      await mediatorAuditControllerApi
+          .approveUserRegistration(accountDetails['userId']);
+    } catch (e) {
+      print("Error fetching pending accounts: $e");
+    }
+  }
+
+  void rejectAcc() async {
+    try {
+      await mediatorAuditControllerApi
+          .rejectUserRegistration(accountDetails['userId']);
+    } catch (e) {
+      print("Error fetching pending accounts: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final company = accountDetails['company'] ?? {};
-
-    void approveAcc() async {
-      try {
-        await mediatorAuditControllerApi
-            .approveUserRegistration(accountDetails['userId']);
-      } catch (e) {
-        print("Error fetching pending accounts: $e");
-      }
-    }
-
-    void rejectAcc() async {
-      try {
-        await mediatorAuditControllerApi
-            .rejectUserRegistration(accountDetails['userId']);
-      } catch (e) {
-        print("Error fetching pending accounts: $e");
-      }
-    }
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Chi tiết tài khoản'),

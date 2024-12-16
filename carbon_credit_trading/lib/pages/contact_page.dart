@@ -155,7 +155,7 @@ class _ContactPageState extends State<ContactPage> {
                     ),
                   ),
                 ),
-                if (FocusScope.of(context).hasFocus)
+                if (FocusScope.of(context).hasFocus && isSearching)
                   TextButton(
                     onPressed: () {
                       setState(() {
