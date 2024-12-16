@@ -34,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
     String password = passwordController.text.trim();
     String passwordAgain = passwordAgainController.text.trim();
 
@@ -42,28 +43,37 @@ class _SignUpPageState extends State<SignUpPage> {
         errorMessage = "Mật khẩu không trùng khớp";
       });
     } else {
-      await registrationResourceApi.register(UserRegistrationRequest(
-        name: 'Dai dien ${companyNameController.text.trim()}',
-        email: emailController.text.trim(),
-        password: password,
-        phone: phoneNumberController.text.trim(),
-        companyName: companyNameController.text.trim(),
-        companyEmail: emailController.text.trim(),
-        companyAddress: addressController.text.trim(),
-        companyIndustry: businessSectorController.text.trim(),
-        companyPhone: phoneNumberController.text.trim(),
-        companyTaxCode: taxIdController.text.trim(),
-      ));
+      try {
+        await registrationResourceApi.register(UserRegistrationRequest(
+          name: 'Dai dien ${companyNameController.text.trim()}',
+          email: emailController.text.trim(),
+          password: password,
+          phone: phoneNumberController.text.trim(),
+          companyName: companyNameController.text.trim(),
+          companyEmail: emailController.text.trim(),
+          companyAddress: addressController.text.trim(),
+          companyIndustry: businessSectorController.text.trim(),
+          companyPhone: phoneNumberController.text.trim(),
+          companyTaxCode: taxIdController.text.trim(),
+        ));
 
-      setState(() {
-        errorMessage = null;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-      );
+        // Xóa lỗi nếu thành công
+        setState(() {
+          errorMessage = null;
+        });
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        );
+      } catch (e) {
+        // Hiển thị thông báo lỗi nếu xảy ra lỗi
+        setState(() {
+          errorMessage = "Đã xảy ra lỗi khi đăng ký: $e";
+        });
+      }
     }
   }
 
