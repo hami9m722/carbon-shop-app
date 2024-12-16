@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/intermediary_question_page.dart';
 import 'package:carbon_credit_trading/pages/login_page.dart';
 import 'package:carbon_credit_trading/pages/pending_account_page.dart';
 import 'package:carbon_credit_trading/pages/profile_page.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         }), //navigation transition
         useMaterial3: true, // should be changed
       ),
-      home: QuestionPage(),
+      home: IntermediaryQuestionPage(),
     );
   }
 }
