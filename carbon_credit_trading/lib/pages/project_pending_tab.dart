@@ -30,7 +30,8 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
   Widget build(BuildContext context) {
     Future<List<Project>> getFilteredProjects() async {
       try {
-        final pagedProjectDTO = await sellerControllerApi.viewAllProject1('');
+        final pagedProjectDTO =
+            await sellerControllerApi.viewAllProject1(_searchQuery);
 
         if (pagedProjectDTO != null) {
           return pagedProjectDTO.content.map((projectData) {
@@ -123,7 +124,7 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
           : null,
       body: Container(
         color: AppColors.greyBackGround,
-        child: FutureBuilder<List<Project>>(
+        child: FutureBuilder(
           future: getFilteredProjects(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

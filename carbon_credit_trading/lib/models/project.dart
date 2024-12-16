@@ -1,4 +1,5 @@
 class Project {
+  final String? projectId;
   final String projectName;
   final String startDate;
   final String endDate;
@@ -17,7 +18,8 @@ class Project {
   final String? rating;
 
   Project(
-      {required this.projectName,
+      {this.projectId,
+      required this.projectName,
       required this.startDate,
       required this.endDate,
       required this.location,

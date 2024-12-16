@@ -16,7 +16,8 @@ class ProjectCanceledTab extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<List<Project>> getFilteredProjects() async {
       try {
-        final pagedProjectDTO = await sellerControllerApi.viewAllProject1('');
+        final pagedProjectDTO =
+            await sellerControllerApi.viewAllProject1(searchQuery);
 
         if (pagedProjectDTO != null) {
           return pagedProjectDTO.content.map((projectData) {
@@ -58,7 +59,7 @@ class ProjectCanceledTab extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: AppColors.greyBackGround,
-        child: FutureBuilder<List<Project>>(
+        child: FutureBuilder(
           future: getFilteredProjects(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
