@@ -1,12 +1,7 @@
-import 'package:carbon_credit_trading/api/api.dart';
-import 'package:carbon_credit_trading/extensions/search.dart';
-import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/pages/check_account_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
-import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 
 class PendingAccountPage extends StatefulWidget {

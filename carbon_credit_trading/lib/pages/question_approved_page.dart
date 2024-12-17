@@ -76,7 +76,7 @@ class QuestionApprovedTab extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: question.question,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),

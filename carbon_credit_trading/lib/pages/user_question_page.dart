@@ -1,110 +1,81 @@
+import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/pages/question_details_page.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+class UserQuestionPage extends StatelessWidget {
+  const UserQuestionPage({super.key});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  Future<List<QuestionDTO>> viewAllQuestions() async {
+    try {
+      final questions = await userControllerApi.viewQuestions();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Thông Báo Facebook',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const NotificationPage(),
-    );
+      if (questions != null) {
+        return questions.content; // Giả sử content chứa danh sách câu hỏi
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching questions: $e");
+      return [];
+    }
   }
-}
-
-class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Thông báo'),
+        title: const Text('Câu hỏi của tôi'),
       ),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return NotificationCard(notification: notifications[index]);
+      body: FutureBuilder<List<QuestionDTO>>(
+        future: viewAllQuestions(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Có lỗi xảy ra: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Không có câu hỏi nào.'));
+          } else {
+            final questions = snapshot.data!;
+            return ListView.builder(
+              itemCount: questions.length,
+              itemBuilder: (context, index) {
+                final question = questions[index];
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(10),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.green, // set status
+                      child: const Icon(
+                        Icons.check, // Icon tích
+                        color: Colors.white,
+                      ),
+                      radius: 30,
+                    ),
+                    title: Text(
+                      question.question!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              QuestionDetailPage(question: question),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
     );
   }
 }
-
-class NotificationCard extends StatelessWidget {
-  final NotificationItem notification;
-
-  const NotificationCard({super.key, required this.notification});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(10),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(notification.avatarUrl),
-          radius: 30,
-        ),
-        title: Text(notification.title),
-        subtitle: Text(notification.subtitle),
-        trailing: IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: () {
-            // Xử lý hành động tại đây (ví dụ: xem thêm chi tiết)
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class NotificationItem {
-  final String title;
-  final String subtitle;
-  final String avatarUrl;
-  final String timeAgo;
-
-  NotificationItem({
-    required this.title,
-    required this.subtitle,
-    required this.avatarUrl,
-    required this.timeAgo,
-  });
-}
-
-// Dữ liệu giả cho các thông báo
-final List<NotificationItem> notifications = [
-  NotificationItem(
-    title: 'Bạn có một lời mời kết bạn mới',
-    subtitle: 'John Doe đã gửi lời mời kết bạn.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-    timeAgo: '1 giờ trước',
-  ),
-  NotificationItem(
-    title: 'Bạn đã nhận được lời mời tham gia nhóm',
-    subtitle: 'Group ABC mời bạn tham gia.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg',
-    timeAgo: '3 giờ trước',
-  ),
-  NotificationItem(
-    title: 'Bạn đã được tag trong một bài viết',
-    subtitle: 'Jane Doe đã gắn thẻ bạn trong bài viết.',
-    avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
-    timeAgo: '5 giờ trước',
-  ),
-  NotificationItem(
-    title: 'Một người bạn đã cập nhật trạng thái của họ',
-    subtitle: 'Alice đã chia sẻ một bài viết mới.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/3.jpg',
-    timeAgo: '1 ngày trước',
-  ),
-  // Thêm nhiều thông báo ở đây nếu cần
-];

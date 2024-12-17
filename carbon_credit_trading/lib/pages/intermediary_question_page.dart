@@ -1,8 +1,5 @@
 import 'package:carbon_credit_trading/pages/question_approved_page.dart';
 import 'package:carbon_credit_trading/pages/question_pending_tab.dart';
-import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
-import 'package:carbon_credit_trading/pages/transaction_canceled_tab.dart';
-import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:flutter/material.dart';
