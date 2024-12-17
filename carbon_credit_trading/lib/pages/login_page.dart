@@ -2,6 +2,7 @@ import 'package:carbon_credit_trading/pages/business_options_page.dart';
 import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
 import 'package:carbon_credit_trading/pages/intermediary_page.dart';
 import 'package:carbon_credit_trading/pages/signup_page.dart';
+import 'package:carbon_credit_trading/pages/user_page.dart';
 import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const BusinessOptionsPage(),
+            builder: (context) => const UserPage(),
           ),
         );
       } else {

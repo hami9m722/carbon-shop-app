@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         }), //navigation transition
         useMaterial3: true, // should be changed
       ),
-      home: IntermediaryQuestionPage(),
+      home: LoginPage(),
     );
   }
 }
