@@ -3,6 +3,8 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/feedback_item.dart';
 import 'package:flutter/material.dart';
 
+//list transaction reviews (userImage, companyName, rating, date, currentAcc dislike or likelike)
+
 class TransactionFeedbackPage extends StatelessWidget {
   const TransactionFeedbackPage({super.key});
 

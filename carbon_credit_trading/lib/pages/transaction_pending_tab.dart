@@ -6,6 +6,19 @@ import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 
+/* pending order info
+ 'orderId': order.orderId,
+  //             'creditAmount': order.creditAmount,
+  //             'total': order.total,
+  //             'paymentBillFile': order.paymentBillFile,
+  //             'contractFile': order.contractFile,
+  //             'certImages': order.certImages,
+  //             'buyer': buyer (companyName, taxCode,address),
+                  'seller': seller (companyName, tatCode, address),
+  //             'project': project infoinfo,
+  //             'status': order.status
+*/
+
 class TransactionPendingTab extends StatefulWidget {
   final String previousPage;
   final String? searchQuery;
@@ -85,61 +98,62 @@ class _TransactionPendingTabState extends State<TransactionPendingTab> {
             );
           }
 
-          final filteredTransactions = snapshot.requireData.search(_searchQuery);
+          final filteredTransactions =
+              snapshot.requireData.search(_searchQuery);
           return Container(
             color: AppColors.greyBackGround,
             child: filteredTransactions.isEmpty
                 ? const Center(
-              child: Text(
-                'Không có giao dịch nào đang chờ duyệt',
-                textAlign: TextAlign.center,
-                softWrap: true,
-                style: AppTextStyles.normalText,
-              ),
-            )
-                : Column(
-              children: [
-                if (widget.previousPage.isNotEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
                     child: Text(
-                      'Các giao dịch đang chờ duyệt',
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.greenButton,
-                      ),
+                      'Không có giao dịch nào đang chờ duyệt',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: AppTextStyles.normalText,
                     ),
-                  ),
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: filteredTransactions.length,
-                    itemBuilder: (context, index) {
-                      final transaction = filteredTransactions[index];
-                      return TransactionItem(
-                        transaction: transaction,
-                        searchQuery: widget.previousPage != ''
-                            ? _searchQuery
-                            : widget.searchQuery,
-                        onPress: widget.previousPage == 'intermediary'
-                            ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ApproveTransactionPage(
-                                      transaction: transaction),
+                  )
+                : Column(
+                    children: [
+                      if (widget.previousPage.isNotEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          child: Text(
+                            'Các giao dịch đang chờ duyệt',
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.greenButton,
                             ),
-                          );
-                        }
-                            : null,
-                      );
-                    },
+                          ),
+                        ),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: filteredTransactions.length,
+                          itemBuilder: (context, index) {
+                            final transaction = filteredTransactions[index];
+                            return TransactionItem(
+                              transaction: transaction,
+                              searchQuery: widget.previousPage != ''
+                                  ? _searchQuery
+                                  : widget.searchQuery,
+                              onPress: widget.previousPage == 'intermediary'
+                                  ? () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ApproveTransactionPage(
+                                                  transaction: transaction),
+                                        ),
+                                      );
+                                    }
+                                  : null,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           );
         },
       ),

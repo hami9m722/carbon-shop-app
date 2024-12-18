@@ -10,6 +10,24 @@ import 'package:carbon_credit_trading/widgets/image_carousel.dart';
 import 'package:carbon_credit_trading/widgets/purchase_dialog.dart';
 import 'package:flutter/material.dart';
 
+/* /*Description
+  project info(
+    projectName
+      startDate
+      endDate
+      address,
+      size,
+      produceCarbonRate,
+      partners: _partnersController.text,
+      ownedBy
+      creditNumber,
+      cert
+      price
+      paymentMethods list 
+  )
+*/
+)*/
+
 class ProjectDetailPage extends StatefulWidget {
   final String previousPage;
   final Project project;

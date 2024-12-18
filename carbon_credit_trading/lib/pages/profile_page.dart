@@ -5,6 +5,7 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
 
+//no use
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 

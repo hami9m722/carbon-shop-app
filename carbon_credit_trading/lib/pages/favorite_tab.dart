@@ -5,6 +5,8 @@ import 'package:carbon_credit_trading/widgets/filter_drawer.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 
+// favorite project (name, price, first project image)
+
 class FavoriteTab extends StatefulWidget {
   const FavoriteTab({super.key});
 
