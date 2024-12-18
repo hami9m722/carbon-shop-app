@@ -40,7 +40,7 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
   }
 
   void _addImage(List<File> newImages) {
-    setState(() async {
+    setState(() {
       _imageFiles.addAll(newImages.whereType<File>().cast<File>());
     });
   }

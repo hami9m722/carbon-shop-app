@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 class PurchaseDialog extends StatefulWidget {
   final double pricePerUnit;
   final int maxQuantity;
+  final Function(double, int) onPurchase;
 
   const PurchaseDialog({
     super.key,
     required this.pricePerUnit,
-    required this.maxQuantity,
+    required this.maxQuantity, required this.onPurchase,
   });
 
   @override
@@ -78,7 +79,9 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
               ),
               const SizedBox(height: 16.0),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.onPurchase(widget.pricePerUnit, quantity);
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
                   padding:

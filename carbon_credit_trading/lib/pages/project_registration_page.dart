@@ -175,15 +175,15 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
           ProjectImageUploadPage(
             initialImages: _projectImages,
             onPrevious: _previousPage,
-            onNext: (images) {
-              setState(() async {
-                List<int> imageIds = [];
-                for (final image in images) {
-                  if (image is File) {
-                    final imageId = await fileControllerApi.uploadFile(image);
-                    imageIds.add(imageId);
-                  }
+            onNext: (images) async {
+              List<int> imageIds = [];
+              for (final image in images) {
+                if (image is File) {
+                  final imageId = await fileControllerApi.uploadFile(image);
+                  imageIds.add(imageId);
                 }
+              }
+              setState(() {
                 _projectImages = imageIds;
               });
               _nextPage();
@@ -192,15 +192,15 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
           CreditImageUploadPage(
             initialImages: _creditImages,
             onPrevious: _previousPage,
-            onSave: (creditImages) {
-              setState(() async {
-                List<int> imageIds = [];
-                for (final image in creditImages) {
-                  if (image is File) {
-                    final imageId = await fileControllerApi.uploadFile(image);
-                    imageIds.add(imageId);
-                  }
+            onSave: (creditImages) async {
+              List<int> imageIds = [];
+              for (final image in creditImages) {
+                if (image is File) {
+                  final imageId = await fileControllerApi.uploadFile(image);
+                  imageIds.add(imageId);
                 }
+              }
+              setState(() {
                 _creditImages = imageIds;
               });
               _saveProject();

@@ -19,7 +19,7 @@ class ProjectCanceledTab extends StatelessWidget {
     Future<List<Project>> getFilteredProjects() async {
       try {
         final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(filter: searchQuery);
+            await sellerControllerApi.viewAllProject1(status: 'REJECTED', filter: searchQuery);
 
         if (pagedProjectDTO != null) {
           return pagedProjectDTO.content.map((projectData) {

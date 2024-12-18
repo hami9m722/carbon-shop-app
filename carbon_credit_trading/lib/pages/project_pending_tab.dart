@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/extensions/dto.dart';
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 
@@ -29,15 +30,21 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
   bool _isSearching = false;
   String _searchQuery = '';
   final FocusNode _searchFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     Future<List<Project>> getFilteredProjects() async {
       try {
-        final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(filter: _searchQuery);
+        final pagedProjectDTO = businessOption == BusinessOption.mediator
+            ? await mediatorAuditControllerApi.viewAllProject2(
+                status: 'INIT', filter: _searchQuery)
+            : await sellerControllerApi.viewAllProject1(
+                status: 'INIT', filter: _searchQuery);
 
         if (pagedProjectDTO != null) {
-          return pagedProjectDTO.content.map((projectData) => projectData.toProject()).toList();
+          return pagedProjectDTO.content
+              .map((projectData) => projectData.toProject())
+              .toList();
         } else {
           return [];
         }

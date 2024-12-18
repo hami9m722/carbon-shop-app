@@ -73,13 +73,13 @@ class FileControllerApi {
     final path = r'/api/file/upload';
 
     // ignore: prefer_final_locals
-    Object? postBody = uploadRequest;
+    Object? postBody = MultipartRequest('dummy', Uri())..files.add(uploadRequest!.file);
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>['application/json'];
+    const contentTypes = <String>['multipart/form-data'];
 
 
     return apiClient.invokeAPI(

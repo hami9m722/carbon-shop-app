@@ -98,7 +98,7 @@ class _TransactionPendingTabState extends State<TransactionPendingTab> {
             );
           }
 
-          final filteredTransactions = snapshot.requireData!;
+          final filteredTransactions = snapshot.requireData;
           return Container(
             color: AppColors.greyBackGround,
             child: filteredTransactions.isEmpty

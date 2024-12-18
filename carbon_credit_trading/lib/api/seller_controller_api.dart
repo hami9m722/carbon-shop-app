@@ -168,8 +168,10 @@ class SellerControllerApi {
   /// Performs an HTTP 'GET /api/seller/projects' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<Response> viewAllProject1WithHttpInfo({ String? filter, }) async {
+  Future<Response> viewAllProject1WithHttpInfo({ String? status, String? filter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/projects';
 
@@ -180,6 +182,9 @@ class SellerControllerApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'status', status));
+    }
     if (filter != null) {
       queryParams.addAll(_queryParams('', 'filter', filter));
     }
@@ -200,9 +205,11 @@ class SellerControllerApi {
 
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<PagedProjectDTO?> viewAllProject1({ String? filter, }) async {
-    final response = await viewAllProject1WithHttpInfo( filter: filter, );
+  Future<PagedProjectDTO?> viewAllProject1({ String? status, String? filter, }) async {
+    final response = await viewAllProject1WithHttpInfo( status: status, filter: filter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -316,7 +323,7 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<Response> viewProjectWithHttpInfo(int projectId,) async {
+  Future<Response> viewProject1WithHttpInfo(int projectId,) async {
     // ignore: prefer_const_declarations
     final path = r'/api/seller/project/{projectId}'
       .replaceAll('{projectId}', projectId.toString());
@@ -345,8 +352,8 @@ class SellerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<ProjectDTO?> viewProject(int projectId,) async {
-    final response = await viewProjectWithHttpInfo(projectId,);
+  Future<ProjectDTO?> viewProject1(int projectId,) async {
+    final response = await viewProject1WithHttpInfo(projectId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

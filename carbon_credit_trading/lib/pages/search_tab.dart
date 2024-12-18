@@ -74,7 +74,7 @@ class _SearchTabState extends State<SearchTab> {
       ),
       body: FutureBuilder(
           future: buyerControllerApi
-              .viewAllProject3()
+              .viewAllProject3(status: 'APPROVED', filter: _searchQuery)
               .then((pagedDto) => pagedDto?.content.map((e) => e.toProject())),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

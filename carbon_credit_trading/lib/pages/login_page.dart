@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/pages/forgetpass_page.dart';
 import 'package:carbon_credit_trading/pages/intermediary_page.dart';
 import 'package:carbon_credit_trading/pages/signup_page.dart';
@@ -46,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
+        businessOption = BusinessOption.mediator;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
