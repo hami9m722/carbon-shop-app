@@ -4,6 +4,12 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+/*Description
+  input for answer
+  approve button
+  reject button to delete question
+*/
+
 class AnswerQuestionPage extends StatefulWidget {
   final QuestionDTO question;
 

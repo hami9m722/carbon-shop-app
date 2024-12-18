@@ -6,7 +6,11 @@ import 'package:carbon_credit_trading/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 
 /*Description
-
+  input for seller company comment 
+  show seller company info (name, address, taxCode)
+  input for project comment
+  show project info (name, address, size, timeStart, timeEnd, produceCarbonRate)
+  rating
 
 */
 

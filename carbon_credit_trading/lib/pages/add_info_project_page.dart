@@ -4,6 +4,23 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_year_picker.dart';
 import 'package:flutter/material.dart';
 
+/*Description
+  input for project(
+    projectName
+      startDate
+      endDate
+      address,
+      size,
+      produceCarbonRate,
+      partners: _partnersController.text,
+      ownedBy
+      creditNumber,
+      cert
+      price
+      paymentMethods list 
+  )
+*/
+
 class AddInfoProjectPage extends StatefulWidget {
   final VoidCallback onNext;
   final void Function(Project data) onProjectDataChanged;

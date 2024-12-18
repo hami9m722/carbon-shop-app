@@ -4,6 +4,14 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_passwordfield.dart';
 import 'package:flutter/material.dart';
 
+/* Description
+  input for current pass
+            new Pass
+            new pass again
+   save button        
+
+*/
+
 class ChangePassPage extends StatefulWidget {
   const ChangePassPage({super.key});
 
