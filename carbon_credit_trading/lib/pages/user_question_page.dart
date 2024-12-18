@@ -11,7 +11,7 @@ class UserQuestionPage extends StatelessWidget {
       final questions = await userControllerApi.viewQuestions();
 
       if (questions != null) {
-        return questions.content; // Giả sử content chứa danh sách câu hỏi
+        return questions.content;
       } else {
         return [];
       }
@@ -50,7 +50,7 @@ class UserQuestionPage extends StatelessWidget {
                     leading: CircleAvatar(
                       backgroundColor: Colors.green, // set status
                       child: const Icon(
-                        Icons.check, // Icon tích
+                        Icons.check,
                         color: Colors.white,
                       ),
                       radius: 30,

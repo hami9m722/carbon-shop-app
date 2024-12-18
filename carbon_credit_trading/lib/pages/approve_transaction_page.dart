@@ -14,6 +14,21 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
+/*Description
+  field to show: date create order, date approve transaction, date pay transaction, date deliver credits
+                  seller company (name, address, taxCode)
+                   buyer company (name, address, taxCode)
+                  project info (name, address, size, timeStart, timeEnd, produceCarbonRate)
+ upload contract file
+  upload bill images,
+  upload credit images,
+
+  approve order
+
+
+
+*/
+
 class ApproveTransactionPage extends StatefulWidget {
   final Transaction transaction;
   const ApproveTransactionPage({super.key, required this.transaction});
@@ -27,9 +42,10 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
   String? filePath;
   List<File> billImages = [];
   List<File> creditImages = [];
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _contractSignDateController =
+      TextEditingController();
+  final TextEditingController _payDateController = TextEditingController();
+  final TextEditingController _deliveryDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +105,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       });
     }
 
+    void approveOrder() async {}
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Duyệt hợp đồng"),
@@ -119,12 +136,6 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Ngày tạo đơn: 11/09/2024',
-                          style: AppTextStyles.normalText),
-                      Text('Ngày ký hợp đồng: 12/09/2024',
-                          style: AppTextStyles.normalText),
-                      Text('Ngày thanh toán: 13/09/2024',
-                          style: AppTextStyles.normalText),
-                      Text('Ngày bàn giao tín chỉ:',
                           style: AppTextStyles.normalText),
                     ],
                   ),
@@ -332,26 +343,25 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      CustomTextFormField(
-                        controller: _priceController,
-                        labelText: 'Giá bán (USD/tín chỉ)',
-                        keyboardType: TextInputType.number,
+                      CustomDatePicker(
+                        controller: _contractSignDateController,
+                        labelText: 'Ngày ký hợp đồng',
                       ),
                       const SizedBox(height: 15),
                       CustomDatePicker(
-                        controller: _startDateController,
+                        controller: _payDateController,
                         labelText: 'Ngày ký thanh toán',
                       ),
                       const SizedBox(height: 15),
                       CustomDatePicker(
-                        controller: _endDateController,
+                        controller: _deliveryDateController,
                         labelText: 'Ngày ký bàn giao tín chỉ',
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: approveOrder,
                           style: TextButton.styleFrom(
                             backgroundColor: AppColors.greenButton,
                             padding: const EdgeInsets.symmetric(vertical: 12),

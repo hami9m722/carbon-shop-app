@@ -5,6 +5,11 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 
+/*Description
+
+
+*/
+
 class AddFeedbackPage extends StatefulWidget {
   const AddFeedbackPage({super.key});
 

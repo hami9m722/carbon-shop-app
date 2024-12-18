@@ -20,6 +20,43 @@ class _TransactionApprovedTabState extends State<TransactionApprovedTab> {
   String _searchQuery = '';
   final FocusNode _searchFocusNode = FocusNode();
 
+  // Future<List<Map<String, dynamic>>> getApprovedOrder() async {
+  //   try {
+  //     final approvedOrders = await buyerControllerApi.viewAllOrders1();
+
+  //     if (approvedOrders != null) {
+  //       List<Map<String, dynamic>> orderList = await Future.wait(
+  //         approvedOrders.content.map((order) async {
+  //           final project =
+  //               await buyerControllerApi.viewProject1(order.orderId!);
+
+  //           final buyer =
+  //               await buyerControllerApi.viewCompany1(order.createdBy!);
+
+  //           return {
+  //             'orderId': order.orderId,
+  //             'creditAmount': order.creditAmount,
+  //             'total': order.total,
+  //             'paymentBillFile': order.paymentBillFile,
+  //             'contractFile': order.contractFile,
+  //             'certImages': order.certImages,
+  //             'buyer': buyer,
+  //             'project': project,
+  //             'status': order.status
+  //           };
+  //         }).toList(),
+  //       );
+
+  //       return orderList;
+  //     } else {
+  //       return [];
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching pending accounts: $e");
+  //     return [];
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
