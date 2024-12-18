@@ -15,33 +15,10 @@ class QuestionPendingTab extends StatelessWidget {
   const QuestionPendingTab({super.key, this.searchQuery});
 
   Future<List<QuestionDTO>> viewAllQuestions1() async {
-    try {
-      // Dữ liệu giả
-      final List<QuestionDTO> fakeQuestions = [
-        QuestionDTO(
-            question: "Tín chỉ carbon là gì và nó hoạt động như thế nào?",
-            answer: "Đây là câu trả lời cho câu hỏi 1."),
-        QuestionDTO(
-            question: "Các công ty có thể làm gì để đạt được tín chỉ carbon?",
-            answer: "Đây là câu trả lời cho câu hỏi 2."),
-        QuestionDTO(
-            question:
-                "Tín chỉ carbon có ảnh hưởng gì đến môi trường và kinh tế không?",
-            answer: "Đây là câu trả lời cho câu hỏi 3."),
-        QuestionDTO(
-            question: "Lợi ích của tín chỉ carbon đối với doanh nghiệp?",
-            answer: "Đây là câu trả lời cho câu hỏi 4."),
-        QuestionDTO(
-            question: "Làm thế nào để giao dịch tín chỉ carbon?",
-            answer: "Đây là câu trả lời cho câu hỏi 5."),
-      ];
-
-      // Giả lập độ trễ như khi gọi API
-      await Future.delayed(const Duration(seconds: 1));
-
-      return fakeQuestions;
-    } catch (e) {
-      print("Error fetching questions: $e");
+    var page = await mediatorAuditControllerApi.viewAllQuestion();
+    if (page != null) {
+      return page.content;
+    } else {
       return [];
     }
   }

@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/pages/add_feedback_page.dart';
@@ -35,14 +36,9 @@ class TransactionDetailPage extends StatelessWidget {
     String transactionStatusMessage =
         getTransactionStatusMessage(transaction.status);
 
-    String billImage =
-        'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif';
+    String billImage = transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
 
-    final List<String> creditImages = [
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      '/path/to/local/image2.jpg',
-    ];
+    final List<String> creditImages = transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
 
     return Scaffold(
         appBar: const CustomAppBar(title: "Chi tiết giao dịch"),

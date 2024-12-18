@@ -32,6 +32,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
 
   String _sortOption = 'Giá tăng dần';
 
+  // TODO: read projects from API
   final List<Project> projects = [
     Project(
       projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
@@ -46,7 +47,6 @@ class _FavoriteTabState extends State<FavoriteTab> {
       certificates: 'ISO 9001',
       price: '800',
       projectImages: [
-        'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
       ],
       paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
       status: 'approved',
@@ -63,7 +63,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
       availableCredits: '500',
       certificates: 'ISO 14001',
       price: '1000',
-      projectImages: ['https://via.placeholder.com/150'],
+      projectImages: [],
       paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
       status: 'approved',
     ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
@@ -53,8 +55,8 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   String _certificates = '';
   String _price = '';
   List<String> _selectedPaymentMethodList = [];
-  List<dynamic> _projectImages = [];
-  List<dynamic> _creditImages = [];
+  List<int> _projectImages = [];
+  List<int> _creditImages = [];
 
   @override
   void initState() {
@@ -114,8 +116,8 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
       creditAmount: int.tryParse(_availableCredits),
       cert: _certificates,
       price: _price,
-      //projectImages: _projectImages.map((image) => int.parse(image)).toList(),
-      //creditImages
+      projectImages: _projectImages,
+      // creditImages: _creditImages.map((image) => int.parse(image)).toList(),
       methodPayment: _selectedPaymentMethodList.join(","),
     ));
   }
@@ -174,8 +176,15 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
             initialImages: _projectImages,
             onPrevious: _previousPage,
             onNext: (images) {
-              setState(() {
-                _projectImages = images;
+              setState(() async {
+                List<int> imageIds = [];
+                for (final image in images) {
+                  if (image is File) {
+                    final imageId = await fileControllerApi.uploadFile(image);
+                    imageIds.add(imageId);
+                  }
+                }
+                _projectImages = imageIds;
               });
               _nextPage();
             },
@@ -184,8 +193,15 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
             initialImages: _creditImages,
             onPrevious: _previousPage,
             onSave: (creditImages) {
-              setState(() {
-                _creditImages = creditImages;
+              setState(() async {
+                List<int> imageIds = [];
+                for (final image in creditImages) {
+                  if (image is File) {
+                    final imageId = await fileControllerApi.uploadFile(image);
+                    imageIds.add(imageId);
+                  }
+                }
+                _creditImages = imageIds;
               });
               _saveProject();
             },

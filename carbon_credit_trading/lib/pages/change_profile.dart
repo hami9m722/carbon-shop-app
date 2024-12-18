@@ -35,7 +35,9 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
     }
   }
 
-  void _changProfile() async {}
+  void _changProfile() async {
+    // TODO: change profile avatar
+  }
 
   @override
   Widget build(BuildContext context) {

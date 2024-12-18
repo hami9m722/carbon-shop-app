@@ -34,7 +34,9 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
     }
   }
 
-  void deletedeleteQuestion() async {}
+  void deleteQuestion() async {
+    // TODO: delete question
+  }
 
   @override
   void initState() {
@@ -93,7 +95,7 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
                   children: [
                     Expanded(
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: replyQuestion,
                           style: TextButton.styleFrom(
                             backgroundColor: AppColors.greenButton,
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -121,7 +123,7 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: deleteQuestion,
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.red,
                           padding: const EdgeInsets.symmetric(vertical: 12),

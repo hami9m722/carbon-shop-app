@@ -1,8 +1,10 @@
+import 'package:carbon_credit_trading/globals.dart';
+
 class User {
   final String? businessName;
   final String? email;
   final String? password;
-  final String? type;
+  final BusinessOption? type;
   final String? image;
   bool isInChat;
 

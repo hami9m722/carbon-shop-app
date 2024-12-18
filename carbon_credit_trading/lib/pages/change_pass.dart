@@ -1,4 +1,3 @@
-import 'package:carbon_credit_trading/services/user_service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_passwordfield.dart';
@@ -25,10 +24,11 @@ class _ChangePassPage extends State<ChangePassPage> {
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController newPasswordAgainController =
       TextEditingController();
-  final UserService userService = UserService();
   String? errorMessage;
 
-  void _changePass() async {}
+  void _changePass() async {
+    //TODO: change pass API
+  }
 
   @override
   Widget build(BuildContext context) {

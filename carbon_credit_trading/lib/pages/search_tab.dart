@@ -1,4 +1,6 @@
-import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/extensions/dto.dart';
+import 'package:carbon_credit_trading/extensions/search.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
@@ -18,52 +20,8 @@ class _SearchTabState extends State<SearchTab> {
   String _searchQuery = '';
   bool _isSearching = false;
 
-  final List<Project> projects = [
-    Project(
-      projectName: 'Dự án năng lượng sinh khối từ rác thải nông nghiệp',
-      startDate: '01/01/2023',
-      endDate: '01/01/2025',
-      location: 'Việt Nam',
-      scale: 'Lớn',
-      scope: 'Toàn quốc',
-      partners: 'Công ty ABC',
-      issuer: 'Chính phủ',
-      availableCredits: '1000',
-      certificates: 'ISO 9001',
-      price: '1000',
-      projectImages: [
-        'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
-      ],
-      paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
-      status: 'approved',
-    ),
-    Project(
-      projectName: 'Dự án năng lượng mặt trời',
-      startDate: '01/06/2023',
-      endDate: '01/06/2024',
-      location: 'Việt Nam',
-      scale: 'Trung bình',
-      scope: 'Khu vực miền Trung',
-      partners: 'Công ty XYZ',
-      issuer: 'Công ty TNHH',
-      availableCredits: '500',
-      certificates: 'ISO 14001',
-      price: '800',
-      projectImages: ['https://via.placeholder.com/150'],
-      paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
-      status: 'approved',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    List<Project> getFilteredTransactions(List<Project> transactions) {
-      return projects.where((project) {
-        return project.projectName.contains(_searchQuery.trim());
-      }).toList();
-    }
-
-    final filteredProjects = getFilteredTransactions(projects);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -114,27 +72,49 @@ class _SearchTabState extends State<SearchTab> {
           ),
         ],
       ),
-      body: Container(
-        color: AppColors.greyBackGround,
-        child: filteredProjects.isEmpty
-            ? const Center(
-                child: Text(
-                  'Không có dự án nào',
-                  style: AppTextStyles.normalText,
-                ),
-              )
-            : ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: filteredProjects.length,
-                itemBuilder: (context, index) {
-                  final project = filteredProjects[index];
-                  return ProjectItem(
-                    project: project,
-                    searchQuery: _searchQuery,
-                  );
-                },
-              ),
-      ),
+      body: FutureBuilder(
+          future: buyerControllerApi
+              .viewAllProject3()
+              .then((pagedDto) => pagedDto?.content.map((e) => e.toProject())),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Có lỗi xảy ra khi tải dự án'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                  child: Text(
+                'Không có dự án nào bị hủy',
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: AppTextStyles.normalText,
+              ));
+            } else {
+              var filteredProjects =
+                  snapshot.data?.toList().search(_searchQuery) ?? [];
+              return Container(
+                color: AppColors.greyBackGround,
+                child: filteredProjects.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Không có dự án nào',
+                          style: AppTextStyles.normalText,
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: filteredProjects.length,
+                        itemBuilder: (context, index) {
+                          final project = filteredProjects[index];
+                          return ProjectItem(
+                            project: project,
+                            searchQuery: _searchQuery,
+                          );
+                        },
+                      ),
+              );
+            }
+          }),
     );
   }
 }

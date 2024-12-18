@@ -154,8 +154,10 @@ class BuyerControllerApi {
   /// Performs an HTTP 'GET /api/buyer/orders' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<Response> viewAllOrders1WithHttpInfo({ String? filter, }) async {
+  Future<Response> viewAllOrders1WithHttpInfo({ String? status, String? filter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/buyer/orders';
 
@@ -166,6 +168,9 @@ class BuyerControllerApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'status', status));
+    }
     if (filter != null) {
       queryParams.addAll(_queryParams('', 'filter', filter));
     }
@@ -186,9 +191,11 @@ class BuyerControllerApi {
 
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<PagedOrderDTO?> viewAllOrders1({ String? filter, }) async {
-    final response = await viewAllOrders1WithHttpInfo( filter: filter, );
+  Future<PagedOrderDTO?> viewAllOrders1({ String? status, String? filter, }) async {
+    final response = await viewAllOrders1WithHttpInfo( status: status, filter: filter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -205,8 +212,10 @@ class BuyerControllerApi {
   /// Performs an HTTP 'GET /api/buyer/projects' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<Response> viewAllProject3WithHttpInfo({ String? filter, }) async {
+  Future<Response> viewAllProject3WithHttpInfo({ String? status, String? filter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/buyer/projects';
 
@@ -217,6 +226,9 @@ class BuyerControllerApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'status', status));
+    }
     if (filter != null) {
       queryParams.addAll(_queryParams('', 'filter', filter));
     }
@@ -237,9 +249,11 @@ class BuyerControllerApi {
 
   /// Parameters:
   ///
+  /// * [String] status:
+  ///
   /// * [String] filter:
-  Future<PagedProjectDTO?> viewAllProject3({ String? filter, }) async {
-    final response = await viewAllProject3WithHttpInfo( filter: filter, );
+  Future<PagedProjectDTO?> viewAllProject3({ String? status, String? filter, }) async {
+    final response = await viewAllProject3WithHttpInfo( status: status, filter: filter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -257,7 +271,7 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] companyId (required):
-  Future<Response> viewCompany1WithHttpInfo(int companyId,) async {
+  Future<Response> viewCompany3WithHttpInfo(int companyId,) async {
     // ignore: prefer_const_declarations
     final path = r'/api/buyer/company/{companyId}'
       .replaceAll('{companyId}', companyId.toString());
@@ -286,8 +300,8 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] companyId (required):
-  Future<CompanyDTO?> viewCompany1(int companyId,) async {
-    final response = await viewCompany1WithHttpInfo(companyId,);
+  Future<CompanyDTO?> viewCompany3(int companyId,) async {
+    final response = await viewCompany3WithHttpInfo(companyId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -305,7 +319,7 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] orderId (required):
-  Future<Response> viewOrder1WithHttpInfo(int orderId,) async {
+  Future<Response> viewOrder2WithHttpInfo(int orderId,) async {
     // ignore: prefer_const_declarations
     final path = r'/api/buyer/order/{orderId}'
       .replaceAll('{orderId}', orderId.toString());
@@ -334,8 +348,8 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] orderId (required):
-  Future<OrderDTO?> viewOrder1(int orderId,) async {
-    final response = await viewOrder1WithHttpInfo(orderId,);
+  Future<OrderDTO?> viewOrder2(int orderId,) async {
+    final response = await viewOrder2WithHttpInfo(orderId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -353,7 +367,7 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<Response> viewProject1WithHttpInfo(int projectId,) async {
+  Future<Response> viewProject2WithHttpInfo(int projectId,) async {
     // ignore: prefer_const_declarations
     final path = r'/api/buyer/project/{projectId}'
       .replaceAll('{projectId}', projectId.toString());
@@ -382,8 +396,8 @@ class BuyerControllerApi {
   /// Parameters:
   ///
   /// * [int] projectId (required):
-  Future<ProjectDTO?> viewProject1(int projectId,) async {
-    final response = await viewProject1WithHttpInfo(projectId,);
+  Future<ProjectDTO?> viewProject2(int projectId,) async {
+    final response = await viewProject2WithHttpInfo(projectId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

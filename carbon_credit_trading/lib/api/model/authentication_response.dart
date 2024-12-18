@@ -35,14 +35,14 @@ class AuthenticationResponse {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AuthenticationResponse &&
-      other.accessToken == accessToken &&
-      other.user == user;
+    other.accessToken == accessToken &&
+    other.user == user;
 
   @override
   int get hashCode =>
-      // ignore: unnecessary_parenthesis
-  (accessToken == null ? 0 : accessToken!.hashCode) +
-      (user == null ? 0 : user!.hashCode);
+    // ignore: unnecessary_parenthesis
+    (accessToken == null ? 0 : accessToken!.hashCode) +
+    (user == null ? 0 : user!.hashCode);
 
   @override
   String toString() => 'AuthenticationResponse[accessToken=$accessToken, user=$user]';

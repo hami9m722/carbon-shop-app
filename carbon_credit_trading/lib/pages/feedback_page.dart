@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 // list company reviews (userImage, companyName, rating, date, currentAcc dislike or likelike)
 
 class FeedbackPage extends StatelessWidget {
-  const FeedbackPage({super.key});
+
+  final int projectId;
+
+  const FeedbackPage({super.key, required this.projectId});
 
   @override
   Widget build(BuildContext context) {

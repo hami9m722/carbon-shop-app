@@ -60,7 +60,6 @@ class BusinessDetailPage extends StatelessWidget {
           certificates: 'ISO 9001',
           price: '1000 VND',
           projectImages: [
-            'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'
           ],
           creditImages: [],
           paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
@@ -77,7 +76,7 @@ class BusinessDetailPage extends StatelessWidget {
           availableCredits: '500',
           certificates: 'ISO 14001',
           price: '800 VND',
-          projectImages: ['https://via.placeholder.com/150'],
+          projectImages: [],
           creditImages: [],
           paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],
           status: 'approved'),

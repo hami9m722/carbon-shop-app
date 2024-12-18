@@ -64,6 +64,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    var projectId = widget.project.projectId;
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Chi tiết dự án",
@@ -348,7 +349,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const FeedbackPage(),
+                              builder: (context) => FeedbackPage(projectId: projectId!,),
                             ),
                           )
                         },

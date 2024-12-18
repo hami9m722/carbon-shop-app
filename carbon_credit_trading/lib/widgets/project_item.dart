@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/project_detail_page.dart';
 import 'package:carbon_credit_trading/services/format.dart';
@@ -87,7 +88,7 @@ class ProjectItem extends StatelessWidget {
                           bottomRight: Radius.circular(8.0),
                         ),
                         child: Image.network(
-                          project.projectImages[0],
+                          project.projectImages[0].toFilePath(),
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return const Center(

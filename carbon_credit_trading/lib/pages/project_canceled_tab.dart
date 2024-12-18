@@ -19,7 +19,7 @@ class ProjectCanceledTab extends StatelessWidget {
     Future<List<Project>> getFilteredProjects() async {
       try {
         final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(searchQuery);
+            await sellerControllerApi.viewAllProject1(filter: searchQuery);
 
         if (pagedProjectDTO != null) {
           return pagedProjectDTO.content.map((projectData) {
@@ -39,8 +39,7 @@ class ProjectCanceledTab extends StatelessWidget {
                       : '0',
                   certificates: projectData.cert ?? '',
                   price: projectData.price ?? '0',
-                  projectImages:
-                      List<String>.from(projectData.projectImages ?? []),
+                  projectImages: projectData.projectImages,
                   //creditImages: List<String>.from(projectData.creditImages ?? []),
                   paymentMethods: List<String>.from(
                       projectData.methodPayment?.split(',') ?? []),

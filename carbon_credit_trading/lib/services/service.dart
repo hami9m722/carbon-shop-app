@@ -1,7 +1,6 @@
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/services/auth_service.dart';
 import 'package:carbon_credit_trading/services/transaction_service.dart';
-import 'package:carbon_credit_trading/services/user_service.dart';
 
 ApiClient apiClient = ApiClient(basePath: 'http://34.126.176.49:8080');
 AuthenticationResourceApi authenticationResourceApi =
@@ -17,6 +16,5 @@ RegistrationResourceApi registrationResourceApi =
 SellerControllerApi sellerControllerApi = SellerControllerApi(apiClient);
 UserControllerApi userControllerApi = UserControllerApi(apiClient);
 
-UserService userService = UserService();
 TransactionService transactionService = TransactionService();
 AuthService authService = AuthService(authenticationResourceApi);

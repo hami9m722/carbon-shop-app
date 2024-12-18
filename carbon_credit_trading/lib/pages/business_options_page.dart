@@ -74,7 +74,7 @@ class BusinessOptionsPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: TextButton(
                           onPressed: () {
-                            businessOption = 'seller';
+                            businessOption = BusinessOption.seller;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -97,7 +97,7 @@ class BusinessOptionsPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: TextButton(
                           onPressed: () {
-                            businessOption = 'buyer';
+                            businessOption = BusinessOption.buyer;
                             Navigator.push(
                               context,
                               MaterialPageRoute(

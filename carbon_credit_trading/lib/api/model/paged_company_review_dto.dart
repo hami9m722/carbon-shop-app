@@ -10,9 +10,9 @@
 
 part of carbon_server_apis;
 
-class PagedProjectDTO {
-  /// Returns a new [PagedProjectDTO] instance.
-  PagedProjectDTO({
+class PagedCompanyReviewDTO {
+  /// Returns a new [PagedCompanyReviewDTO] instance.
+  PagedCompanyReviewDTO({
     this.size,
     this.content = const [],
     this.number,
@@ -34,7 +34,7 @@ class PagedProjectDTO {
   ///
   int? size;
 
-  List<ProjectDTO> content;
+  List<CompanyReviewDTO> content;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -109,7 +109,7 @@ class PagedProjectDTO {
   bool? empty;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PagedProjectDTO &&
+  bool operator ==(Object other) => identical(this, other) || other is PagedCompanyReviewDTO &&
     other.size == size &&
     _deepEquality.equals(other.content, content) &&
     other.number == number &&
@@ -138,7 +138,7 @@ class PagedProjectDTO {
     (empty == null ? 0 : empty!.hashCode);
 
   @override
-  String toString() => 'PagedProjectDTO[size=$size, content=$content, number=$number, sort=$sort, first=$first, last=$last, numberOfElements=$numberOfElements, pageable=$pageable, totalElements=$totalElements, totalPages=$totalPages, empty=$empty]';
+  String toString() => 'PagedCompanyReviewDTO[size=$size, content=$content, number=$number, sort=$sort, first=$first, last=$last, numberOfElements=$numberOfElements, pageable=$pageable, totalElements=$totalElements, totalPages=$totalPages, empty=$empty]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -196,10 +196,10 @@ class PagedProjectDTO {
     return json;
   }
 
-  /// Returns a new [PagedProjectDTO] instance and imports its values from
+  /// Returns a new [PagedCompanyReviewDTO] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PagedProjectDTO? fromJson(dynamic value) {
+  static PagedCompanyReviewDTO? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -208,15 +208,15 @@ class PagedProjectDTO {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PagedProjectDTO[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PagedProjectDTO[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PagedCompanyReviewDTO[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PagedCompanyReviewDTO[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PagedProjectDTO(
+      return PagedCompanyReviewDTO(
         size: mapValueOfType<int>(json, r'size'),
-        content: ProjectDTO.listFromJson(json[r'content']),
+        content: CompanyReviewDTO.listFromJson(json[r'content']),
         number: mapValueOfType<int>(json, r'number'),
         sort: SortObject.fromJson(json[r'sort']),
         first: mapValueOfType<bool>(json, r'first'),
@@ -231,11 +231,11 @@ class PagedProjectDTO {
     return null;
   }
 
-  static List<PagedProjectDTO> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PagedProjectDTO>[];
+  static List<PagedCompanyReviewDTO> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PagedCompanyReviewDTO>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PagedProjectDTO.fromJson(row);
+        final value = PagedCompanyReviewDTO.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -244,12 +244,12 @@ class PagedProjectDTO {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PagedProjectDTO> mapFromJson(dynamic json) {
-    final map = <String, PagedProjectDTO>{};
+  static Map<String, PagedCompanyReviewDTO> mapFromJson(dynamic json) {
+    final map = <String, PagedCompanyReviewDTO>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PagedProjectDTO.fromJson(entry.value);
+        final value = PagedCompanyReviewDTO.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -258,14 +258,14 @@ class PagedProjectDTO {
     return map;
   }
 
-  // maps a json object with a list of PagedProjectDTO-objects as value to a dart map
-  static Map<String, List<PagedProjectDTO>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PagedProjectDTO>>{};
+  // maps a json object with a list of PagedCompanyReviewDTO-objects as value to a dart map
+  static Map<String, List<PagedCompanyReviewDTO>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PagedCompanyReviewDTO>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PagedProjectDTO.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PagedCompanyReviewDTO.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -45,7 +45,7 @@ class TransactionItem extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
-                    ...highlightMatches(transaction.transactionId,
+                    ...highlightMatches(transaction.transactionId.toString(),
                         searchQuery ?? '', Colors.yellow)
                   ]),
             ),

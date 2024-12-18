@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -13,6 +16,7 @@ import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 
 /*Description
@@ -102,7 +106,15 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
       });
     }
 
-    void approveOrder() async {}
+    void approveOrder() async {
+      // TODO: review fields
+      await mediatorAuditControllerApi.doneProcessOrder(widget.transaction.transactionId, MediatorDoneOrderDTO(
+        contractFile: await fileControllerApi.upload(uploadRequest: UploadRequest(file: await MultipartFile.fromPath('file', filePath!, filename: fileName))),
+        certImages: await Future.wait(creditImages.map((e) => e.upload()).toList()),
+        paymentBillFile: await billImage?.upload(),
+        message: "Transaction approved",
+      ));
+    }
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Duyệt hợp đồng"),

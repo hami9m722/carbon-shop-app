@@ -19,13 +19,13 @@ class RegistrationResourceApi {
   /// Performs an HTTP 'POST /register' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [UserRegistrationRequest] registrationRequest (required):
-  Future<Response> registerWithHttpInfo(UserRegistrationRequest registrationRequest,) async {
+  /// * [UserRegistrationRequest] userRegistrationRequest (required):
+  Future<Response> registerWithHttpInfo(UserRegistrationRequest userRegistrationRequest,) async {
     // ignore: prefer_const_declarations
     final path = r'/register';
 
     // ignore: prefer_final_locals
-    Object? postBody = registrationRequest;
+    Object? postBody = userRegistrationRequest;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -47,9 +47,9 @@ class RegistrationResourceApi {
 
   /// Parameters:
   ///
-  /// * [UserRegistrationRequest] registrationRequest (required):
-  Future<void> register(UserRegistrationRequest registrationRequest,) async {
-    final response = await registerWithHttpInfo(registrationRequest,);
+  /// * [UserRegistrationRequest] userRegistrationRequest (required):
+  Future<void> register(UserRegistrationRequest userRegistrationRequest,) async {
+    final response = await registerWithHttpInfo(userRegistrationRequest,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

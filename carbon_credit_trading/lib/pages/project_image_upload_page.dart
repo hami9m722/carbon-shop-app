@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 //upload project imagesimages
 
@@ -37,7 +40,7 @@ class _ProjectImageUploadPage extends State<ProjectImageUploadPage>
   }
 
   void _addImage(List<File> newImages) {
-    setState(() {
+    setState(() async {
       _imageFiles.addAll(newImages.whereType<File>().cast<File>());
     });
   }

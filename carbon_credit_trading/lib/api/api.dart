@@ -57,13 +57,17 @@ part 'model/password_reset_complete_request.dart';
 part 'model/password_reset_request.dart';
 part 'model/project_dto.dart';
 part 'model/question_dto.dart';
-part 'model/registration_request.dart';
 part 'model/seller_register_project_dto.dart';
 part 'model/seller_review_company.dart';
 part 'model/sort_object.dart';
 part 'model/upload_request.dart';
 part 'model/user_ask_dto.dart';
 part 'model/user_registration_request.dart';
+part 'model/mediator_done_order_dto.dart';
+part 'model/company_review_dto.dart';
+part 'model/paged_company_review_dto.dart';
+part 'model/project_review_dto.dart';
+part 'model/paged_project_review_dto.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

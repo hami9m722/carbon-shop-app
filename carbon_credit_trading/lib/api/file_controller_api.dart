@@ -96,10 +96,24 @@ class FileControllerApi {
   /// Parameters:
   ///
   /// * [UploadRequest] uploadRequest:
-  Future<void> upload({ UploadRequest? uploadRequest, }) async {
+  Future<int?> upload({ UploadRequest? uploadRequest, }) async {
     final response = await uploadWithHttpInfo( uploadRequest: uploadRequest, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'int',) as int;
+    
+    }
+    return null;
   }
+
+  Future<int> uploadFile(File file) async {
+    final uploadRequest = UploadRequest(file: await MultipartFile.fromPath('file', file.path, filename: file.path.split('/').last));
+    return await upload(uploadRequest: uploadRequest) ?? -1;
+  }
+
 }

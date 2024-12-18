@@ -1,9 +1,18 @@
+import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 
 extension SearchTransaction on List<Transaction> {
   List<Transaction> search(String searchQuery) {
     return where((transaction) {
       return transaction.projectName.contains(searchQuery) ?? false;
+    }).toList();
+  }
+}
+
+extension SearchProject on List<Project> {
+  List<Project> search(String searchQuery) {
+    return where((project) {
+      return project.projectName.contains(searchQuery);
     }).toList();
   }
 }

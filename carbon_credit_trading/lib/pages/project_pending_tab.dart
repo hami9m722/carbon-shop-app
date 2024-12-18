@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 
@@ -33,36 +34,10 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
     Future<List<Project>> getFilteredProjects() async {
       try {
         final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(_searchQuery);
+            await sellerControllerApi.viewAllProject1(filter: _searchQuery);
 
         if (pagedProjectDTO != null) {
-          return pagedProjectDTO.content.map((projectData) {
-                return Project(
-                  projectName: projectData.name ?? '',
-                  startDate: projectData.timeStart?.year.toString() ??
-                      DateTime.now().year.toString(),
-                  endDate: projectData.timeEnd?.year.toString() ??
-                      DateTime.now().year.toString(),
-                  location: projectData.address ?? '',
-                  scale: projectData.size ?? '',
-                  scope: projectData.produceCarbonRate ?? '',
-                  partners: projectData.partner ?? '',
-                  issuer: projectData.auditByOrg ?? '',
-                  availableCredits: (projectData.creditAmount != null)
-                      ? projectData.creditAmount.toString()
-                      : '0',
-                  certificates: projectData.cert ?? '',
-                  price: projectData.price ?? '0',
-                  projectImages:
-                      List<String>.from(projectData.projectImages ?? []),
-                  //creditImages: List<String>.from(projectData.creditImages ?? []),
-                  paymentMethods: List<String>.from(
-                      projectData.methodPayment?.split(',') ?? []),
-                  //status: projectData.status ?? '',
-                  //rating: projectData.rating,
-                );
-              }).toList() ??
-              [];
+          return pagedProjectDTO.content.map((projectData) => projectData.toProject()).toList();
         } else {
           return [];
         }

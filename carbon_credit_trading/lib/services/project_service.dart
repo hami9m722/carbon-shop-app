@@ -16,11 +16,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '10.5',
         projectImages: [
-          'https://example.com/images/solar_plant.jpg',
-          'https://example.com/images/solar_panel.jpg',
         ],
         creditImages: [
-          'https://example.com/images/solar_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'approved',
@@ -38,11 +35,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '12.5',
         projectImages: [
-          'https://example.com/images/wind_farm.jpg',
-          'https://example.com/images/wind_turbine.jpg',
         ],
         creditImages: [
-          'https://example.com/images/wind_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'approved',
@@ -65,11 +59,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '10.5',
         projectImages: [
-          'https://example.com/images/solar_plant.jpg',
-          'https://example.com/images/solar_panel.jpg',
         ],
         creditImages: [
-          'https://example.com/images/solar_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'canceled',
@@ -87,11 +78,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '12.5',
         projectImages: [
-          'https://example.com/images/wind_farm.jpg',
-          'https://example.com/images/wind_turbine.jpg',
         ],
         creditImages: [
-          'https://example.com/images/wind_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'canceled',
@@ -114,11 +102,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '10.5',
         projectImages: [
-          'https://example.com/images/solar_plant.jpg',
-          'https://example.com/images/solar_panel.jpg',
         ],
         creditImages: [
-          'https://example.com/images/solar_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'pending',
@@ -136,11 +121,8 @@ class ProjectService {
         certificates: 'ISO 14001, Green Energy Certificate',
         price: '12.5',
         projectImages: [
-          'https://example.com/images/wind_farm.jpg',
-          'https://example.com/images/wind_turbine.jpg',
         ],
         creditImages: [
-          'https://example.com/images/wind_credit.jpg',
         ],
         paymentMethods: ['Credit Card', 'Bank Transfer'],
         status: 'pending',

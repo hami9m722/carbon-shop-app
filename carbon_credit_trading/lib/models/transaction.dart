@@ -1,8 +1,9 @@
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/user.dart';
 
 class Transaction {
-  final String transactionId;
+  final int transactionId;
   final String contractNumber;
   final String contractDate;
   final String projectName;
@@ -12,8 +13,9 @@ class Transaction {
   final User? buyer;
   final String status;
   final Project projectInfo;
+  final OrderDTO rootDto;
 
-  Transaction({
+  Transaction(this.rootDto, {
     required this.transactionId,
     required this.contractNumber,
     required this.contractDate,

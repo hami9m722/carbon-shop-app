@@ -1,5 +1,5 @@
 class Project {
-  final String? projectId;
+  final int? projectId;
   final String projectName;
   final String startDate;
   final String endDate;
@@ -11,8 +11,8 @@ class Project {
   final String availableCredits;
   final String certificates;
   final String price;
-  final List<dynamic> projectImages;
-  final List<dynamic> creditImages;
+  final List<int> projectImages;
+  final List<int> creditImages;
   final List<String> paymentMethods;
   final String? status;
   final String? rating;
