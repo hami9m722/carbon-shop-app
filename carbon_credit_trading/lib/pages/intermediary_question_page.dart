@@ -4,6 +4,8 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
+//not use apiapi
+
 class IntermediaryQuestionPage extends StatefulWidget {
   const IntermediaryQuestionPage({super.key});
 

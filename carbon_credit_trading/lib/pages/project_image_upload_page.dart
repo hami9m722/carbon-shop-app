@@ -4,6 +4,8 @@ import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:flutter/material.dart';
 
+//upload project imagesimages
+
 class ProjectImageUploadPage extends StatefulWidget {
   final VoidCallback onPrevious;
   final Function(List<dynamic>) onNext;

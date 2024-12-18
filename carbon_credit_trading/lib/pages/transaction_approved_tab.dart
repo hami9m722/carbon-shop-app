@@ -6,6 +6,19 @@ import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 
+/* approved order info
+ 'orderId': order.orderId,
+  //             'creditAmount': order.creditAmount,
+  //             'total': order.total,
+  //             'paymentBillFile': order.paymentBillFile,
+  //             'contractFile': order.contractFile,
+  //             'certImages': order.certImages,
+  //             'buyer': buyer (companyName, taxCode,address),
+                  'seller': seller (companyName, tatCode, address),
+  //             'project': project infoinfo,
+  //             'status': order.status
+*/
+
 class TransactionApprovedTab extends StatefulWidget {
   final String? searchQuery;
 

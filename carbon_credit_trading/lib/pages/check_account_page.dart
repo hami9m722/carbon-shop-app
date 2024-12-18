@@ -4,6 +4,13 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
 
+/* Description
+  show company info (image, name, email, taxCode, address, industry), user(name, phone)
+  reject button
+  approve buttonbutton
+
+*/
+
 class CheckAccountPage extends StatelessWidget {
   final Map<String, dynamic> accountDetails;
 

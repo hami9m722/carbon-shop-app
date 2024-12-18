@@ -12,6 +12,7 @@ import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 
 /*Description
@@ -24,8 +25,6 @@ import 'package:open_file/open_file.dart';
   upload credit images,
 
   approve order
-
-
 
 */
 
@@ -40,12 +39,22 @@ class ApproveTransactionPage extends StatefulWidget {
 class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
   String? fileName;
   String? filePath;
-  List<File> billImages = [];
+  File? billImage;
   List<File> creditImages = [];
   final TextEditingController _contractSignDateController =
       TextEditingController();
   final TextEditingController _payDateController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
+
+  Future<void> pickBillImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        billImage = File(image.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,18 +99,6 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
     void removeCreditImage(dynamic image) {
       setState(() {
         creditImages.remove(image);
-      });
-    }
-
-    void addBillImage(List<File> newImages) {
-      setState(() {
-        billImages.addAll(newImages);
-      });
-    }
-
-    void removeBillImage(dynamic image) {
-      setState(() {
-        billImages.remove(image);
       });
     }
 
@@ -283,30 +280,28 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                       const SizedBox(height: 5.0),
                       Container(
                         constraints: const BoxConstraints(minHeight: 130),
-                        child: ImageUploadSection(
-                          imageFiles: billImages,
-                          onRemoveImage: removeBillImage,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.greenPopUpText),
+                          borderRadius: BorderRadius.circular(10),
+                          image: billImage != null
+                              ? DecorationImage(
+                                  image: FileImage(billImage!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                         ),
                       ),
                       const SizedBox(height: 15),
-                      ImagePickerButton(
-                        onImagesSelected: addBillImage,
-                        imageFiles: billImages,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: AppColors.greenButton,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Text(
-                              'Đăng tải',
-                              style: AppTextStyles.normalText,
-                              textAlign: TextAlign.center,
-                            ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          onPressed: pickBillImage,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greenButton,
+                            foregroundColor: Colors.white,
                           ),
+                          child: const Text('Đăng tải',
+                              style: AppTextStyles.normalText),
                         ),
                       ),
                       const Text('Hình ảnh tín chỉ',

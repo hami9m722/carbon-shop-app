@@ -8,6 +8,8 @@ import 'package:carbon_credit_trading/widgets/project_item.dart';
 
 import 'package:flutter/material.dart';
 
+// canceledcanceled projects (name, price, first project image)
+
 class ProjectCanceledTab extends StatelessWidget {
   final String? searchQuery;
   const ProjectCanceledTab({super.key, this.searchQuery});

@@ -4,6 +4,8 @@ import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+//show company info (image, name, email, taxCode, address, industry), user(name, phone)
+
 class PendingAccountPage extends StatefulWidget {
   final String? searchQuery;
 

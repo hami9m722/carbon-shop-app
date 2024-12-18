@@ -8,6 +8,8 @@ import 'package:carbon_credit_trading/widgets/project_item.dart';
 
 import 'package:flutter/material.dart';
 
+// approved projects (name, price, first project image)
+
 class ProjectApprovedTab extends StatelessWidget {
   final String? searchQuery;
   const ProjectApprovedTab({super.key, this.searchQuery});

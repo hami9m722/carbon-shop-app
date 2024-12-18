@@ -6,6 +6,7 @@ import 'package:carbon_credit_trading/pages/transaction_review_page.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:flutter/material.dart';
 
+//not use api
 class BuyerPage extends StatefulWidget {
   const BuyerPage({super.key});
 

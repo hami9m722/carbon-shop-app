@@ -4,6 +4,8 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+//not use apiapi
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 

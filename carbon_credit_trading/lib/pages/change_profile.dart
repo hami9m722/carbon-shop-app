@@ -6,6 +6,12 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+/* Description
+  input with default company info (image, name, email, taxCode, address, industry), user(name, phone)
+  save button for new value
+
+*/
+
 class ChangeProfilePage extends StatefulWidget {
   const ChangeProfilePage({super.key});
   @override
@@ -142,7 +148,6 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                     ),
                   ),
                 const SizedBox(height: 10),
-                // Đăng nhập Button
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: TextButton(

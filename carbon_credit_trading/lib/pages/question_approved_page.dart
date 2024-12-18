@@ -6,6 +6,8 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/question_dialog.dart';
 import 'package:flutter/material.dart';
 
+// approved question info (question)
+
 class QuestionApprovedTab extends StatelessWidget {
   final String? searchQuery;
 

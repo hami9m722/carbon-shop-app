@@ -7,6 +7,8 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/question_dialog.dart';
 import 'package:flutter/material.dart';
 
+// pending question info (question)
+
 class QuestionPendingTab extends StatelessWidget {
   final String? searchQuery;
 

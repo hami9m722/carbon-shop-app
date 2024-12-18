@@ -4,7 +4,6 @@ import 'package:carbon_credit_trading/models/transaction.dart';
 import '../models/user.dart';
 
 class TransactionService {
-
   Future<List<Transaction>> getApprovedTransactions() async {
     return [
       Transaction(
@@ -174,8 +173,8 @@ class TransactionService {
               'https://example.com/images/solar_credit.jpg',
             ],
             paymentMethods: ['Credit Card', 'Bank Transfer'],
-            status: 'approved'),
-        status: 'approved',
+            status: 'pending'),
+        status: 'pending',
       ),
       Transaction(
         transactionId: '022',
@@ -211,5 +210,4 @@ class TransactionService {
       ),
     ];
   }
-
 }

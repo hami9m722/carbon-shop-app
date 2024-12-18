@@ -12,6 +12,19 @@ import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:carbon_credit_trading/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
 
+//
+/*Description
+  field to show: date create order, date approve transaction, date pay transaction, date deliver credits
+                  seller company (name, address, taxCode)
+                   buyer company (name, address, taxCode)
+                  project info (name, address, size, timeStart, timeEnd, produceCarbonRate)
+ contract file
+ bill images,
+ credit images,
+
+
+*/
+
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
 
@@ -22,11 +35,8 @@ class TransactionDetailPage extends StatelessWidget {
     String transactionStatusMessage =
         getTransactionStatusMessage(transaction.status);
 
-    final List<String> billImages = [
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-      '/path/to/local/image2.jpg',
-    ];
+    String billImage =
+        'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif';
 
     final List<String> creditImages = [
       'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
@@ -217,12 +227,17 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 5.0),
-                          ImageCarousel(
-                            imagePaths: billImages,
-                            onImageTap: (context, images, index) {
-                              showFullScreen(context, images, index);
-                            },
-                          ),
+                          Container(
+                              constraints: const BoxConstraints(minHeight: 130),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: billImage != null
+                                    ? DecorationImage(
+                                        image: NetworkImage(billImage),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                              )),
                           const SizedBox(height: 15.0),
                           const Text(
                             'Hình ảnh tín chỉ',

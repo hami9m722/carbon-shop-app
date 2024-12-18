@@ -2,6 +2,8 @@ import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+// approved question info (question, answeranswer)
+
 class QuestionDetailPage extends StatelessWidget {
   final QuestionDTO question;
 

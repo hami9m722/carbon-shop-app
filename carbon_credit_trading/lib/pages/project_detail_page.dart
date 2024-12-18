@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 
 /* /*Description
   project info(
+    projectImages,
+
     projectName
       startDate
       endDate

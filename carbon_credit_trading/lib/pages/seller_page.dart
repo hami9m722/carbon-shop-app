@@ -9,6 +9,8 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
 import 'package:flutter/material.dart';
 
+//not use api
+
 class SellerPage extends StatelessWidget {
   const SellerPage({super.key});
 

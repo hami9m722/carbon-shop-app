@@ -3,6 +3,8 @@ import 'package:carbon_credit_trading/pages/question_details_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:flutter/material.dart';
 
+// all question of 1 account
+
 class UserQuestionPage extends StatelessWidget {
   const UserQuestionPage({super.key});
 

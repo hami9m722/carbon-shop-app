@@ -8,6 +8,13 @@ import 'package:carbon_credit_trading/widgets/feedback_item.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 
+/*Description
+  show company info (image, name, email, taxCode, address, industry), user(name, phone)
+  list company projects (name, price, project image[0])
+  list company reviews (userImage, companyName, rating, date, currentAcc dislike or likelike)
+
+*/
+
 class BusinessDetailPage extends StatelessWidget {
   const BusinessDetailPage({super.key});
 

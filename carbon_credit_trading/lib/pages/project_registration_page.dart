@@ -7,6 +7,24 @@ import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
+/* save all project info (
+projectImages,
+creditImages,
+
+    projectName
+      startDate
+      endDate
+      address,
+      size,
+      produceCarbonRate,
+      partners: _partnersController.text,
+      ownedBy
+      creditNumber,
+      cert
+      price
+      paymentMethods lis
+)*/
+
 class ProjectRegistrationPage extends StatefulWidget {
   final Project? initialProject;
   const ProjectRegistrationPage({super.key, this.initialProject});
