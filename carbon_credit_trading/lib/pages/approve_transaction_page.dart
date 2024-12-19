@@ -356,7 +356,8 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                       ),
                       const SizedBox(height: 15),
                       CustomDatePicker(
-                        controller: _contractSignDateController,
+                        controller:
+                            _contractSignDateController, //TODO: add contractSignDate, transferDate, payDate field for order
                         labelText: 'Ngày ký hợp đồng',
                       ),
                       const SizedBox(height: 15),
