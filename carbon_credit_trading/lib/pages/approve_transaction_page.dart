@@ -10,7 +10,6 @@ import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_date_picker.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
-import 'package:carbon_credit_trading/widgets/custom_textformfield.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:carbon_credit_trading/widgets/image_upload_section.dart';
 import 'package:file_picker/file_picker.dart';
@@ -108,12 +107,18 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
 
     void approveOrder() async {
       // TODO: review fields
-      await mediatorAuditControllerApi.doneProcessOrder(widget.transaction.transactionId, MediatorDoneOrderDTO(
-        contractFile: await fileControllerApi.upload(uploadRequest: UploadRequest(file: await MultipartFile.fromPath('file', filePath!, filename: fileName))),
-        certImages: await Future.wait(creditImages.map((e) => e.upload()).toList()),
-        paymentBillFile: await billImage?.upload(),
-        message: "Transaction approved",
-      ));
+      await mediatorAuditControllerApi.doneProcessOrder(
+          widget.transaction.transactionId,
+          MediatorDoneOrderDTO(
+            contractFile: await fileControllerApi.upload(
+                uploadRequest: UploadRequest(
+                    file: await MultipartFile.fromPath('file', filePath!,
+                        filename: fileName))),
+            certImages:
+                await Future.wait(creditImages.map((e) => e.upload()).toList()),
+            paymentBillFile: await billImage?.upload(),
+            message: "Transaction approved",
+          ));
     }
 
     return Scaffold(

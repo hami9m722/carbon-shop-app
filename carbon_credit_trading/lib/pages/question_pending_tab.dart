@@ -1,10 +1,6 @@
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/pages/answer_question_page.dart';
-import 'package:carbon_credit_trading/pages/question_details_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
-import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:carbon_credit_trading/widgets/question_dialog.dart';
 import 'package:flutter/material.dart';
 
 // pending question info (question)

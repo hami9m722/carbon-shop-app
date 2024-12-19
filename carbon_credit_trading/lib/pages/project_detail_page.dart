@@ -53,12 +53,13 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       context: context,
       builder: (BuildContext context) {
         return PurchaseDialog(
-          maxQuantity: maxQuantity,
-          pricePerUnit: pricePerUnit,
-          onPurchase: (double price, int quantity) async {
-            await buyerControllerApi.newOrder(BuyerCreateOrder(projectId: widget.project.projectId!, creditAmount: quantity));
-          }
-        );
+            maxQuantity: maxQuantity,
+            pricePerUnit: pricePerUnit,
+            onPurchase: (double price, int quantity) async {
+              await buyerControllerApi.newOrder(BuyerCreateOrder(
+                  projectId: widget.project.projectId!,
+                  creditAmount: quantity));
+            });
       },
     );
   }
@@ -66,7 +67,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
   @override
   Widget build(BuildContext context) {
     var projectId = widget.project.projectId;
-    List<String> _imagePaths = widget.project.projectImages
+    List<String> imagePaths = widget.project.projectImages
         .map((image) => image.toFilePath())
         .toList();
     return Scaffold(
@@ -84,7 +85,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                 children: [
                   // Image carousel
                   ImageCarousel(
-                    imagePaths: _imagePaths,
+                    imagePaths: imagePaths,
                     onImageTap: (context, images, index) {
                       showFullScreen(context, images, index);
                     },

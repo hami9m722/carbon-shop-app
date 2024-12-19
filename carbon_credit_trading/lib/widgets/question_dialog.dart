@@ -49,11 +49,11 @@ class _QuestionDialogState extends State<QuestionDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: _questionController, // Gán controller
+              controller: _questionController,
               maxLines: 5,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Nhập đánh giá của bạn',
+                hintText: 'Nhập câu hỏi của bạn',
                 filled: true,
                 fillColor: Colors.white,
               ),

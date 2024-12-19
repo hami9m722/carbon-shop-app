@@ -1,4 +1,3 @@
-import 'package:carbon_credit_trading/extensions/search.dart';
 import 'package:carbon_credit_trading/pages/approve_transaction_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';

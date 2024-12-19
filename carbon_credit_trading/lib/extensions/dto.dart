@@ -57,20 +57,22 @@ extension AppUserDTOMapper on AppUserDTO {
 extension OrderDTOMapper on OrderDTO {
   Future<Transaction> toTransaction() async {
     var project = await userControllerApi.viewProject(this.project!);
-    var ownerCompany = await userControllerApi.viewCompany(project!.ownerCompany!);
-    var ownerCompanyUser = await userControllerApi.viewCompanyUser(ownerCompany!.id!);
+    var ownerCompany =
+        await userControllerApi.viewCompany(project!.ownerCompany!);
+    var ownerCompanyUser =
+        await userControllerApi.viewCompanyUser(ownerCompany!.id!);
     var buyerUser = await userControllerApi.viewCompanyUser(createdBy!);
     return Transaction(
       this,
       transactionId: orderId ?? 0,
       contractNumber: '',
       contractDate: DateTime.timestamp().toString(),
-      projectName: project?.name ?? '',
+      projectName: project.name ?? '',
       creditAmount: creditAmount.toString(),
       totalAmount: total.toString(),
       seller: ownerCompanyUser!.toUser(),
       buyer: buyerUser!.toUser(),
-      projectInfo: project!.toProject(),
+      projectInfo: project.toProject(),
       status: status.toString(),
     );
   }
@@ -78,6 +80,7 @@ extension OrderDTOMapper on OrderDTO {
 
 extension PagedOrderDTOMapper on PagedOrderDTO {
   Future<List<Transaction>> toTransactions() async {
-    return await Future.wait(content.map((order) => order.toTransaction()).toList());
+    return await Future.wait(
+        content.map((order) => order.toTransaction()).toList());
   }
 }

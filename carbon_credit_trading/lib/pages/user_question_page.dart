@@ -49,9 +49,9 @@ class UserQuestionPage extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(10),
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundColor: Colors.green, // set status
-                      child: const Icon(
+                      child: Icon(
                         Icons.check,
                         color: Colors.white,
                       ),
