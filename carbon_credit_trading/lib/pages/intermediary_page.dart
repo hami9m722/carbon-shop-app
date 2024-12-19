@@ -145,8 +145,9 @@ class IntermediaryPage extends StatelessWidget {
                                       })),
                                   SizedBox(
                                       width: constraints.maxWidth / 3 - 5,
-                                      child: _buildActionCard(Icons.bar_chart,
-                                          'Duyệt tài khoảnkhoản', onTapped: () {
+                                      child: _buildActionCard(
+                                          Icons.bar_chart, 'Duyệt tài khoản',
+                                          onTapped: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

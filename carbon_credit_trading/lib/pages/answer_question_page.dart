@@ -34,8 +34,8 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
     }
   }
 
-  void deleteQuestion() async {
-    // TODO: delete question
+  void rejectQuestion() async {
+    // TODO: set status to rejected
   }
 
   @override
@@ -123,7 +123,7 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: deleteQuestion,
+                        onPressed: rejectQuestion,
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.red,
                           padding: const EdgeInsets.symmetric(vertical: 12),

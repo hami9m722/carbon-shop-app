@@ -18,7 +18,8 @@ class PendingAccountPage extends StatefulWidget {
 class _PendingAccountPageState extends State<PendingAccountPage> {
   Future<List<Map<String, dynamic>>> getPendingAccount() async {
     try {
-      final pendingUsers = await mediatorAuditControllerApi.viewAllUser(status: 'INIT');
+      final pendingUsers =
+          await mediatorAuditControllerApi.viewAllUser(status: 'INIT');
 
       if (pendingUsers != null) {
         List<Map<String, dynamic>> userList = await Future.wait(
@@ -27,7 +28,7 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
                 await sellerControllerApi.viewCompany1(user.company ?? 00);
 
             return {
-              'id': user.userId,
+              'userId': user.userId,
               'name': user.name,
               'phone': user.phone,
               'company': company,
@@ -99,7 +100,7 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  account['userId'].toString(),
+                                  account['company'].name ?? "N/A",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17),

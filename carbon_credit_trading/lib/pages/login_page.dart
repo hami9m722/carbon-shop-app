@@ -33,38 +33,59 @@ class _LoginPageState extends State<LoginPage> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    var authResp = await authService.authenticate(email, password);
-    var user = authResp.user;
+    try {
+      var authResp = await authService.authenticate(email, password);
+      var user = authResp.user;
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    if (user != null) {
-      if (user.role == AppUserDTORoleEnum.SELLER_OR_BUYER) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const UserPage(),
+      if (user != null) {
+        if (user.role == AppUserDTORoleEnum.SELLER_OR_BUYER) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserPage(),
+            ),
+          );
+        } else {
+          businessOption = BusinessOption.mediator;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const IntermediaryPage(),
+            ),
+          );
+        }
+      } else {
+        setState(() {
+          errorMessage = 'Email hoặc mật khẩu không đúng';
+        });
+      }
+    } catch (e) {
+      print("Error during authentication: $e");
+
+      if (e.toString().contains("401")) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Email hoặc mật khẩu không đúng"),
+            backgroundColor: Colors.red,
           ),
         );
       } else {
-        businessOption = BusinessOption.mediator;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const IntermediaryPage(),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Đã xảy ra lỗi: ${e.toString()}"),
+            backgroundColor: Colors.red,
           ),
         );
       }
-    } else {
-      setState(() {
-        errorMessage = 'Email hoặc mật khẩu không đúng';
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+        canPop: false, child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const CustomAppBar(
         title: "Đăng nhập",
@@ -152,6 +173,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           )),
-    );
+    ));
   }
 }

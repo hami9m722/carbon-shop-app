@@ -103,7 +103,7 @@ class CustomMenuWidget {
                     Icons.logout,
                   ),
                   SizedBox(width: 8),
-                  Text("Đăng xuất"),
+                  Text("Đăng xuất"), //TODO: logout function
                 ],
               ),
             ),

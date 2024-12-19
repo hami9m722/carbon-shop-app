@@ -1,4 +1,5 @@
 import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/pages/question_details_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,11 @@ class UserQuestionPage extends StatelessWidget {
       final questions = await userControllerApi.viewQuestions();
 
       if (questions != null) {
-        return questions.content;
+        final filteredQuestions = questions.content
+            .where((question) => question.askedBy == currentUserId)
+            .toList();
+
+        return filteredQuestions;
       } else {
         return [];
       }
@@ -49,10 +54,11 @@ class UserQuestionPage extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(10),
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.green, // set status
+                    leading: CircleAvatar(
+                      backgroundColor:
+                          question.answer != null ? Colors.green : Colors.red,
                       child: Icon(
-                        Icons.check,
+                        question.answer != null ? Icons.check : Icons.close,
                         color: Colors.white,
                       ),
                       radius: 30,

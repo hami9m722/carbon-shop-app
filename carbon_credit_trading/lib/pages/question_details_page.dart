@@ -41,10 +41,11 @@ class QuestionDetailPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
+                Flexible(
+                    child: Text(
                   question.answer ?? "Chưa có câu trả lời",
                   style: const TextStyle(fontSize: 16),
-                ),
+                )),
               ],
             ),
           ),

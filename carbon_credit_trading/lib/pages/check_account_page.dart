@@ -20,6 +20,8 @@ class CheckAccountPage extends StatelessWidget {
     try {
       await mediatorAuditControllerApi
           .approveUserRegistration(accountDetails['userId']);
+
+      //TODO: ( 3769): Error fetching pending accounts: ApiException 500: {"status":500,"code":"ILLEGAL_ARGUMENT","message":"rawPassword cannot be null"}
     } catch (e) {
       print("Error fetching pending accounts: $e");
     }
