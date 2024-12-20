@@ -138,9 +138,11 @@ class _ContactPageState extends State<ContactPage> {
                       });
                     },
                     onTap: () {
-                      setState(() {
-                        isSearching = true;
-                      });
+                      setState(() {});
+                    },
+                    onEditingComplete: () {
+                      FocusScope.of(context).unfocus();
+                      setState(() {});
                     },
                     decoration: const InputDecoration(
                       hintText: 'Tìm kiếm',
@@ -153,7 +155,7 @@ class _ContactPageState extends State<ContactPage> {
                     ),
                   ),
                 ),
-                if (isSearching)
+                if (FocusScope.of(context).hasFocus)
                   TextButton(
                     onPressed: () {
                       setState(() {

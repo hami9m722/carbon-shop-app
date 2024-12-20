@@ -266,10 +266,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
                       )),
           ])),
       endDrawer: FilterDrawer(
-        onApplyFilters: (filters) {
-          // Handle the filter logic here (e.g., apply the filter to your data source)
-          print(filters); // You can use this to filter your data
-        },
+        onApplyFilters: (filters) {},
       ),
     );
   }
