@@ -17,12 +17,15 @@ class AppUserDTO {
     this.name,
     this.phone,
     this.email,
+    this.avatar,
     required this.role,
     this.approvedAt,
     this.rejectedAt,
     this.status,
     this.company,
     this.favoriteProjects = const [],
+    this.likedCompanyReviews = const [],
+    this.likeProjectReviews = const [],
   });
 
   ///
@@ -57,6 +60,14 @@ class AppUserDTO {
   ///
   String? email;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? avatar;
+
   AppUserDTORoleEnum role;
 
   ///
@@ -87,18 +98,25 @@ class AppUserDTO {
 
   List<int> favoriteProjects;
 
+  List<int> likedCompanyReviews;
+
+  List<int> likeProjectReviews;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AppUserDTO &&
     other.userId == userId &&
     other.name == name &&
     other.phone == phone &&
     other.email == email &&
+    other.avatar == avatar &&
     other.role == role &&
     other.approvedAt == approvedAt &&
     other.rejectedAt == rejectedAt &&
     other.status == status &&
     other.company == company &&
-    _deepEquality.equals(other.favoriteProjects, favoriteProjects);
+    _deepEquality.equals(other.favoriteProjects, favoriteProjects) &&
+    _deepEquality.equals(other.likedCompanyReviews, likedCompanyReviews) &&
+    _deepEquality.equals(other.likeProjectReviews, likeProjectReviews);
 
   @override
   int get hashCode =>
@@ -107,15 +125,18 @@ class AppUserDTO {
     (name == null ? 0 : name!.hashCode) +
     (phone == null ? 0 : phone!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
+    (avatar == null ? 0 : avatar!.hashCode) +
     (role.hashCode) +
     (approvedAt == null ? 0 : approvedAt!.hashCode) +
     (rejectedAt == null ? 0 : rejectedAt!.hashCode) +
     (status == null ? 0 : status!.hashCode) +
     (company == null ? 0 : company!.hashCode) +
-    (favoriteProjects.hashCode);
+    (favoriteProjects.hashCode) +
+    (likedCompanyReviews.hashCode) +
+    (likeProjectReviews.hashCode);
 
   @override
-  String toString() => 'AppUserDTO[userId=$userId, name=$name, phone=$phone, email=$email, role=$role, approvedAt=$approvedAt, rejectedAt=$rejectedAt, status=$status, company=$company, favoriteProjects=$favoriteProjects]';
+  String toString() => 'AppUserDTO[userId=$userId, name=$name, phone=$phone, email=$email, avatar=$avatar, role=$role, approvedAt=$approvedAt, rejectedAt=$rejectedAt, status=$status, company=$company, favoriteProjects=$favoriteProjects, likedCompanyReviews=$likedCompanyReviews, likeProjectReviews=$likeProjectReviews]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -139,6 +160,11 @@ class AppUserDTO {
     } else {
       json[r'email'] = null;
     }
+    if (this.avatar != null) {
+      json[r'avatar'] = this.avatar;
+    } else {
+      json[r'avatar'] = null;
+    }
       json[r'role'] = this.role;
     if (this.approvedAt != null) {
       json[r'approvedAt'] = this.approvedAt!.toUtc().toIso8601String();
@@ -161,6 +187,8 @@ class AppUserDTO {
       json[r'company'] = null;
     }
       json[r'favoriteProjects'] = this.favoriteProjects;
+      json[r'likedCompanyReviews'] = this.likedCompanyReviews;
+      json[r'likeProjectReviews'] = this.likeProjectReviews;
     return json;
   }
 
@@ -187,6 +215,7 @@ class AppUserDTO {
         name: mapValueOfType<String>(json, r'name'),
         phone: mapValueOfType<String>(json, r'phone'),
         email: mapValueOfType<String>(json, r'email'),
+        avatar: mapValueOfType<int>(json, r'avatar'),
         role: AppUserDTORoleEnum.fromJson(json[r'role'])!,
         approvedAt: mapDateTime(json, r'approvedAt', r''),
         rejectedAt: mapDateTime(json, r'rejectedAt', r''),
@@ -194,6 +223,12 @@ class AppUserDTO {
         company: mapValueOfType<int>(json, r'company'),
         favoriteProjects: json[r'favoriteProjects'] is Iterable
             ? (json[r'favoriteProjects'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
+        likedCompanyReviews: json[r'likedCompanyReviews'] is Iterable
+            ? (json[r'likedCompanyReviews'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
+        likeProjectReviews: json[r'likeProjectReviews'] is Iterable
+            ? (json[r'likeProjectReviews'] as Iterable).cast<int>().toList(growable: false)
             : const [],
       );
     }

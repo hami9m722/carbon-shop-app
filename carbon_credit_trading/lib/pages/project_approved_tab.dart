@@ -23,9 +23,9 @@ class ProjectApprovedTab extends StatelessWidget {
             await sellerControllerApi.viewAllProject1(status: 'APPROVED', filter: searchQuery);
 
         if (pagedProjectDTO != null) {
-          return pagedProjectDTO.content.map((projectData) {
-                return projectData.toProject();
-              }).toList();
+          return await Future.wait(pagedProjectDTO.content.map((projectData) {
+            return projectData.toProject();
+          }));
         } else {
           return [];
         }

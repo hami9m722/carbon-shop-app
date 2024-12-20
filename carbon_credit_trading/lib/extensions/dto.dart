@@ -1,12 +1,17 @@
 import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/extensions/file_id.dart';
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/comment.dart';
+import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/models/user.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 
 extension ProjectDTOMapper on ProjectDTO {
-  Project toProject() {
+  Future<Project> toProject() async {
+    var company = await userControllerApi.viewCompany(ownerCompany!);
+    var companyUser = await userControllerApi.viewCompanyUser(company!.id!);
     return Project(
       projectId: projectId ?? 0,
       projectName: name ?? '',
@@ -25,6 +30,8 @@ extension ProjectDTOMapper on ProjectDTO {
       paymentMethods: List<String>.from(methodPayment?.split(',') ?? []),
       //status: projectData.status ?? '',
       //rating: projectData.rating,
+      company: company,
+      companyUser: companyUser!,
     );
   }
 }
@@ -72,7 +79,7 @@ extension OrderDTOMapper on OrderDTO {
       totalAmount: total.toString(),
       seller: ownerCompanyUser!.toUser(),
       buyer: buyerUser!.toUser(),
-      projectInfo: project.toProject(),
+      projectInfo: await project.toProject(),
       status: status.toString(),
     );
   }
@@ -82,5 +89,66 @@ extension PagedOrderDTOMapper on PagedOrderDTO {
   Future<List<Transaction>> toTransactions() async {
     return await Future.wait(
         content.map((order) => order.toTransaction()).toList());
+  }
+}
+
+extension ContactItemDTOMapper on ContactItemDTO {
+  Future<Message> toMessage() async {
+    var selfFuture = userControllerApi.viewUser(currentUserId!);
+    var userFuture = userControllerApi.viewUser(chatUserId!);
+
+    var self = await selfFuture;
+    var user = await userFuture;
+
+    return Message(
+      conversationId ?? '',
+      currentUserId ?? 0,
+      chatUserId ?? 0,
+      messageId: latestMessage?.id ?? 0,
+      senderName: self?.name ?? '',
+      senderAvatar: self?.avatar?.toFilePath() ?? '',
+      receiverName: user?.name ?? '',
+      receiverAvatar: user?.avatar?.toFilePath() ?? '',
+      timestamp: latestMessage?.createdAt ?? DateTime.now(),
+      isRead: false,
+    );
+  }
+}
+
+extension PagedContactItemDTOMapper on PagedContactItemDTO {
+  Future<List<Message>> toMessages() async {
+    return await Future.wait(
+        content.map((contact) => contact.toMessage()).toList());
+  }
+}
+
+extension ChatMessageDTOMapper on ChatMessageDTO {
+  Future<Message> toMessage() async {
+    var senderFuture = userControllerApi.viewUser(this.sender!);
+    var receiverFuture = userControllerApi.viewUser(this.receiver!);
+
+    var sender = await senderFuture;
+    var receiver = await receiverFuture;
+
+    return Message(
+      conversationId ?? '',
+      sender?.userId ?? 0,
+      receiver?.userId ?? 0,
+      messageId: id ?? 0,
+      senderName: sender?.name ?? '',
+      senderAvatar: sender?.avatar?.toFilePath() ?? '',
+      receiverName: receiver?.name ?? '',
+      receiverAvatar: receiver?.avatar?.toFilePath() ?? '',
+      content: content,
+      timestamp: createdAt ?? DateTime.now(),
+      isRead: false,
+    );
+  }
+}
+
+extension PagedChatMessageDTOMapper on PagedChatMessageDTO {
+  Future<List<Message>> toMessages() async {
+    return await Future.wait(
+        content.map((message) => message.toMessage()).toList());
   }
 }

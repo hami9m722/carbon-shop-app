@@ -2,9 +2,12 @@
 import 'package:intl/intl.dart';
 
 class Message {
-  final String messageId;
+  final int messageId;
+  final String conversationId;
+  final int senderId;
   final String senderName;
   final String senderAvatar;
+  final int receiverId;
   final String receiverName;
   final String receiverAvatar;
   final String? content;
@@ -15,7 +18,7 @@ class Message {
   bool isRead;
   final Message? replyTo;
 
-  Message({
+  Message(this.conversationId, this.senderId, this.receiverId, {
     required this.messageId,
     required this.senderName,
     required this.senderAvatar,

@@ -1,3 +1,5 @@
+import 'package:carbon_credit_trading/api/api.dart';
+
 class Project {
   final int? projectId;
   final String projectName;
@@ -16,6 +18,8 @@ class Project {
   final List<String> paymentMethods;
   final String? status;
   final String? rating;
+  final CompanyDTO? company;
+  final AppUserDTO? companyUser;
 
   Project(
       {this.projectId,
@@ -30,6 +34,8 @@ class Project {
       required this.availableCredits,
       required this.certificates,
       required this.price,
+      required this.company,
+      required this.companyUser,
       this.projectImages = const [],
       this.creditImages = const [],
       this.paymentMethods = const [],

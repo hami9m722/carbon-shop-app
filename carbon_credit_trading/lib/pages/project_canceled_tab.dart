@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 
@@ -22,32 +23,9 @@ class ProjectCanceledTab extends StatelessWidget {
             await sellerControllerApi.viewAllProject1(status: 'REJECTED', filter: searchQuery);
 
         if (pagedProjectDTO != null) {
-          return pagedProjectDTO.content.map((projectData) {
-                return Project(
-                  projectName: projectData.name ?? '',
-                  startDate: projectData.timeStart?.year.toString() ??
-                      DateTime.now().year.toString(),
-                  endDate: projectData.timeEnd?.year.toString() ??
-                      DateTime.now().year.toString(),
-                  location: projectData.address ?? '',
-                  scale: projectData.size ?? '',
-                  scope: projectData.produceCarbonRate ?? '',
-                  partners: projectData.partner ?? '',
-                  issuer: projectData.auditByOrg ?? '',
-                  availableCredits: (projectData.creditAmount != null)
-                      ? projectData.creditAmount.toString()
-                      : '0',
-                  certificates: projectData.cert ?? '',
-                  price: projectData.price ?? '0',
-                  projectImages: projectData.projectImages,
-                  //creditImages: List<String>.from(projectData.creditImages ?? []),
-                  paymentMethods: List<String>.from(
-                      projectData.methodPayment?.split(',') ?? []),
-                  //status: projectData.status ?? '',
-                  //rating: projectData.rating,
-                );
-              }).toList() ??
-              [];
+          return await Future.wait(pagedProjectDTO.content.map((projectData) {
+            return projectData.toProject();
+          }));
         } else {
           return [];
         }

@@ -115,6 +115,8 @@ class _AddInfoProjectPage extends State<AddInfoProjectPage> {
       price: _priceController.text,
       paymentMethods: _selectedPaymentMethodList,
       status: 'pending',
+      company: null,
+      companyUser: null,
     ));
   }
 

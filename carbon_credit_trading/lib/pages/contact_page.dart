@@ -1,45 +1,12 @@
+import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:carbon_credit_trading/models/message.dart';
 import 'package:carbon_credit_trading/pages/chat_page.dart';
 import 'package:carbon_credit_trading/services/format.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-//
-final List<Message> mockMessages = [
-  Message(
-    messageId: "msg001",
-    senderName: 'John Doe',
-    senderAvatar: 'https://example.com/avatar1.jpg',
-    receiverName: 'You',
-    receiverAvatar: 'https://example.com/your_avatar.jpg',
-    content: 'Hey, how are you?',
-    timestamp: DateTime.parse('2024-10-15 10:31:00'),
-    isRead: true,
-  ),
-  Message(
-    messageId: "msg002",
-    senderName: 'You',
-    senderAvatar: 'https://example.com/your_avatar.jpg',
-    receiverName: 'John Doe',
-    receiverAvatar: 'https://example.com/avatar1.jpg',
-    content: 'I\'m fine, thanks!',
-    timestamp: DateTime.parse('2024-10-20 10:32:00'),
-    isRead: true,
-  ),
-  Message(
-    messageId: "msg003",
-    senderName: 'Jane Smith',
-    senderAvatar: 'https://example.com/avatar2.jpg',
-    receiverName: 'You',
-    receiverAvatar: 'https://example.com/your_avatar.jpg',
-    content: 'Let\'s catch up John later',
-    timestamp: DateTime.parse('2024-10-19 09:20:00'),
-    isRead: false,
-  ),
-];
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -58,46 +25,6 @@ class _ContactPageState extends State<ContactPage> {
   @override
   void initState() {
     super.initState();
-    groupedMessages = groupMessagesByReceiver();
-  }
-
-  List<Map<String, dynamic>> groupMessagesByReceiver() {
-    var grouped = groupBy(
-        mockMessages.where((message) {
-          return message.senderName == 'You' || message.receiverName == 'You';
-        }).toList(), (Message m) {
-      return m.senderName == 'You' ? m.receiverName : m.senderName;
-    });
-
-    return grouped.entries.map((entry) {
-      final latestMessage = entry.value
-          .reduce((a, b) => a.timestamp.isAfter(b.timestamp) ? a : b);
-
-      String contactName = latestMessage.senderName == 'You'
-          ? latestMessage.receiverName
-          : latestMessage.senderName;
-
-      return {
-        'name': contactName,
-        'avatar': latestMessage.senderName == 'You'
-            ? latestMessage.receiverAvatar
-            : latestMessage.senderAvatar,
-        'latestMessage': latestMessage.content,
-        'timestamp': latestMessage.timestamp,
-        'isRead': latestMessage.isRead,
-      };
-    }).toList();
-  }
-
-  List<Map<String, dynamic>> getFilteredMessages() {
-    final query = searchController.text.toLowerCase();
-    if (query.isEmpty) return groupedMessages;
-
-    return groupedMessages.where((message) {
-      final content =
-          showPeopleTab ? message['name'] : message['latestMessage'];
-      return content.toLowerCase().contains(query);
-    }).toList();
   }
 
   String formatTimestamp(DateTime timestamp) {
@@ -117,9 +44,6 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredMessages = getFilteredMessages();
-    hasResults = filteredMessages.isNotEmpty;
-
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Liên hệ",
@@ -212,108 +136,97 @@ class _ContactPageState extends State<ContactPage> {
             ),
 
           Expanded(
-            child: hasResults
-                ? ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    itemCount: isSearching
-                        ? filteredMessages.length
-                        : groupedMessages.length,
-                    itemBuilder: (context, index) {
-                      final message = isSearching
-                          ? filteredMessages[index]
-                          : groupedMessages[index];
+            child: FutureBuilder<List<Message>>(future: () async {
+              var pagedContactItemDTO = await userControllerApi.getConversations();
+              return await pagedContactItemDTO?.toMessages();
+            } as Future<List<Message>>, builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final messages = snapshot.data;
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior:
+                  ScrollViewKeyboardDismissBehavior.onDrag,
+                  itemCount: messages?.length,
+                  itemBuilder: (context, index) {
+                    final message = messages?[index];
 
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 15),
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(message['avatar']),
-                        ),
-                        title: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              fontWeight: message['isRead']
-                                  ? FontWeight.w600
-                                  : FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 22,
-                            ),
-                            children: highlightMatches(
-                                message['name'],
-                                searchController.text,
-                                showPeopleTab
-                                    ? Colors.yellow
-                                    : Colors.transparent),
+                    return ListTile(
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 15),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(message!.receiverAvatar),
+                      ),
+                      title: RichText(
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 22,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          children: highlightMatches(
+                              message!.receiverName,
+                              searchController.text,
+                              showPeopleTab
+                                  ? Colors.yellow
+                                  : Colors.transparent),
                         ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontWeight: message['isRead']
-                                        ? FontWeight.normal
-                                        : FontWeight.w600,
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                  ),
-                                  children: highlightMatches(
-                                      message['latestMessage'],
-                                      searchController.text,
-                                      showPeopleTab
-                                          ? Colors.transparent
-                                          : Colors.yellow),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontWeight:  FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 18,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                children: highlightMatches(
+                                message.content!,
+                                    searchController.text,
+                                    showPeopleTab
+                                        ? Colors.transparent
+                                        : Colors.yellow),
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            Text(
-                              formatTimestamp(message['timestamp']),
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                              ),
+                          ),
+                          Text(
+                            formatTimestamp(message.timestamp),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
                             ),
-                          ],
-                        ),
-                        trailing: !message['isRead']
-                            ? Container(
-                                height: 12,
-                                width: 12,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.green,
-                                ),
-                              )
-                            : null,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChatPage(
-                                contactName: message['name'],
-                                contactAvatar: message['avatar'],
-                              ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ChatPage(
+                              conversationId: message.conversationId,
+                              chatWithUserId: message.receiverId,
+                              chatWithUserName: message.receiverName,
+                              chatWithUserAvatar: message.receiverAvatar,
                             ),
-                          );
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                      );
-                    },
-                  )
-                : const Center(
-                    child: Text(
-                      'Không có kết quả',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+                          ),
+                        );
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
           ),
         ],
       ),

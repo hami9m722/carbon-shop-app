@@ -45,6 +45,8 @@ class _FavoriteTabState extends State<FavoriteTab> {
       issuer: 'Chính phủ',
       availableCredits: '1000',
       certificates: 'ISO 9001',
+      company: null,
+      companyUser: null,
       price: '800',
       projectImages: [
       ],
@@ -61,6 +63,8 @@ class _FavoriteTabState extends State<FavoriteTab> {
       partners: 'Công ty XYZ',
       issuer: 'Công ty TNHH',
       availableCredits: '500',
+      company: null,
+      companyUser: null,
       certificates: 'ISO 14001',
       price: '1000',
       projectImages: [],

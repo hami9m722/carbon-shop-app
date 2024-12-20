@@ -42,9 +42,8 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
                 status: 'INIT', filter: _searchQuery);
 
         if (pagedProjectDTO != null) {
-          return pagedProjectDTO.content
-              .map((projectData) => projectData.toProject())
-              .toList();
+          return await Future.wait(pagedProjectDTO.content
+              .map((projectData) => projectData.toProject()));
         } else {
           return [];
         }

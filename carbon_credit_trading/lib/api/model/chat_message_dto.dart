@@ -19,6 +19,7 @@ class ChatMessageDTO {
     required this.conversationId,
     this.sender,
     this.receiver,
+    this.createdAt,
   });
 
   ///
@@ -63,6 +64,14 @@ class ChatMessageDTO {
   ///
   int? receiver;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? createdAt;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ChatMessageDTO &&
     other.id == id &&
@@ -70,7 +79,8 @@ class ChatMessageDTO {
     other.fileId == fileId &&
     other.conversationId == conversationId &&
     other.sender == sender &&
-    other.receiver == receiver;
+    other.receiver == receiver &&
+    other.createdAt == createdAt;
 
   @override
   int get hashCode =>
@@ -80,10 +90,11 @@ class ChatMessageDTO {
     (fileId == null ? 0 : fileId!.hashCode) +
     (conversationId.hashCode) +
     (sender == null ? 0 : sender!.hashCode) +
-    (receiver == null ? 0 : receiver!.hashCode);
+    (receiver == null ? 0 : receiver!.hashCode) +
+    (createdAt == null ? 0 : createdAt!.hashCode);
 
   @override
-  String toString() => 'ChatMessageDTO[id=$id, content=$content, fileId=$fileId, conversationId=$conversationId, sender=$sender, receiver=$receiver]';
+  String toString() => 'ChatMessageDTO[id=$id, content=$content, fileId=$fileId, conversationId=$conversationId, sender=$sender, receiver=$receiver, createdAt=$createdAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -113,6 +124,11 @@ class ChatMessageDTO {
     } else {
       json[r'receiver'] = null;
     }
+    if (this.createdAt != null) {
+      json[r'createdAt'] = this.createdAt!.toUtc().toIso8601String();
+    } else {
+      json[r'createdAt'] = null;
+    }
     return json;
   }
 
@@ -141,6 +157,7 @@ class ChatMessageDTO {
         conversationId: mapValueOfType<String>(json, r'conversationId')!,
         sender: mapValueOfType<int>(json, r'sender'),
         receiver: mapValueOfType<int>(json, r'receiver'),
+        createdAt: mapDateTime(json, r'createdAt', r''),
       );
     }
     return null;

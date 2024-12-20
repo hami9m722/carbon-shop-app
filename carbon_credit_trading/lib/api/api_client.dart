@@ -204,6 +204,8 @@ class ApiClient {
           return CompanyDTO.fromJson(value);
         case 'CompanyReviewDTO':
           return CompanyReviewDTO.fromJson(value);
+        case 'ContactItemDTO':
+          return ContactItemDTO.fromJson(value);
         case 'LikeResultDTO':
           return LikeResultDTO.fromJson(value);
         case 'MediatorAnswerDTO':
@@ -220,6 +222,8 @@ class ApiClient {
           return PagedChatMessageDTO.fromJson(value);
         case 'PagedCompanyReviewDTO':
           return PagedCompanyReviewDTO.fromJson(value);
+        case 'PagedContactItemDTO':
+          return PagedContactItemDTO.fromJson(value);
         case 'PagedOrderDTO':
           return PagedOrderDTO.fromJson(value);
         case 'PagedProjectDTO':
@@ -228,8 +232,6 @@ class ApiClient {
           return PagedProjectReviewDTO.fromJson(value);
         case 'PagedQuestionDTO':
           return PagedQuestionDTO.fromJson(value);
-        case 'PagedUUIDDTO':
-          return PagedUUIDDTO.fromJson(value);
         case 'PasswordResetCompleteRequest':
           return PasswordResetCompleteRequest.fromJson(value);
         case 'PasswordResetRequest':

@@ -61,6 +61,8 @@ class BusinessDetailPage extends StatelessWidget {
           price: '1000 VND',
           projectImages: [
           ],
+          company: null,
+          companyUser: null,
           creditImages: [],
           paymentMethods: ['Chuyển khoản', 'Tiền mặt'],
           status: 'approved'),
@@ -76,6 +78,8 @@ class BusinessDetailPage extends StatelessWidget {
           availableCredits: '500',
           certificates: 'ISO 14001',
           price: '800 VND',
+          company: null,
+          companyUser: null,
           projectImages: [],
           creditImages: [],
           paymentMethods: ['Thẻ tín dụng', 'Tiền mặt'],

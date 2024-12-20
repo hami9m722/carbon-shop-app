@@ -90,7 +90,7 @@ class UserControllerApi {
     );
   }
 
-  Future<PagedUUIDDTO?> getConversations() async {
+  Future<PagedContactItemDTO?> getConversations() async {
     final response = await getConversationsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -99,7 +99,55 @@ class UserControllerApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedUUIDDTO',) as PagedUUIDDTO;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedContactItemDTO',) as PagedContactItemDTO;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /api/user/chat/conversation/{conversationId}/latest' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [String] conversationId (required):
+  Future<Response> getLatestMessageWithHttpInfo(String conversationId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/chat/conversation/{conversationId}/latest'
+      .replaceAll('{conversationId}', conversationId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [String] conversationId (required):
+  Future<ChatMessageDTO?> getLatestMessage(String conversationId,) async {
+    final response = await getLatestMessageWithHttpInfo(conversationId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatMessageDTO',) as ChatMessageDTO;
     
     }
     return null;

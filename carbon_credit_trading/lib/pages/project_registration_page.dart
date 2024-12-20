@@ -152,6 +152,8 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
               price: _price,
               paymentMethods: _selectedPaymentMethodList,
               status: 'pending',
+              companyUser: null,
+              company: null
             ),
             onNext: _nextPage,
             onProjectDataChanged: (data) {

@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/extensions/dto.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
@@ -18,13 +22,13 @@ import 'package:uuid/uuid.dart';
 //
 
 class ChatPage extends StatefulWidget {
-  final String contactName;
-  final String contactAvatar;
+  String? conversationId;
+  final int chatWithUserId;
+  final String chatWithUserName;
+  final String chatWithUserAvatar;
 
-  const ChatPage({
-    super.key,
-    required this.contactName,
-    required this.contactAvatar,
+  ChatPage({
+    super.key, required this.chatWithUserId, required this.chatWithUserName, required this.chatWithUserAvatar, this.conversationId
   });
 
   @override
@@ -38,37 +42,42 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   bool _isOptionsVisible = false;
   Message? _replyMessage;
   final ScrollController _scrollController = ScrollController();
-  final Map<String, GlobalKey> _messageKeys = {};
+  final Map<int, GlobalKey> _messageKeys = {};
+  final Set<int> loadedMessageIds = {};
 
-  final List<Message> mockMessages = [
-    Message(
-      messageId: "msg001",
-      senderName: 'John Doe',
-      senderAvatar: 'https://example.com/avatar1.jpg',
-      receiverName: 'You',
-      receiverAvatar: 'https://example.com/your_avatar.jpg',
-      content: 'Hey, how are you?',
-      timestamp: DateTime.parse('2024-10-15 10:31:00'),
-      isRead: true,
-    ),
-    Message(
-      messageId: "msg002",
-      senderName: 'You',
-      senderAvatar: 'https://example.com/your_avatar.jpg',
-      receiverName: 'John Doe',
-      receiverAvatar: 'https://example.com/avatar1.jpg',
-      content: 'I\'m fine, thanks!',
-      timestamp: DateTime.parse('2024-10-20 10:32:00'),
-      isRead: true,
-    ),
-  ];
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(_checkText);
+
+    _startPollingNewMessage();
     //_markMessageAsRead(); //if receiver == you
     //_setUserInChat(true);
+  }
+
+  void _startPollingNewMessage() {
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+      await _pollingNewMessage();
+    });
+  }
+
+
+  Future<void> _pollingNewMessage() async {
+    try {
+      if (widget.conversationId == null) {
+        return;
+      }
+      var latestMessage = await userControllerApi.getLatestMessage(widget.conversationId!);
+      if (latestMessage != null && !loadedMessageIds.contains(latestMessage.id!)) {
+        setState(() {
+          loadedMessageIds.add(latestMessage.id!);
+        });
+      }
+    } catch (e) {
+      print('API error: $e');
+    }
   }
 
   void _checkText() {
@@ -77,22 +86,14 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     });
   }
 
-  void _sendTextMessage() {
+  Future<void> _sendTextMessage() async {
     if (_controller.text.isNotEmpty) {
+      var dto = await userControllerApi.sendMessage(SendChatMessageDTO(
+        content: _controller.text.trim(),
+        receiver: widget.chatWithUserId,
+      ));
       setState(() {
-        mockMessages.add(
-          Message(
-            messageId: "msg${uuid.v4()}",
-            senderName: 'You',
-            senderAvatar: 'https://example.com/your_avatar.jpg',
-            receiverName: widget.contactAvatar,
-            receiverAvatar: widget.contactAvatar,
-            content: _controller.text.trim(),
-            replyTo: _replyMessage,
-            timestamp: DateTime.now(),
-            isRead: false,
-          ),
-        );
+        widget.conversationId ??= dto?.conversationId;
         _controller.clear();
         _replyMessage = null;
       });
@@ -108,18 +109,18 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
       final audioDuration = await _getAudioDuration(audioUrl);
       if (audioDuration.inSeconds > 0 && audioDuration.inSeconds < 60) {
         setState(() {
-          mockMessages.add(
-            Message(
-                messageId: "msg${uuid.v4()}",
-                senderName: 'You',
-                senderAvatar: 'https://example.com/your_avatar.jpg',
-                receiverName: widget.contactName,
-                receiverAvatar: widget.contactAvatar,
-                audioUrl: audioUrl,
-                timestamp: DateTime.now(),
-                isRead: false,
-                replyTo: _replyMessage),
-          );
+          // mockMessages.add(
+          //   Message(
+          //       messageId: "msg${uuid.v4()}",
+          //       senderName: 'You',
+          //       senderAvatar: 'https://example.com/your_avatar.jpg',
+          //       receiverName: widget.contactName,
+          //       receiverAvatar: widget.contactAvatar,
+          //       audioUrl: audioUrl,
+          //       timestamp: DateTime.now(),
+          //       isRead: false,
+          //       replyTo: _replyMessage),
+          // );
         });
       } else {
         showErrorDialog(
@@ -127,19 +128,19 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
       }
     } else {
       setState(() {
-        mockMessages.add(
-          Message(
-              messageId: "msg${uuid.v4()}",
-              senderName: 'You',
-              senderAvatar: 'https://example.com/your_avatar.jpg',
-              receiverName: widget.contactName,
-              receiverAvatar: widget.contactAvatar,
-              imageUrls: imageUrls,
-              videoUrl: videoUrl,
-              timestamp: DateTime.now(),
-              isRead: false,
-              replyTo: _replyMessage),
-        );
+        // mockMessages.add(
+        //   Message(
+        //       messageId: "msg${uuid.v4()}",
+        //       senderName: 'You',
+        //       senderAvatar: 'https://example.com/your_avatar.jpg',
+        //       receiverName: widget.contactName,
+        //       receiverAvatar: widget.contactAvatar,
+        //       imageUrls: imageUrls,
+        //       videoUrl: videoUrl,
+        //       timestamp: DateTime.now(),
+        //       isRead: false,
+        //       replyTo: _replyMessage),
+        // );
       });
     }
   }
@@ -186,7 +187,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     );
   }
 
-  void _scrollToOriginalMessage(String messageId) {
+  void _scrollToOriginalMessage(int messageId) {
     final targetKey = _messageKeys[messageId];
 
     if (targetKey != null) {
@@ -203,6 +204,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _timer?.cancel();
     _controller.removeListener(_checkText);
     _controller.dispose();
     _scrollController.dispose();
@@ -222,191 +224,217 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
               title: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(widget.contactAvatar),
+                    backgroundImage: NetworkImage(widget.chatWithUserAvatar),
                     radius: 18,
                   ),
                   const SizedBox(width: 10),
-                  Text(widget.contactName),
+                  Text(widget.chatWithUserName),
                 ],
               ),
             ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: ListView.builder(
-                    reverse: true,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: groupMessagesByDate(mockMessages).length,
-                    itemBuilder: (context, index) {
-                      final groupedMessages = groupMessagesByDate(mockMessages);
-
-                      final dates =
-                          groupedMessages.keys.toList().reversed.toList();
-
-                      final date = dates.elementAt(index);
-
-                      final messages = groupedMessages[date]!;
-
-                      final unreadMessages = messages
-                          .where(
-                              (msg) => !msg.isRead && msg.receiverName == 'You')
-                          .toList();
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Center(
-                            child: Text(
-                              !isToday(date) ? date : 'Hôm nay',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 13),
-                            ),
-                          ),
-                          ...messages.map((message) {
-                            final messageKey = GlobalKey();
-
-                            _messageKeys[message.messageId] = messageKey;
-                            return Container(
-                              key: messageKey,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: message.senderName == 'You'
-                                    ? MainAxisAlignment.end
-                                    : MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              if (message.senderName != 'You')
-                                                CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      message.senderAvatar),
-                                                ),
-                                              const SizedBox(width: 8),
-                                              _buildMessageContent(message),
-                                            ]),
-                                        Row(children: [
-                                          Text(
-                                            DateFormat('HH:mm')
-                                                .format(message.timestamp),
-                                            style: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontSize: 12),
-                                          ),
-                                          const SizedBox(width: 2),
-                                          Icon(
-                                            message.isRead
-                                                ? Icons.done_all
-                                                : Icons.done,
-                                            color: message.isRead
-                                                ? Colors.blue
-                                                : Colors.grey,
-                                          )
-                                        ]),
-                                      ]),
-                                ],
-                              ),
-                            );
-                          }),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                Column(children: [
-                  if (_replyMessage != null) _buildReply(_replyMessage!),
-                  Row(
-                    children: [
-                      AnimatedRotation(
-                        turns: _isOptionsVisible ? 0.5 : 0,
-                        duration: const Duration(milliseconds: 300),
-                        child: IconButton(
-                          icon: Icon(
-                            _isOptionsVisible
-                                ? Icons.cancel_outlined
-                                : Icons.add_circle_outline_outlined,
-                            size: 40,
-                          ),
-                          onPressed: _toggleOptions,
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: 'Gửi tin nhắn ...',
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade500),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      if (_isSendButtonVisible)
-                        IconButton(
-                          icon: const Icon(Icons.send,
-                              color: AppColors.greenButton),
-                          onPressed: _sendTextMessage,
-                        ),
-                      const SizedBox(
-                        width: 5,
-                      )
-                    ],
-                  ),
-                  if (_isOptionsVisible)
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      color: Colors.grey[200],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ImagePickerButton(
-                            onImagesSelected: onImageselected,
-                            child:
-                                _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
-                          ),
-                          AddVideoButton(
-                            picker: ImagePicker(),
-                            showErrorDialog: showErrorDialog,
-                            onVideoChanged: onVideoSelected,
-                            child: _buildOptionItem(
-                                Icons.video_call, 'Chọn video'),
-                          ),
-                          AudioRecorderButton(
-                            onAudioRecorded: (audioPath) {
-                              _sendMediaMessage(audioUrl: audioPath);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                ]),
-              ],
-            ),
+            body: FutureBuilder<List<Message>>(future: () async {
+              if (widget.conversationId == null) {
+                return [];
+              }
+              var conversationMessages = await userControllerApi.getConversationMessages(widget.conversationId!);
+              conversationMessages?.content.forEach((message) {
+                loadedMessageIds.add(message.id!);
+              });
+              return await conversationMessages?.toMessages();
+            } as Future<List<Message>>, builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData) {
+                final conversationMessages = snapshot.data;
+                return buildMessageList(conversationMessages!);
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
           ),
         ));
+  }
+
+  Column buildMessageList(List<Message> conversationMessages) {
+    return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: ListView.builder(
+                  reverse: true,
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: groupMessagesByDate(conversationMessages).length,
+                  itemBuilder: (context, index) {
+                    final groupedMessages = groupMessagesByDate(conversationMessages);
+
+                    final dates =
+                        groupedMessages.keys.toList().reversed.toList();
+
+                    final date = dates.elementAt(index);
+
+                    final messages = groupedMessages[date]!;
+
+                    final unreadMessages = messages
+                        .where(
+                            (msg) => !msg.isRead && msg.receiverName == 'You')
+                        .toList();
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Center(
+                          child: Text(
+                            !isToday(date) ? date : 'Hôm nay',
+                            style: TextStyle(
+                                color: Colors.grey[600], fontSize: 13),
+                          ),
+                        ),
+                        ...messages.map((message) {
+                          final messageKey = GlobalKey();
+
+                          _messageKeys[message.messageId] = messageKey;
+                          return Container(
+                            key: messageKey,
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: message.senderName == 'You'
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            if (message.senderName != 'You')
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    message.senderAvatar),
+                                              ),
+                                            const SizedBox(width: 8),
+                                            _buildMessageContent(message),
+                                          ]),
+                                      Row(children: [
+                                        Text(
+                                          DateFormat('HH:mm')
+                                              .format(message.timestamp),
+                                          style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 12),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Icon(
+                                          message.isRead
+                                              ? Icons.done_all
+                                              : Icons.done,
+                                          color: message.isRead
+                                              ? Colors.blue
+                                              : Colors.grey,
+                                        )
+                                      ]),
+                                    ]),
+                              ],
+                            ),
+                          );
+                        }),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              Column(children: [
+                if (_replyMessage != null) _buildReply(_replyMessage!),
+                Row(
+                  children: [
+                    AnimatedRotation(
+                      turns: _isOptionsVisible ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      child: IconButton(
+                        icon: Icon(
+                          _isOptionsVisible
+                              ? Icons.cancel_outlined
+                              : Icons.add_circle_outline_outlined,
+                          size: 40,
+                        ),
+                        onPressed: _toggleOptions,
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: 'Gửi tin nhắn ...',
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    if (_isSendButtonVisible)
+                      IconButton(
+                        icon: const Icon(Icons.send,
+                            color: AppColors.greenButton),
+                        onPressed: _sendTextMessage,
+                      ),
+                    const SizedBox(
+                      width: 5,
+                    )
+                  ],
+                ),
+                if (_isOptionsVisible)
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    color: Colors.grey[200],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ImagePickerButton(
+                          onImagesSelected: onImageselected,
+                          child:
+                              _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
+                        ),
+                        AddVideoButton(
+                          picker: ImagePicker(),
+                          showErrorDialog: showErrorDialog,
+                          onVideoChanged: onVideoSelected,
+                          child: _buildOptionItem(
+                              Icons.video_call, 'Chọn video'),
+                        ),
+                        AudioRecorderButton(
+                          onAudioRecorded: (audioPath) {
+                            _sendMediaMessage(audioUrl: audioPath);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+              ]),
+            ],
+          );
   }
 
   Widget _buildOptionItem(IconData icon, String label) {

@@ -1,5 +1,6 @@
 import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:carbon_credit_trading/extensions/search.dart';
+import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
@@ -72,10 +73,12 @@ class _SearchTabState extends State<SearchTab> {
           ),
         ],
       ),
-      body: FutureBuilder(
-          future: buyerControllerApi
-              .viewAllProject3(status: 'APPROVED', filter: _searchQuery)
-              .then((pagedDto) => pagedDto?.content.map((e) => e.toProject())),
+      body: FutureBuilder<List<Project>>(
+          future: () async {
+            var paged = await buyerControllerApi
+                .viewAllProject3(status: 'APPROVED', filter: _searchQuery);
+            return await Future.wait(paged!.content.map((dto) => dto.toProject()));
+          } as Future<List<Project>>,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
