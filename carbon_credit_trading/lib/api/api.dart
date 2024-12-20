@@ -68,6 +68,11 @@ part 'model/company_review_dto.dart';
 part 'model/paged_company_review_dto.dart';
 part 'model/project_review_dto.dart';
 part 'model/paged_project_review_dto.dart';
+part 'model/chat_message_dto.dart';
+part 'model/paged_chat_message_dto.dart';
+part 'model/paged_uuiddto.dart';
+part 'model/like_result_dto.dart';
+part 'model/send_chat_message_dto.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

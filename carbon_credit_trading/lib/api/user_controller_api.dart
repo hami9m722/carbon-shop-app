@@ -16,6 +16,191 @@ class UserControllerApi {
 
   final ApiClient apiClient;
 
+  /// Performs an HTTP 'GET /api/user/chat/conversation/{conversationId}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [String] conversationId (required):
+  Future<Response> getConversationMessagesWithHttpInfo(String conversationId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/chat/conversation/{conversationId}'
+      .replaceAll('{conversationId}', conversationId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [String] conversationId (required):
+  Future<PagedChatMessageDTO?> getConversationMessages(String conversationId,) async {
+    final response = await getConversationMessagesWithHttpInfo(conversationId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedChatMessageDTO',) as PagedChatMessageDTO;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /api/user/chat/conversations' operation and returns the [Response].
+  Future<Response> getConversationsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/chat/conversations';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<PagedUUIDDTO?> getConversations() async {
+    final response = await getConversationsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PagedUUIDDTO',) as PagedUUIDDTO;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'PATCH /api/user/company/review/{reviewId}/like' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] reviewId (required):
+  Future<Response> likeCompanyReviewWithHttpInfo(int reviewId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/company/review/{reviewId}/like'
+      .replaceAll('{reviewId}', reviewId.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PATCH',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] reviewId (required):
+  Future<LikeResultDTO?> likeCompanyReview(int reviewId,) async {
+    final response = await likeCompanyReviewWithHttpInfo(reviewId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LikeResultDTO',) as LikeResultDTO;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'PATCH /api/user/project/review/{reviewId}/like' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] reviewId (required):
+  Future<Response> likeProjectReviewWithHttpInfo(int reviewId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/project/review/{reviewId}/like'
+      .replaceAll('{reviewId}', reviewId.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PATCH',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] reviewId (required):
+  Future<LikeResultDTO?> likeProjectReview(int reviewId,) async {
+    final response = await likeProjectReviewWithHttpInfo(reviewId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LikeResultDTO',) as LikeResultDTO;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /api/user/question' operation and returns the [Response].
   /// Parameters:
   ///
@@ -58,6 +243,53 @@ class UserControllerApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'QuestionDTO',) as QuestionDTO;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /api/user/chat' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [SendChatMessageDTO] sendChatMessageDTO (required):
+  Future<Response> sendMessageWithHttpInfo(SendChatMessageDTO sendChatMessageDTO,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/user/chat';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sendChatMessageDTO;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [SendChatMessageDTO] sendChatMessageDTO (required):
+  Future<ChatMessageDTO?> sendMessage(SendChatMessageDTO sendChatMessageDTO,) async {
+    final response = await sendMessageWithHttpInfo(sendChatMessageDTO,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatMessageDTO',) as ChatMessageDTO;
     
     }
     return null;
@@ -357,8 +589,8 @@ class UserControllerApi {
   /// Performs an HTTP 'GET /api/user/questions' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [String] filter:
-  Future<Response> viewQuestionsWithHttpInfo({ String? filter, }) async {
+  /// * [bool] answered:
+  Future<Response> viewQuestionsWithHttpInfo({ bool? answered, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/user/questions';
 
@@ -369,8 +601,8 @@ class UserControllerApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    if (filter != null) {
-      queryParams.addAll(_queryParams('', 'filter', filter));
+    if (answered != null) {
+      queryParams.addAll(_queryParams('', 'answered', answered));
     }
 
     const contentTypes = <String>[];
@@ -389,9 +621,9 @@ class UserControllerApi {
 
   /// Parameters:
   ///
-  /// * [String] filter:
-  Future<PagedQuestionDTO?> viewQuestions({ String? filter, }) async {
-    final response = await viewQuestionsWithHttpInfo( filter: filter, );
+  /// * [bool] answered:
+  Future<PagedQuestionDTO?> viewQuestions({ bool? answered, }) async {
+    final response = await viewQuestionsWithHttpInfo( answered: answered, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

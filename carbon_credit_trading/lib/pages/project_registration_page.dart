@@ -117,7 +117,6 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
       cert: _certificates,
       price: _price,
       projectImages: _projectImages,
-      // creditImages: _creditImages.map((image) => int.parse(image)).toList(),  //TODO: add creditsImages field
       methodPayment: _selectedPaymentMethodList.join(","),
     ));
   }

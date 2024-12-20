@@ -13,7 +13,7 @@ class QuestionApprovedTab extends StatelessWidget {
   Future<List<QuestionDTO>> viewAllQuestions() async {
     try {
       final questions = await userControllerApi
-          .viewQuestions(); //TODO: filtered by status: approved
+          .viewQuestions(answered: true);
 
       if (questions != null) {
         return questions.content;

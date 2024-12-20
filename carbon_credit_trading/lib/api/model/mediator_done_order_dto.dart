@@ -16,6 +16,9 @@ class MediatorDoneOrderDTO {
     this.contractFile,
     this.certImages = const [],
     this.paymentBillFile,
+    this.contractSignDate,
+    this.payDate,
+    this.deliveryDate,
     this.message,
   });
 
@@ -43,6 +46,30 @@ class MediatorDoneOrderDTO {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
+  DateTime? contractSignDate;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? payDate;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? deliveryDate;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? message;
 
   @override
@@ -50,6 +77,9 @@ class MediatorDoneOrderDTO {
     other.contractFile == contractFile &&
     _deepEquality.equals(other.certImages, certImages) &&
     other.paymentBillFile == paymentBillFile &&
+    other.contractSignDate == contractSignDate &&
+    other.payDate == payDate &&
+    other.deliveryDate == deliveryDate &&
     other.message == message;
 
   @override
@@ -58,10 +88,13 @@ class MediatorDoneOrderDTO {
     (contractFile == null ? 0 : contractFile!.hashCode) +
     (certImages.hashCode) +
     (paymentBillFile == null ? 0 : paymentBillFile!.hashCode) +
+    (contractSignDate == null ? 0 : contractSignDate!.hashCode) +
+    (payDate == null ? 0 : payDate!.hashCode) +
+    (deliveryDate == null ? 0 : deliveryDate!.hashCode) +
     (message == null ? 0 : message!.hashCode);
 
   @override
-  String toString() => 'MediatorDoneOrderDTO[contractFile=$contractFile, certImages=$certImages, paymentBillFile=$paymentBillFile, message=$message]';
+  String toString() => 'MediatorDoneOrderDTO[contractFile=$contractFile, certImages=$certImages, paymentBillFile=$paymentBillFile, contractSignDate=$contractSignDate, payDate=$payDate, deliveryDate=$deliveryDate, message=$message]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -75,6 +108,21 @@ class MediatorDoneOrderDTO {
       json[r'paymentBillFile'] = this.paymentBillFile;
     } else {
       json[r'paymentBillFile'] = null;
+    }
+    if (this.contractSignDate != null) {
+      json[r'contractSignDate'] = this.contractSignDate!.toUtc().toIso8601String();
+    } else {
+      json[r'contractSignDate'] = null;
+    }
+    if (this.payDate != null) {
+      json[r'payDate'] = this.payDate!.toUtc().toIso8601String();
+    } else {
+      json[r'payDate'] = null;
+    }
+    if (this.deliveryDate != null) {
+      json[r'deliveryDate'] = this.deliveryDate!.toUtc().toIso8601String();
+    } else {
+      json[r'deliveryDate'] = null;
     }
     if (this.message != null) {
       json[r'message'] = this.message;
@@ -108,6 +156,9 @@ class MediatorDoneOrderDTO {
             ? (json[r'certImages'] as Iterable).cast<int>().toList(growable: false)
             : const [],
         paymentBillFile: mapValueOfType<int>(json, r'paymentBillFile'),
+        contractSignDate: mapDateTime(json, r'contractSignDate', r''),
+        payDate: mapDateTime(json, r'payDate', r''),
+        deliveryDate: mapDateTime(json, r'deliveryDate', r''),
         message: mapValueOfType<String>(json, r'message'),
       );
     }

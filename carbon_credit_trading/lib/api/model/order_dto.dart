@@ -25,6 +25,9 @@ class OrderDTO {
     this.project,
     this.processBy,
     this.createdBy,
+    this.contractSignDate,
+    this.payDate,
+    this.deliveryDate,
   });
 
   ///
@@ -111,6 +114,30 @@ class OrderDTO {
   ///
   int? createdBy;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? contractSignDate;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? payDate;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? deliveryDate;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is OrderDTO &&
     other.orderId == orderId &&
@@ -124,7 +151,10 @@ class OrderDTO {
     _deepEquality.equals(other.certImages, certImages) &&
     other.project == project &&
     other.processBy == processBy &&
-    other.createdBy == createdBy;
+    other.createdBy == createdBy &&
+    other.contractSignDate == contractSignDate &&
+    other.payDate == payDate &&
+    other.deliveryDate == deliveryDate;
 
   @override
   int get hashCode =>
@@ -140,10 +170,13 @@ class OrderDTO {
     (certImages.hashCode) +
     (project == null ? 0 : project!.hashCode) +
     (processBy == null ? 0 : processBy!.hashCode) +
-    (createdBy == null ? 0 : createdBy!.hashCode);
+    (createdBy == null ? 0 : createdBy!.hashCode) +
+    (contractSignDate == null ? 0 : contractSignDate!.hashCode) +
+    (payDate == null ? 0 : payDate!.hashCode) +
+    (deliveryDate == null ? 0 : deliveryDate!.hashCode);
 
   @override
-  String toString() => 'OrderDTO[orderId=$orderId, creditAmount=$creditAmount, unit=$unit, price=$price, total=$total, status=$status, paymentBillFile=$paymentBillFile, contractFile=$contractFile, certImages=$certImages, project=$project, processBy=$processBy, createdBy=$createdBy]';
+  String toString() => 'OrderDTO[orderId=$orderId, creditAmount=$creditAmount, unit=$unit, price=$price, total=$total, status=$status, paymentBillFile=$paymentBillFile, contractFile=$contractFile, certImages=$certImages, project=$project, processBy=$processBy, createdBy=$createdBy, contractSignDate=$contractSignDate, payDate=$payDate, deliveryDate=$deliveryDate]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -203,6 +236,21 @@ class OrderDTO {
     } else {
       json[r'createdBy'] = null;
     }
+    if (this.contractSignDate != null) {
+      json[r'contractSignDate'] = this.contractSignDate!.toUtc().toIso8601String();
+    } else {
+      json[r'contractSignDate'] = null;
+    }
+    if (this.payDate != null) {
+      json[r'payDate'] = this.payDate!.toUtc().toIso8601String();
+    } else {
+      json[r'payDate'] = null;
+    }
+    if (this.deliveryDate != null) {
+      json[r'deliveryDate'] = this.deliveryDate!.toUtc().toIso8601String();
+    } else {
+      json[r'deliveryDate'] = null;
+    }
     return json;
   }
 
@@ -239,6 +287,9 @@ class OrderDTO {
         project: mapValueOfType<int>(json, r'project'),
         processBy: mapValueOfType<int>(json, r'processBy'),
         createdBy: mapValueOfType<int>(json, r'createdBy'),
+        contractSignDate: mapDateTime(json, r'contractSignDate', r''),
+        payDate: mapDateTime(json, r'payDate', r''),
+        deliveryDate: mapDateTime(json, r'deliveryDate', r''),
       );
     }
     return null;

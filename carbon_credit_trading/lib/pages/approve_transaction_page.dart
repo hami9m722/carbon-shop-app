@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/extensions/datetime.dart';
 import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
 import 'package:carbon_credit_trading/services/service.dart';
@@ -106,7 +107,6 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
     }
 
     void approveOrder() async {
-      // TODO: review fields
       await mediatorAuditControllerApi.doneProcessOrder(
           widget.transaction.transactionId,
           MediatorDoneOrderDTO(
@@ -117,6 +117,9 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
             certImages:
                 await Future.wait(creditImages.map((e) => e.upload()).toList()),
             paymentBillFile: await billImage?.upload(),
+            contractSignDate: _contractSignDateController.text.toDateTime(),
+            payDate: _payDateController.text.toDateTime(),
+            deliveryDate: _deliveryDateController.text.toDateTime(),
             message: "Transaction approved",
           ));
     }
