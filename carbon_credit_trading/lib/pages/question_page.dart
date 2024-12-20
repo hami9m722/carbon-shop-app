@@ -1,4 +1,4 @@
-import 'package:carbon_credit_trading/models/message.dart';
+import 'package:carbon_credit_trading/pages/question_details_page.dart';
 import 'package:carbon_credit_trading/services/format.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
@@ -42,6 +42,13 @@ class _QuestionPageState extends State<QuestionPage> {
         children: [
           Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  'Tìm hiểu thêm về tín chỉ Carbon',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -119,7 +126,15 @@ class _QuestionPageState extends State<QuestionPage> {
                                 ),
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const QuestionDetailPage(),
+                                ),
+                              );
+                            },
                           );
                         },
                         separatorBuilder: (context, index) => const Divider(
