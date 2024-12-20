@@ -21,6 +21,15 @@ class _SearchTabState extends State<SearchTab> {
   String _searchQuery = '';
   bool _isSearching = false;
 
+  Future<List<Project>> _getProjects() async {
+    var paged = await buyerControllerApi.viewAllProject3(
+        status: 'APPROVED', filter: _searchQuery);
+    return Future.wait((await buyerControllerApi.viewAllProject3(
+            status: 'APPROVED', filter: _searchQuery))!
+        .content
+        .map((dto) => dto.toProject()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,51 +82,50 @@ class _SearchTabState extends State<SearchTab> {
           ),
         ],
       ),
-      body: FutureBuilder<List<Project>>(
-          future: () async {
-            var paged = await buyerControllerApi
-                .viewAllProject3(status: 'APPROVED', filter: _searchQuery);
-            return await Future.wait(paged!.content.map((dto) => dto.toProject()));
-          } as Future<List<Project>>,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('Có lỗi xảy ra khi tải dự án'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                  child: Text(
-                'Không có dự án nào bị hủy',
-                textAlign: TextAlign.center,
-                softWrap: true,
-                style: AppTextStyles.normalText,
-              ));
-            } else {
-              var filteredProjects =
-                  snapshot.data?.toList().search(_searchQuery) ?? [];
-              return Container(
-                color: AppColors.greyBackGround,
-                child: filteredProjects.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'Không có dự án nào',
-                          style: AppTextStyles.normalText,
-                        ),
-                      )
-                    : ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: filteredProjects.length,
-                        itemBuilder: (context, index) {
-                          final project = filteredProjects[index];
-                          return ProjectItem(
-                            project: project,
-                            searchQuery: _searchQuery,
-                          );
-                        },
-                      ),
-              );
-            }
-          }),
+      body: FutureBuilder<List<Project>>(future: () async {
+        return Future.wait((await buyerControllerApi.viewAllProject3(
+                status: 'APPROVED', filter: _searchQuery))!
+            .content
+            .map((dto) => dto.toProject()));
+      }(), builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Có lỗi xảy ra khi tải dự án'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+              child: Text(
+            'Không có dự án nào bị hủy',
+            textAlign: TextAlign.center,
+            softWrap: true,
+            style: AppTextStyles.normalText,
+          ));
+        } else {
+          var filteredProjects =
+              snapshot.data?.toList().search(_searchQuery) ?? [];
+          return Container(
+            color: AppColors.greyBackGround,
+            child: filteredProjects.isEmpty
+                ? const Center(
+                    child: Text(
+                      'Không có dự án nào',
+                      style: AppTextStyles.normalText,
+                    ),
+                  )
+                : ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: filteredProjects.length,
+                    itemBuilder: (context, index) {
+                      final project = filteredProjects[index];
+                      return ProjectItem(
+                        project: project,
+                        searchQuery: _searchQuery,
+                      );
+                    },
+                  ),
+          );
+        }
+      }),
     );
   }
 }
