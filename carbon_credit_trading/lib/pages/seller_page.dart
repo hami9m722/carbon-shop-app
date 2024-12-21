@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/pages/chart_statistic_page.dart';
 import 'package:carbon_credit_trading/pages/contact_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/pages/projects_seller_page.dart';
@@ -228,7 +229,13 @@ class SellerPage extends StatelessWidget {
                           Icons.bar_chart,
                           'Thống kê doanh thu',
                           onTapped: () {
-                            // Hành động cho thống kê doanh thu nếu cần
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ChartStatisticPage(),
+                              ),
+                            );
                           },
                         ),
                       ),

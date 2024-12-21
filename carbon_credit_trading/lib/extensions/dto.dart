@@ -28,7 +28,7 @@ extension ProjectDTOMapper on ProjectDTO {
       projectImages: projectImages,
       //creditImages: List<String>.from(projectData.creditImages ?? []),
       paymentMethods: List<String>.from(methodPayment?.split(',') ?? []),
-      //status: projectData.status ?? '',
+      status: status?.toString().split('.').last ?? '',
       //rating: projectData.rating,
       company: company,
       companyUser: companyUser!,

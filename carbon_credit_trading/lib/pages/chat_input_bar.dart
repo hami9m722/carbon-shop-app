@@ -5,7 +5,6 @@ import 'package:carbon_credit_trading/widgets/add_video_button.dart';
 import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
 import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../theme/colors.dart';

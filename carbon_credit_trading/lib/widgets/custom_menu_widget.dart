@@ -1,5 +1,6 @@
 import 'package:carbon_credit_trading/pages/business_detail_page.dart';
 import 'package:carbon_credit_trading/pages/setting_page.dart';
+import 'package:carbon_credit_trading/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class CustomMenuWidget {
@@ -85,7 +86,12 @@ class CustomMenuWidget {
             width: double.infinity,
             child: TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.transparent,

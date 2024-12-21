@@ -7,7 +7,6 @@ import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 
 /* save all project info (
 projectImages,
@@ -80,7 +79,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   }
 
   void _nextPage() {
-    if (_currentIndex < 2) {
+    if (_currentIndex < 11) {
       setState(() {
         _currentIndex++;
       });
@@ -116,7 +115,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
       creditAmount: int.tryParse(_availableCredits),
       cert: _certificates,
       price: _price,
-      projectImages: _projectImages,
+      projectImages: _creditImages,
       methodPayment: _selectedPaymentMethodList.join(","),
     ));
   }
@@ -139,22 +138,21 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         children: [
           AddInfoProjectPage(
             initialProject: Project(
-              projectName: _projectName,
-              startDate: _startDate,
-              endDate: _endDate,
-              location: _location,
-              scale: _scale,
-              scope: _scope,
-              partners: _partners,
-              issuer: _issuer,
-              availableCredits: _availableCredits,
-              certificates: _certificates,
-              price: _price,
-              paymentMethods: _selectedPaymentMethodList,
-              status: 'pending',
-              companyUser: null,
-              company: null
-            ),
+                projectName: _projectName,
+                startDate: _startDate,
+                endDate: _endDate,
+                location: _location,
+                scale: _scale,
+                scope: _scope,
+                partners: _partners,
+                issuer: _issuer,
+                availableCredits: _availableCredits,
+                certificates: _certificates,
+                price: _price,
+                paymentMethods: _selectedPaymentMethodList,
+                status: 'pending',
+                companyUser: null,
+                company: null),
             onNext: _nextPage,
             onProjectDataChanged: (data) {
               setState(() {
@@ -173,23 +171,23 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
               });
             },
           ),
-          ProjectImageUploadPage(
-            initialImages: _projectImages,
-            onPrevious: _previousPage,
-            onNext: (images) async {
-              List<int> imageIds = [];
-              for (final image in images) {
-                if (image is File) {
-                  final imageId = await fileControllerApi.uploadFile(image);
-                  imageIds.add(imageId);
-                }
-              }
-              setState(() {
-                _projectImages = imageIds;
-              });
-              _nextPage();
-            },
-          ),
+          // ProjectImageUploadPage(
+          //   initialImages: _projectImages,
+          //   onPrevious: _previousPage,
+          //   onNext: (images) async {
+          //     List<int> imageIds = [];
+          //     for (final image in images) {
+          //       if (image is File) {
+          //         final imageId = await fileControllerApi.uploadFile(image);
+          //         imageIds.add(imageId);
+          //       }
+          //     }
+          //     setState(() {
+          //       _projectImages = imageIds;
+          //     });
+          //     _nextPage();
+          //   },
+          // ),
           CreditImageUploadPage(
             initialImages: _creditImages,
             onPrevious: _previousPage,

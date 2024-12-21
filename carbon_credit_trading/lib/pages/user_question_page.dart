@@ -57,11 +57,11 @@ class UserQuestionPage extends StatelessWidget {
                     leading: CircleAvatar(
                       backgroundColor:
                           question.answer != null ? Colors.green : Colors.red,
+                      radius: 30,
                       child: Icon(
                         question.answer != null ? Icons.check : Icons.close,
                         color: Colors.white,
                       ),
-                      radius: 30,
                     ),
                     title: Text(
                       question.question!,

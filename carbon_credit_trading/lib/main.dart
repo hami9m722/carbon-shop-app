@@ -1,10 +1,4 @@
-import 'package:carbon_credit_trading/pages/intermediary_question_page.dart';
 import 'package:carbon_credit_trading/pages/login_page.dart';
-import 'package:carbon_credit_trading/pages/pending_account_page.dart';
-import 'package:carbon_credit_trading/pages/profile_page.dart';
-import 'package:carbon_credit_trading/pages/question_page.dart';
-import 'package:carbon_credit_trading/pages/transaction_approved_tab.dart';
-import 'package:carbon_credit_trading/pages/transaction_pending_tab.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -35,7 +35,6 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
   }
 
   void rejectQuestion() async {
-    // TODO: set status to rejected
   }
 
   @override

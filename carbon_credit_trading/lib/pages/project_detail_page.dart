@@ -2,7 +2,6 @@ import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/project.dart';
-import 'package:carbon_credit_trading/pages/chat_page.dart';
 import 'package:carbon_credit_trading/pages/feedback_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
@@ -65,6 +64,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     );
   }
 
+  void saveFavoriteProject() async {}
+
   @override
   Widget build(BuildContext context) {
     var projectId = widget.project.projectId;
@@ -99,16 +100,20 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                   ),
                   const SizedBox(height: 8),
                   customRichText(
-                      title: 'Tên dự án: ',
-                      value: 'REDD+ Bảo tồn rừng ngập mặn Thái Lan'),
-                  customRichText(title: 'Vị trí: ', value: 'Vịnh Thái Lan'),
-                  customRichText(title: 'Quy mô: ', value: '20,000 ha'),
-                  customRichText(title: 'Thời gian: ', value: '2021 - 2041'),
+                      title: 'Tên dự án: ', value: widget.project.projectName),
                   customRichText(
-                      title: 'Phạm vi: ',
+                      title: 'Vị trí: ', value: widget.project.location),
+                  customRichText(
+                      title: 'Quy mô: ', value: widget.project.scale),
+                  customRichText(
+                      title: 'Thời gian: ',
                       value:
-                          'Giảm 60,000 tấn CO2/năm, bảo vệ hệ sinh thái ven biển'),
-                  customRichText(title: 'Số lượng cần bán: ', value: '100,000'),
+                          '${widget.project.startDate} - ${widget.project.endDate}'),
+                  customRichText(
+                      title: 'Phạm vi: ', value: widget.project.scope),
+                  customRichText(
+                      title: 'Số lượng cần bán: ',
+                      value: widget.project.availableCredits),
                   const SizedBox(height: 25),
 
                   const Text(
@@ -118,19 +123,12 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                   const SizedBox(height: 8),
                   customRichText(
                       title: 'Tiêu chuẩn tín chỉ: ',
-                      value: 'VCS (Verified Carbon Standard)'),
-                  customRichText(title: 'Mã tín chỉ: ', value: 'VCS-AB123456'),
-                  customRichText(
-                      title: 'Ngày phát hành: ', value: '10/09/2024'),
+                      value: widget.project.certificates),
                   customRichText(
                       title: 'Thời gian hiệu lực: ',
                       value: 'Vĩnh viễn (sau khi đã giao dịch)'),
                   customRichText(
-                      title: 'Người nắm giữ tín chỉ: ',
-                      value: 'Green Earth Ventures'),
-                  customRichText(
-                      title: 'Chứng nhận bởi: ',
-                      value: 'TƯV SÜD (Tổ chức giám sát độc lập)'),
+                      title: 'Đối tác: ', value: widget.project.partners),
                   const SizedBox(height: 25),
 
                   const Text(
@@ -138,48 +136,51 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   customRichText(
-                      title: '• Tổ chức chuẩn bị: ',
-                      value:
-                          'TƯV SÜD đã xác minh dự án đáp ứng các tiêu chí của VCS và cấp tín chỉ carbon cho dự án này.'),
+                      title: '• Giá bán: ',
+                      value: "${widget.project.price} USD"),
                   customRichText(
-                      title: '• Công nghệ hiện tại: ',
-                      value:
-                          'Sử dụng công nghệ vệ tinh để theo dõi diện tích rừng và đảm bảo rừng không bị khai thác.'),
+                    title: '• Phương thức thanh toán: ',
+                    value: widget.project.paymentMethods.join(', '),
+                  ),
                   const SizedBox(height: 25),
 
                   const Text(
                     'Doanh nghiệp bảo trợ:',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
-                  const Text(
-                    'Renewable Biomass Energy Ventures',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.greenButton),
+                  Text(
+                    widget.project.issuer,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.greenButton,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   if (widget.previousPage == '')
                     businessOption == BusinessOption.buyer
                         ? // check userID != sellerCompany
                         buildBuyerUI()
-                        : widget.project.status == 'pending'
+                        : widget.project.status == 'PENDING'
                             ? buildPendingUI(context)
                             : Align(
                                 alignment: Alignment.bottomRight,
-                                child: widget.project.status == 'approved'
-                                    ? Container(
-                                        decoration: const BoxDecoration(
-                                          color: AppColors.greenButton,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: IconButton(
-                                          icon: const Icon(Icons.archive,
-                                              color: Colors.white),
-                                          onPressed: () {},
-                                        ),
-                                      )
-                                    : widget.project.status == 'canceled'
+                                child: widget.project.status == 'APPROVED'
+                                    ? widget.project.companyUser?.userId ==
+                                            currentUserId
+                                        ? Container(
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.greenButton,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.archive,
+                                                  color: Colors.white),
+                                              onPressed: () {},
+                                            ),
+                                          )
+                                        : const SizedBox()
+                                    : widget.project.status == 'REJECTED'
                                         ? Container(
                                             decoration: const BoxDecoration(
                                               color: AppColors.greenButton,
@@ -188,7 +189,13 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                                             child: IconButton(
                                               icon: const Icon(Icons.replay,
                                                   color: Colors.white),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const ProjectRegistrationPage()));
+                                              },
                                             ),
                                           )
                                         : const SizedBox()),
@@ -198,7 +205,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
             ),
             businessOption == BusinessOption.mediator
                 ? buildMediatorFooter()
-                : buildBuyerFooter(context, projectId)
+                : businessOption == BusinessOption.buyer
+                    ? buildBuyerFooter(context, projectId)
+                    : const SizedBox()
           ],
         ),
       ),
@@ -345,15 +354,15 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           child: IconButton(
             icon: const Icon(Icons.message_outlined, color: Colors.white),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    var companyUser = widget.project.companyUser;
-                    return ChatPage(chatWithUserId: companyUser!.userId!, chatWithUserName: companyUser.name!, chatWithUserAvatar: companyUser.avatar!.toFilePath(),);
-                  },
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const ChatPage(
+              //         contactName:
+              //             'Renewable Biomass Energy Ventures',
+              //         contactAvatar: ''),
+              //   ),
+              // );
             },
           ),
         ),

@@ -137,7 +137,8 @@ class _ContactPageState extends State<ContactPage> {
 
           Expanded(
             child: FutureBuilder<List<Message>>(future: () async {
-              var pagedContactItemDTO = await userControllerApi.getConversations();
+              var pagedContactItemDTO =
+                  await userControllerApi.getConversations();
               return await pagedContactItemDTO!.toMessages();
             }(), builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -145,14 +146,14 @@ class _ContactPageState extends State<ContactPage> {
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   itemCount: messages?.length,
                   itemBuilder: (context, index) {
                     final message = messages?[index];
 
                     return ListTile(
                       contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15),
+                          const EdgeInsets.symmetric(horizontal: 15),
                       leading: CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(message!.receiverAvatar),
@@ -165,7 +166,7 @@ class _ContactPageState extends State<ContactPage> {
                             fontSize: 22,
                           ),
                           children: highlightMatches(
-                              message!.receiverName,
+                              message.receiverName,
                               searchController.text,
                               showPeopleTab
                                   ? Colors.yellow
@@ -181,12 +182,12 @@ class _ContactPageState extends State<ContactPage> {
                             child: RichText(
                               text: TextSpan(
                                 style: const TextStyle(
-                                  fontWeight:  FontWeight.w600,
+                                  fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                   fontSize: 18,
                                 ),
                                 children: highlightMatches(
-                                message.content ?? "",
+                                    message.content ?? "",
                                     searchController.text,
                                     showPeopleTab
                                         ? Colors.transparent

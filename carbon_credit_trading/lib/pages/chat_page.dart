@@ -421,8 +421,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: Image.file(
-                                      File(url),
+                                    child: Image.network(
+                                      url,
                                       fit: BoxFit.cover,
                                       width: 200,
                                       height: 200,
