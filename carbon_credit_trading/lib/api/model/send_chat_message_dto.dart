@@ -15,6 +15,9 @@ class SendChatMessageDTO {
   SendChatMessageDTO({
     this.content,
     this.fileId,
+    this.imageId,
+    this.videoId,
+    this.audioId,
     this.receiver,
   });
 
@@ -40,12 +43,39 @@ class SendChatMessageDTO {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
+  int? imageId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? videoId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? audioId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? receiver;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendChatMessageDTO &&
     other.content == content &&
     other.fileId == fileId &&
+    other.imageId == imageId &&
+    other.videoId == videoId &&
+    other.audioId == audioId &&
     other.receiver == receiver;
 
   @override
@@ -53,10 +83,13 @@ class SendChatMessageDTO {
     // ignore: unnecessary_parenthesis
     (content == null ? 0 : content!.hashCode) +
     (fileId == null ? 0 : fileId!.hashCode) +
+    (imageId == null ? 0 : imageId!.hashCode) +
+    (videoId == null ? 0 : videoId!.hashCode) +
+    (audioId == null ? 0 : audioId!.hashCode) +
     (receiver == null ? 0 : receiver!.hashCode);
 
   @override
-  String toString() => 'SendChatMessageDTO[content=$content, fileId=$fileId, receiver=$receiver]';
+  String toString() => 'SendChatMessageDTO[content=$content, fileId=$fileId, imageId=$imageId, videoId=$videoId, audioId=$audioId, receiver=$receiver]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -69,6 +102,21 @@ class SendChatMessageDTO {
       json[r'fileId'] = this.fileId;
     } else {
       json[r'fileId'] = null;
+    }
+    if (this.imageId != null) {
+      json[r'imageId'] = this.imageId;
+    } else {
+      json[r'imageId'] = null;
+    }
+    if (this.videoId != null) {
+      json[r'videoId'] = this.videoId;
+    } else {
+      json[r'videoId'] = null;
+    }
+    if (this.audioId != null) {
+      json[r'audioId'] = this.audioId;
+    } else {
+      json[r'audioId'] = null;
     }
     if (this.receiver != null) {
       json[r'receiver'] = this.receiver;
@@ -99,6 +147,9 @@ class SendChatMessageDTO {
       return SendChatMessageDTO(
         content: mapValueOfType<String>(json, r'content'),
         fileId: mapValueOfType<int>(json, r'fileId'),
+        imageId: mapValueOfType<int>(json, r'imageId'),
+        videoId: mapValueOfType<int>(json, r'videoId'),
+        audioId: mapValueOfType<int>(json, r'audioId'),
         receiver: mapValueOfType<int>(json, r'receiver'),
       );
     }

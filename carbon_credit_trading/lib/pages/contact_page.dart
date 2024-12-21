@@ -138,8 +138,8 @@ class _ContactPageState extends State<ContactPage> {
           Expanded(
             child: FutureBuilder<List<Message>>(future: () async {
               var pagedContactItemDTO = await userControllerApi.getConversations();
-              return await pagedContactItemDTO?.toMessages();
-            } as Future<List<Message>>, builder: (context, snapshot) {
+              return await pagedContactItemDTO!.toMessages();
+            }(), builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final messages = snapshot.data;
                 return ListView.builder(
@@ -186,7 +186,7 @@ class _ContactPageState extends State<ContactPage> {
                                   fontSize: 18,
                                 ),
                                 children: highlightMatches(
-                                message.content!,
+                                message.content ?? "",
                                     searchController.text,
                                     showPeopleTab
                                         ? Colors.transparent

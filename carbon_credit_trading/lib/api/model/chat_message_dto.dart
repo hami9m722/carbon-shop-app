@@ -16,6 +16,9 @@ class ChatMessageDTO {
     this.id,
     this.content,
     this.fileId,
+    this.imageId,
+    this.videoId,
+    this.audioId,
     required this.conversationId,
     this.sender,
     this.receiver,
@@ -45,6 +48,30 @@ class ChatMessageDTO {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   int? fileId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? imageId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? videoId;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? audioId;
 
   String conversationId;
 
@@ -77,6 +104,9 @@ class ChatMessageDTO {
     other.id == id &&
     other.content == content &&
     other.fileId == fileId &&
+    other.imageId == imageId &&
+    other.videoId == videoId &&
+    other.audioId == audioId &&
     other.conversationId == conversationId &&
     other.sender == sender &&
     other.receiver == receiver &&
@@ -88,13 +118,16 @@ class ChatMessageDTO {
     (id == null ? 0 : id!.hashCode) +
     (content == null ? 0 : content!.hashCode) +
     (fileId == null ? 0 : fileId!.hashCode) +
+    (imageId == null ? 0 : imageId!.hashCode) +
+    (videoId == null ? 0 : videoId!.hashCode) +
+    (audioId == null ? 0 : audioId!.hashCode) +
     (conversationId.hashCode) +
     (sender == null ? 0 : sender!.hashCode) +
     (receiver == null ? 0 : receiver!.hashCode) +
     (createdAt == null ? 0 : createdAt!.hashCode);
 
   @override
-  String toString() => 'ChatMessageDTO[id=$id, content=$content, fileId=$fileId, conversationId=$conversationId, sender=$sender, receiver=$receiver, createdAt=$createdAt]';
+  String toString() => 'ChatMessageDTO[id=$id, content=$content, fileId=$fileId, imageId=$imageId, videoId=$videoId, audioId=$audioId, conversationId=$conversationId, sender=$sender, receiver=$receiver, createdAt=$createdAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -112,6 +145,21 @@ class ChatMessageDTO {
       json[r'fileId'] = this.fileId;
     } else {
       json[r'fileId'] = null;
+    }
+    if (this.imageId != null) {
+      json[r'imageId'] = this.imageId;
+    } else {
+      json[r'imageId'] = null;
+    }
+    if (this.videoId != null) {
+      json[r'videoId'] = this.videoId;
+    } else {
+      json[r'videoId'] = null;
+    }
+    if (this.audioId != null) {
+      json[r'audioId'] = this.audioId;
+    } else {
+      json[r'audioId'] = null;
     }
       json[r'conversationId'] = this.conversationId;
     if (this.sender != null) {
@@ -154,6 +202,9 @@ class ChatMessageDTO {
         id: mapValueOfType<int>(json, r'id'),
         content: mapValueOfType<String>(json, r'content'),
         fileId: mapValueOfType<int>(json, r'fileId'),
+        imageId: mapValueOfType<int>(json, r'imageId'),
+        videoId: mapValueOfType<int>(json, r'videoId'),
+        audioId: mapValueOfType<int>(json, r'audioId'),
         conversationId: mapValueOfType<String>(json, r'conversationId')!,
         sender: mapValueOfType<int>(json, r'sender'),
         receiver: mapValueOfType<int>(json, r'receiver'),

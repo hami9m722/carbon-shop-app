@@ -4,20 +4,17 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/extensions/dto.dart';
+import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/message.dart';
+import 'package:carbon_credit_trading/pages/chat_input_bar.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/services/utils.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
-import 'package:carbon_credit_trading/widgets/add_video_button.dart';
-import 'package:carbon_credit_trading/widgets/audio_recorder_button.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
-import 'package:carbon_credit_trading/widgets/image_picker_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:uuid/uuid.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 
 //
@@ -40,11 +37,6 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
-  final TextEditingController _controller = TextEditingController();
-  final Uuid uuid = const Uuid();
-  bool _isSendButtonVisible = false;
-  bool _isOptionsVisible = false;
-  Message? _replyMessage;
   final ScrollController _scrollController = ScrollController();
   final Map<int, GlobalKey> _messageKeys = {};
   final Set<int> loadedMessageIds = {};
@@ -54,7 +46,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_checkText);
 
     _startPollingNewMessage();
     //_markMessageAsRead(); //if receiver == you
@@ -85,86 +76,58 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     }
   }
 
-  void _checkText() {
-    setState(() {
-      _isSendButtonVisible = _controller.text.isNotEmpty;
-    });
-  }
-
-  Future<void> _sendTextMessage() async {
-    if (_controller.text.isNotEmpty) {
+  Future<void> _sendTextMessage(String text) async {
+    if (text.isNotEmpty) {
       var dto = await userControllerApi.sendMessage(SendChatMessageDTO(
-        content: _controller.text.trim(),
+        content: text.trim(),
         receiver: widget.chatWithUserId,
       ));
       setState(() {
         widget.conversationId ??= dto?.conversationId;
-        _controller.clear();
-        _replyMessage = null;
       });
     }
   }
 
-  Future<void> _sendMediaMessage({
-    List<String>? imageUrls,
-    String? videoUrl,
-    String? audioUrl,
-  }) async {
-    if (audioUrl != null) {
-      final audioDuration = await _getAudioDuration(audioUrl);
-      if (audioDuration.inSeconds > 0 && audioDuration.inSeconds < 60) {
-        setState(() {
-          // mockMessages.add(
-          //   Message(
-          //       messageId: "msg${uuid.v4()}",
-          //       senderName: 'You',
-          //       senderAvatar: 'https://example.com/your_avatar.jpg',
-          //       receiverName: widget.contactName,
-          //       receiverAvatar: widget.contactAvatar,
-          //       audioUrl: audioUrl,
-          //       timestamp: DateTime.now(),
-          //       isRead: false,
-          //       replyTo: _replyMessage),
-          // );
-        });
-      } else {
-        showErrorDialog(
-            'Thời gian ghi âm phải lớn hơn 0 giây và nhỏ hơn 60 giây.');
-      }
-    } else {
-      setState(() {
-        // mockMessages.add(
-        //   Message(
-        //       messageId: "msg${uuid.v4()}",
-        //       senderName: 'You',
-        //       senderAvatar: 'https://example.com/your_avatar.jpg',
-        //       receiverName: widget.contactName,
-        //       receiverAvatar: widget.contactAvatar,
-        //       imageUrls: imageUrls,
-        //       videoUrl: videoUrl,
-        //       timestamp: DateTime.now(),
-        //       isRead: false,
-        //       replyTo: _replyMessage),
-        // );
-      });
-    }
-  }
-
-  void _toggleOptions() {
+  Future<void> onAudioRecorded(String audioUrl) async {
+    var file = File(audioUrl);
+    var id = await fileControllerApi.uploadFile(file);
+    var dto = await userControllerApi.sendMessage(SendChatMessageDTO(
+      content: '',
+      audioId: id,
+      receiver: widget.chatWithUserId,
+    ));
     setState(() {
-      _isOptionsVisible = !_isOptionsVisible;
-      FocusScope.of(context).unfocus();
+      widget.conversationId ??= dto?.conversationId;
     });
   }
 
-  void onImageselected(List<File> images) {
-    List<String> imageUrls = images.map((image) => image.path).toList();
+  Future<void> onImageSelected(List<File> images) async {
+    var ids = await Future.wait(
+        images.map((image) => fileControllerApi.uploadFile(image)));
 
-    _sendMediaMessage(imageUrls: imageUrls);
+    var messages = await Future.wait(
+        ids.map((id) => userControllerApi.sendMessage(SendChatMessageDTO(
+              content: '',
+              imageId: id,
+              receiver: widget.chatWithUserId,
+            ))));
+
+    setState(() {
+      widget.conversationId ??= messages.firstOrNull?.conversationId;
+    });
   }
 
   void onVideoSelected(File video) {
-    _sendMediaMessage(videoUrl: video.path);
+    fileControllerApi.uploadFile(video).then((id) async {
+      var dto = await userControllerApi.sendMessage(SendChatMessageDTO(
+        content: '',
+        videoId: id,
+        receiver: widget.chatWithUserId,
+      ));
+      setState(() {
+        widget.conversationId ??= dto?.conversationId;
+      });
+    });
   }
 
   Future<Duration> _getAudioDuration(String audioUrl) async {
@@ -210,8 +173,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     _timer?.cancel();
-    _controller.removeListener(_checkText);
-    _controller.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -237,214 +198,127 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                 ],
               ),
             ),
-            body: FutureBuilder<List<Message>>(future: () async {
-              if (widget.conversationId == null) {
-                return [] as List<Message>;
-              }
-              var conversationMessages = await userControllerApi
-                  .getConversationMessages(widget.conversationId!);
-              conversationMessages?.content.forEach((message) {
-                loadedMessageIds.add(message.id!);
-              });
-              return await conversationMessages!.toMessages();
-            }(), builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasData) {
-                final conversationMessages = snapshot.data;
-                return buildMessageList(conversationMessages!);
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
+            body: buildMessageList(),
           ),
         ));
   }
 
-  Column buildMessageList(List<Message> conversationMessages) {
+  Column buildMessageList() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(
-          child: ListView.builder(
-            reverse: true,
-            physics: const BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: groupMessagesByDate(conversationMessages).length,
-            itemBuilder: (context, index) {
-              final groupedMessages = groupMessagesByDate(conversationMessages);
+        FutureBuilder<List<Message>>(future: () async {
+          if (widget.conversationId == null) {
+            return <Message>[];
+          }
+          var conversationMessages = await userControllerApi
+              .getConversationMessages(widget.conversationId!);
+          conversationMessages?.content.forEach((message) {
+            loadedMessageIds.add(message.id!);
+          });
+          return await conversationMessages!.toMessages();
+        }(), builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasData) {
+            final conversationMessages = snapshot.data?.reversed.toList();
+            return Flexible(
+              child: ListView.builder(
+                reverse: true,
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: groupMessagesByDate(conversationMessages!).length,
+                itemBuilder: (context, index) {
+                  final groupedMessages =
+                      groupMessagesByDate(conversationMessages);
 
-              final dates = groupedMessages.keys.toList().reversed.toList();
+                  final dates = groupedMessages.keys.toList().reversed.toList();
 
-              final date = dates.elementAt(index);
+                  final date = dates.elementAt(index);
 
-              final messages = groupedMessages[date]!;
+                  final messages = groupedMessages[date]!;
 
-              final unreadMessages = messages
-                  .where((msg) => !msg.isRead && msg.receiverName == 'You')
-                  .toList();
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Center(
-                    child: Text(
-                      !isToday(date) ? date : 'Hôm nay',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                    ),
-                  ),
-                  ...messages.map((message) {
-                    final messageKey = GlobalKey();
-
-                    _messageKeys[message.messageId] = messageKey;
-                    return Container(
-                      key: messageKey,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: message.senderName == 'You'
-                            ? MainAxisAlignment.end
-                            : MainAxisAlignment.start,
-                        children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      if (message.senderName != 'You')
-                                        CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              message.senderAvatar),
-                                        ),
-                                      const SizedBox(width: 8),
-                                      _buildMessageContent(message),
-                                    ]),
-                                Row(children: [
-                                  Text(
-                                    DateFormat('HH:mm')
-                                        .format(message.timestamp),
-                                    style: TextStyle(
-                                        color: Colors.grey[600], fontSize: 12),
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Icon(
-                                    message.isRead
-                                        ? Icons.done_all
-                                        : Icons.done,
-                                    color: message.isRead
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                  )
-                                ]),
-                              ]),
-                        ],
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Center(
+                        child: Text(
+                          !isToday(date) ? date : 'Hôm nay',
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 13),
+                        ),
                       ),
-                    );
-                  }),
-                  const SizedBox(height: 10),
-                ],
-              );
-            },
-          ),
-        ),
-        Column(children: [
-          if (_replyMessage != null) _buildReply(_replyMessage!),
-          Row(
-            children: [
-              AnimatedRotation(
-                turns: _isOptionsVisible ? 0.5 : 0,
-                duration: const Duration(milliseconds: 300),
-                child: IconButton(
-                  icon: Icon(
-                    _isOptionsVisible
-                        ? Icons.cancel_outlined
-                        : Icons.add_circle_outline_outlined,
-                    size: 40,
-                  ),
-                  onPressed: _toggleOptions,
-                ),
-              ),
-              Expanded(
-                child: TextField(
-                  controller: _controller,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: 'Gửi tin nhắn ...',
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade500),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              if (_isSendButtonVisible)
-                IconButton(
-                  icon: const Icon(Icons.send, color: AppColors.greenButton),
-                  onPressed: _sendTextMessage,
-                ),
-              const SizedBox(
-                width: 5,
-              )
-            ],
-          ),
-          if (_isOptionsVisible)
-            Container(
-              padding: const EdgeInsets.all(10),
-              color: Colors.grey[200],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ImagePickerButton(
-                    onImagesSelected: onImageselected,
-                    child: _buildOptionItem(Icons.camera_alt, 'Chọn ảnh'),
-                  ),
-                  AddVideoButton(
-                    picker: ImagePicker(),
-                    showErrorDialog: showErrorDialog,
-                    onVideoChanged: onVideoSelected,
-                    child: _buildOptionItem(Icons.video_call, 'Chọn video'),
-                  ),
-                  AudioRecorderButton(
-                    onAudioRecorded: (audioPath) {
-                      _sendMediaMessage(audioUrl: audioPath);
-                    },
-                  ),
-                ],
-              ),
-            ),
-        ]),
-      ],
-    );
-  }
+                      ...messages.map((message) {
+                        final messageKey = GlobalKey();
 
-  Widget _buildOptionItem(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, size: 30),
+                        _messageKeys[message.messageId] = messageKey;
+                        return Container(
+                          key: messageKey,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: message.senderId == currentUserId
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          if (message.senderId != currentUserId)
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  message.senderAvatar),
+                                            ),
+                                          const SizedBox(width: 8),
+                                          _buildMessageContent(message),
+                                        ]),
+                                    Row(children: [
+                                      Text(
+                                        DateFormat('HH:mm')
+                                            .format(message.timestamp),
+                                        style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 12),
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Icon(
+                                        message.isRead
+                                            ? Icons.done_all
+                                            : Icons.done,
+                                        color: message.isRead
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                      )
+                                    ]),
+                                  ]),
+                            ],
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                },
+              ),
+            );
+          } else {
+            return const Center();
+          }
+        }),
+        ChatInputBar(
+          onSendMessage: _sendTextMessage,
+          onError: showErrorDialog,
+          onImageSelected: onImageSelected,
+          onVideoSelected: onVideoSelected,
+          onAudioRecorded: onAudioRecorded,
         ),
-        const SizedBox(height: 4),
-        Text(label),
       ],
     );
   }
@@ -455,7 +329,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
 
     return Stack(
         clipBehavior: Clip.none,
-        alignment: message.senderName == 'You'
+        alignment: message.senderId == currentUserId
             ? Alignment.topRight
             : Alignment.topLeft,
         children: [
@@ -476,7 +350,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                message.replyTo!.senderName == 'You'
+                                message.replyTo!.senderId == currentUserId
                                     ? 'Phản hồi lại chính bạn'
                                     : 'Phản hồi lại ${message.replyTo!.senderName}',
                                 style: const TextStyle(
@@ -509,7 +383,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                   : const SizedBox()),
           Container(
             margin: EdgeInsets.only(top: message.replyTo != null ? 75 : 0),
-            child: message.videoUrl != null
+            child: message.videoUrl?.isNotEmpty ?? false
                 ? GestureDetector(
                     onLongPress: () => _showMessageOptions(message),
                     onTap: () {
@@ -562,7 +436,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                           }).toList(),
                         ),
                       )
-                    : message.audioUrl != null
+                    : message.audioUrl?.isNotEmpty ?? false
                         ? GestureDetector(
                             onLongPress: () => _showMessageOptions(message),
                             child: FutureBuilder<Duration>(
@@ -595,7 +469,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                                   vertical: 10, horizontal: 16),
                               constraints: BoxConstraints(maxWidth: maxWidth),
                               decoration: BoxDecoration(
-                                color: message.senderName == 'You'
+                                color: message.senderId == currentUserId
                                     ? Colors.blue
                                     : Colors.grey[300],
                                 borderRadius: BorderRadius.circular(20),
@@ -603,7 +477,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                               child: Text(
                                 message.content ?? '',
                                 style: TextStyle(
-                                  color: message.senderName == 'You'
+                                  color: message.senderId == currentUserId
                                       ? Colors.white
                                       : Colors.black,
                                 ),
@@ -690,61 +564,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   }
 
   void _replyToMessage(Message message) {
-    setState(() {
-      _replyMessage = message;
-    });
-  }
-
-  Widget _buildReply(Message replyMessage) {
-    return Container(
-      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 5),
-      width: double.infinity,
-      color: Colors.grey[200],
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  replyMessage.senderName == 'You'
-                      ? 'Phản hồi chính bạn'
-                      : 'Phản hồi lại ${replyMessage.senderName}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 5.0),
-                Text(
-                  replyMessage.content != null &&
-                          replyMessage.content!.isNotEmpty
-                      ? replyMessage.content!
-                      : replyMessage.videoUrl != null
-                          ? replyMessage.videoUrl!
-                          : replyMessage.imageUrls != null &&
-                                  replyMessage.imageUrls!.isNotEmpty
-                              ? replyMessage.imageUrls!.join('\n')
-                              : replyMessage.audioUrl ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.close, color: Colors.grey),
-            onPressed: () {
-              setState(() {
-                _replyMessage = null;
-              });
-            },
-          ),
-        ],
-      ),
-    );
+    setState(() {});
   }
 }

@@ -140,6 +140,9 @@ extension ChatMessageDTOMapper on ChatMessageDTO {
       receiverName: receiver?.name ?? '',
       receiverAvatar: receiver?.avatar?.toFilePath() ?? '',
       content: content,
+      audioUrl: audioId?.toFilePath() ?? '',
+      imageUrls: imageId != null ? [imageId!.toFilePath()] : [],
+      videoUrl: videoId?.toFilePath() ?? '',
       timestamp: createdAt ?? DateTime.now(),
       isRead: false,
     );
