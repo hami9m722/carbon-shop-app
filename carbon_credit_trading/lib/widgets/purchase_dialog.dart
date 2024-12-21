@@ -1,4 +1,5 @@
 // purchase_dialog.dart
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ class PurchaseDialog extends StatefulWidget {
   const PurchaseDialog({
     super.key,
     required this.pricePerUnit,
-    required this.maxQuantity, required this.onPurchase,
+    required this.maxQuantity,
+    required this.onPurchase,
   });
 
   @override

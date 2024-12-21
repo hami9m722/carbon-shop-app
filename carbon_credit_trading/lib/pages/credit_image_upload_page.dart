@@ -79,7 +79,7 @@ class _CreditImageUploadPageState extends State<CreditImageUploadPage>
                         color: AppColors.greenButton, size: 35),
                     SizedBox(width: 8),
                     Text(
-                      'Đăng tải ảnh tín chỉ',
+                      'Đăng tải ảnh dự án',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,

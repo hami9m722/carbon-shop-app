@@ -16,6 +16,14 @@ class PendingAccountPage extends StatefulWidget {
 }
 
 class _PendingAccountPageState extends State<PendingAccountPage> {
+  late Future<List<Map<String, dynamic>>> _pendingAccountsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendingAccountsFuture = getPendingAccount();
+  }
+
   Future<List<Map<String, dynamic>>> getPendingAccount() async {
     try {
       final pendingUsers =
@@ -25,7 +33,7 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
         List<Map<String, dynamic>> userList = await Future.wait(
           pendingUsers.content.map((user) async {
             final company =
-                await sellerControllerApi.viewCompany1(user.company ?? 00);
+                await sellerControllerApi.viewCompany1(user.company ?? 0);
 
             return {
               'userId': user.userId,
@@ -53,7 +61,7 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
         title: "Tài khoản đang chờ duyệt",
       ),
       body: FutureBuilder(
-        future: getPendingAccount(),
+        future: _pendingAccountsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

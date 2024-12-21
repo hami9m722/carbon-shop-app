@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/globals.dart';
 
 class User {
@@ -7,6 +8,7 @@ class User {
   final BusinessOption? type;
   final String? image;
   bool isInChat;
+  final CompanyDTO? company;
 
   User(
       {this.businessName,
@@ -14,5 +16,6 @@ class User {
       this.password,
       this.type,
       this.image,
-      this.isInChat = false});
+      this.isInChat = false,
+      this.company});
 }

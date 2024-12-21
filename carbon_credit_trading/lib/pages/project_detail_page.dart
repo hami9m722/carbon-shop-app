@@ -45,21 +45,28 @@ class ProjectDetailPage extends StatefulWidget {
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
-  final int maxQuantity = 20;
-  final double pricePerUnit = 1000000.0;
-
   void showPurchaseDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return PurchaseDialog(
-            maxQuantity: maxQuantity,
-            pricePerUnit: pricePerUnit,
-            onPurchase: (double price, int quantity) async {
+          maxQuantity: widget.project.availableCredits != null
+              ? int.parse(widget.project.availableCredits.toString())
+              : 0,
+          pricePerUnit: widget.project.price != null
+              ? double.parse(widget.project.price.toString())
+              : 0,
+          onPurchase: (double price, int quantity) async {
+            try {
               await buyerControllerApi.newOrder(BuyerCreateOrder(
                   projectId: widget.project.projectId!,
                   creditAmount: quantity));
-            });
+              Navigator.of(context).pop();
+            } catch (e) {
+              print('Error: $e');
+            }
+          },
+        );
       },
     );
   }

@@ -8,3 +8,9 @@ extension DateTimeString on String {
         );
   }
 }
+
+extension DateTimeFormatter on DateTime {
+  String toDateString() {
+    return '$day/$month/$year';
+  }
+}

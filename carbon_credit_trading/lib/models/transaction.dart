@@ -14,8 +14,10 @@ class Transaction {
   final String status;
   final Project projectInfo;
   final OrderDTO rootDto;
+  final CompanyDTO? buyerCompany;
 
-  Transaction(this.rootDto, {
+  Transaction(
+    this.rootDto, {
     required this.transactionId,
     required this.contractNumber,
     required this.contractDate,
@@ -26,5 +28,6 @@ class Transaction {
     required this.buyer,
     required this.projectInfo,
     required this.status,
+    this.buyerCompany,
   });
 }

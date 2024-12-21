@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/extensions/datetime.dart';
 import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/transaction.dart';
@@ -38,7 +39,8 @@ class TransactionDetailPage extends StatelessWidget {
 
     String billImage = transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
 
-    final List<String> creditImages = transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
+    final List<String> creditImages =
+        transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
 
     return Scaffold(
         appBar: const CustomAppBar(title: "Chi tiết giao dịch"),
@@ -65,23 +67,19 @@ class TransactionDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
                     color: Colors.white,
-                    child: const Column(
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ngày tạo đơn: 11/09/2024',
+                            'Ngày ký hợp đồng: ${transaction.rootDto.contractSignDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Ngày ký hợp đồng: 12/09/2024',
+                            'Ngày tạo đơn: ${transaction.rootDto.payDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Ngày thanh toán: 13/09/2024',
-                            style: AppTextStyles.normalText,
-                          ),
-                          Text(
-                            'Ngày bàn giao tín chỉ:',
+                            'Ngày tạo đơn: ${transaction.rootDto.deliveryDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -91,7 +89,7 @@ class TransactionDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
                     color: Colors.white,
-                    child: const Column(
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -102,15 +100,15 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên doanh nghiệp: Coastal Mangrove Restoration',
+                            'Tên doanh nghiệp: ${transaction.buyerCompany?.name}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Mã số thuế: 123456789',
+                            'Mã số thuế: ${transaction.buyerCompany?.taxCode}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Địa chỉ: 123 Đường ABC, TP.HCM',
+                            'Địa chỉ: ${transaction.buyerCompany?.address}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -120,7 +118,7 @@ class TransactionDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
                     color: Colors.white,
-                    child: const Column(
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -131,15 +129,15 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên doanh nghiệp: EcoRestore Building Corporation',
+                            'Tên doanh nghiệp: ${transaction.projectInfo.company?.name}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Mã số thuế: 987654321',
+                            'Mã số thuế: ${transaction.projectInfo.company?.taxCode}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Địa chỉ: 456 Đường DEF, Sydney, Úc',
+                            'Địa chỉ: ${transaction.projectInfo.company?.address}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -149,7 +147,7 @@ class TransactionDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
                     color: Colors.white,
-                    child: const Column(
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -160,27 +158,27 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên dự án: REDD+ Bảo tồn rừng ngập mặn Thái Lan',
+                            'Tên dự án: ${transaction.projectName}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Vị trí: Vịnh Thái Lan',
+                            'Vị trí: ${transaction.projectInfo.location}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Quy mô: 20,000 ha',
+                            'Quy mô:  ${transaction.projectInfo.scale}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Thời gian: 2021 - 2041',
+                            'Thời gian:  ${transaction.projectInfo.startDate} - ${transaction.projectInfo.endDate}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Phạm vi: Giảm 60,000 tấn CO2/năm, bảo vệ hệ sinh thái ven biển',
+                            'Phạm vi: ${transaction.projectInfo.scope}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Số lượng cần bán: 100,000',
+                            'Số lượng cần bán: ${transaction.projectInfo.availableCredits}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),

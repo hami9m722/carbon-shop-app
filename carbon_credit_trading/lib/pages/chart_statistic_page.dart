@@ -41,7 +41,7 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
     print("Error fetching projects: ${projects.length}");
     int canceled = projects.where((p) => p.status == 'REJECTED').length;
     int successful = projects.where((p) => p.status == 'APPROVED').length;
-    int pending = projects.where((p) => p.status == 'PENDING').length;
+    int pending = projects.where((p) => p.status == 'INIT').length;
 
     int total = canceled + successful + pending;
 
@@ -50,6 +50,29 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
       'Thành công': (successful / total) * 100,
       'Đang duyệt': (pending / total) * 100,
     };
+  }
+
+  Widget buildLegend(Map<String, double> data, List<Color> colors) {
+    List<Widget> legends = [];
+    int i = 0;
+    data.forEach((String key, double value) {
+      legends.add(Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            color: colors[i],
+          ),
+          SizedBox(width: 8),
+          Text('$key (${value.toStringAsFixed(1)}%)'),
+        ],
+      ));
+      i++;
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: legends,
+    );
   }
 
   @override
@@ -79,7 +102,10 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                       PieChartData(
                         sections: [
                           PieChartSectionData(
-                              value: 40, title: 'Bị hủy', color: Colors.red),
+                            value: 40,
+                            title: 'Bị hủy',
+                            color: Colors.red,
+                          ),
                           PieChartSectionData(
                               value: 30,
                               title: 'Thành công',
@@ -94,6 +120,11 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                   ),
                   SizedBox(height: 32.0),
                   Text('Dự án'),
+                  buildLegend(
+                      {'Bị hủy': 40, 'Thành công': 30, 'Đang duyệt': 30},
+                      [Colors.red, Colors.green, Colors.yellow]),
+                  SizedBox(height: 32.0),
+                  Text('Dự án'),
                   SizedBox(
                     height: 200,
                     child: PieChart(
@@ -101,20 +132,25 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                         sections: [
                           PieChartSectionData(
                               value: projectPercentages['Bị hủy']!,
-                              title: 'Bị hủy',
+                              title:
+                                  '${projectPercentages['Bị hủy']!.toStringAsFixed(1)}%',
                               color: Colors.red),
                           PieChartSectionData(
                               value: projectPercentages['Thành công']!,
-                              title: 'Thành công',
+                              title:
+                                  '${projectPercentages['Thành công']!.toStringAsFixed(1)}%',
                               color: Colors.green),
                           PieChartSectionData(
                               value: projectPercentages['Đang duyệt']!,
-                              title: 'Đang duyệt',
+                              title:
+                                  '${projectPercentages['Đang duyệt']!.toStringAsFixed(1)}%',
                               color: Colors.yellow),
                         ],
                       ),
                     ),
                   ),
+                  buildLegend(projectPercentages,
+                      [Colors.red, Colors.green, Colors.yellow]),
                   SizedBox(height: 32.0),
                   Text('Tổng doanh thu theo tháng'),
                   SizedBox(

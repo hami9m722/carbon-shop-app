@@ -103,21 +103,27 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   }
 
   void _saveProject() async {
-    await sellerControllerApi.registerProject(SellerRegisterProjectDTO(
-      name: _projectName,
-      timeStart: DateTime.tryParse(_startDate),
-      timeEnd: DateTime.tryParse(_endDate),
-      address: _location,
-      size: _scale,
-      produceCarbonRate: _scope,
-      partner: _partners,
-      auditByOrg: _issuer,
-      creditAmount: int.tryParse(_availableCredits),
-      cert: _certificates,
-      price: _price,
-      projectImages: _creditImages,
-      methodPayment: _selectedPaymentMethodList.join(","),
-    ));
+    try {
+      await sellerControllerApi.registerProject(SellerRegisterProjectDTO(
+        name: _projectName,
+        timeStart: DateTime.tryParse(_startDate),
+        timeEnd: DateTime.tryParse(_endDate),
+        address: _location,
+        size: _scale,
+        produceCarbonRate: _scope,
+        partner: _partners,
+        auditByOrg: _issuer,
+        creditAmount: int.tryParse(_availableCredits),
+        cert: _certificates,
+        price: _price,
+        projectImages: _creditImages,
+        methodPayment: _selectedPaymentMethodList.join(","),
+      ));
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Có lỗi xảy ra: $error")),
+      );
+    }
   }
 
   @override
