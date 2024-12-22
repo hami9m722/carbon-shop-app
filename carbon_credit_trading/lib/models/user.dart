@@ -8,14 +8,13 @@ class User {
   final BusinessOption? type;
   final String? image;
   bool isInChat;
-  final CompanyDTO? company;
 
-  User(
-      {this.businessName,
-      this.email,
-      this.password,
-      this.type,
-      this.image,
-      this.isInChat = false,
-      this.company});
+  User({
+    this.businessName,
+    this.email,
+    this.password,
+    this.type,
+    this.image,
+    this.isInChat = false,
+  });
 }

@@ -39,6 +39,7 @@ class _TransactionPendingTabState extends State<TransactionPendingTab> {
     return Scaffold(
       appBar: widget.previousPage != ''
           ? AppBar(
+              automaticallyImplyLeading: widget.previousPage != '',
               centerTitle: true,
               title: _isSearching
                   ? TextField(

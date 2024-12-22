@@ -29,11 +29,11 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Cài đặt tài khoản',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 15),
+              // const Text(
+              //   'Cài đặt tài khoản',
+              //   style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              // ),
+              //const SizedBox(height: 15),
               _buildSettingTile(
                 context,
                 'Chỉnh sửa hồ sơ',
@@ -60,20 +60,20 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               const SizedBox(height: 30),
-              const Text(
-                'Cài đặt khác',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 15),
-              _buildSwitchTile(
-                'Thông báo',
-                _pushNotifications,
-                (bool newValue) {
-                  setState(() {
-                    _pushNotifications = newValue;
-                  });
-                },
-              ),
+              // const Text(
+              //   'Cài đặt khác',
+              //   style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              // ),
+              // const SizedBox(height: 15),
+              // _buildSwitchTile(
+              //   'Thông báo',
+              //   _pushNotifications,
+              //   (bool newValue) {
+              //     setState(() {
+              //       _pushNotifications = newValue;
+              //     });
+              //   },
+              // ),
             ],
           ),
         ),

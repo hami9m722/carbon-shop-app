@@ -36,7 +36,7 @@ class _TransactionCanceledTabState extends State<TransactionCanceledTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: businessOption == 'seller'
+      appBar: businessOption == BusinessOption.seller
           ? AppBar(
               centerTitle: true,
               title: _isSearching

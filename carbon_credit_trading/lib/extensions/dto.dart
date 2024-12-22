@@ -81,6 +81,7 @@ extension OrderDTOMapper on OrderDTO {
       totalAmount: total.toString(),
       seller: ownerCompanyUser!.toUser(),
       buyer: buyerUser!.toUser(),
+      buyerCompany: buyerCompany,
       projectInfo: await project.toProject(),
       status: status.toString(),
     );
