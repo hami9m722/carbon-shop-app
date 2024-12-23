@@ -31,28 +31,28 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
   String _searchQuery = '';
   final FocusNode _searchFocusNode = FocusNode();
 
-  @override
-  Widget build(BuildContext context) {
-    Future<List<Project>> getFilteredProjects() async {
-      try {
-        final pagedProjectDTO = businessOption == BusinessOption.mediator
-            ? await mediatorAuditControllerApi.viewAllProject2(
-                status: 'INIT', filter: _searchQuery)
-            : await sellerControllerApi.viewAllProject1(
-                status: 'INIT', filter: _searchQuery);
+  Future<List<Project>> getFilteredProjects() async {
+    try {
+      final pagedProjectDTO = businessOption == BusinessOption.mediator
+          ? await mediatorAuditControllerApi.viewAllProject2(
+          status: 'INIT', filter: _searchQuery)
+          : await sellerControllerApi.viewAllProject1(
+          status: 'INIT', filter: _searchQuery);
 
-        if (pagedProjectDTO != null) {
-          return await Future.wait(pagedProjectDTO.content
-              .map((projectData) => projectData.toProject()));
-        } else {
-          return [];
-        }
-      } catch (e) {
-        print("Error fetching projects: $e");
+      if (pagedProjectDTO != null) {
+        return await Future.wait(pagedProjectDTO.content
+            .map((projectData) => projectData.toProject()));
+      } else {
         return [];
       }
+    } catch (e) {
+      print("Error fetching projects: $e");
+      return [];
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.previousPage != ''
           ? AppBar(

@@ -136,8 +136,8 @@ class _TransactionPendingTabState extends State<TransactionPendingTab> {
                                   ? _searchQuery
                                   : widget.searchQuery,
                               onPress: widget.previousPage == 'intermediary'
-                                  ? () {
-                                      Navigator.push(
+                                  ? () async {
+                                      await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
@@ -145,6 +145,9 @@ class _TransactionPendingTabState extends State<TransactionPendingTab> {
                                                   transaction: transaction),
                                         ),
                                       );
+                                      setState(() {
+
+                                      });
                                     }
                                   : null,
                             );
