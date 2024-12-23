@@ -21,10 +21,21 @@ class TransactionService {
   }
 
   Future<List<Transaction>> getPendingTransactions() async {
-    var orderFutures = businessOption == BusinessOption.seller
+    var processingOrders = businessOption == BusinessOption.seller
         ? sellerControllerApi.viewAllOrders(status: "PROCESSING")
         : buyerControllerApi.viewAllOrders1(status: "PROCESSING");
-    var page = await orderFutures;
-    return await page!.toTransactions();
+    var initOrders = businessOption == BusinessOption.seller
+        ? sellerControllerApi.viewAllOrders(status: "INIT")
+        : buyerControllerApi.viewAllOrders1(status: "INIT");
+    var processing = await processingOrders;
+    var init = await initOrders;
+    var result = <Transaction>[];
+
+    var processingTransactions = processing!.toTransactions();
+    var initTransactions = init!.toTransactions();
+
+    result.addAll(await processingTransactions);
+    result.addAll(await initTransactions);
+    return result;
   }
 }

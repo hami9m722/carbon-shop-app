@@ -68,7 +68,7 @@ extension OrderDTOMapper on OrderDTO {
         await userControllerApi.viewCompany(project!.ownerCompany!);
     var ownerCompanyUser =
         await userControllerApi.viewCompanyUser(ownerCompany!.id!);
-    var buyerUser = await userControllerApi.viewCompanyUser(createdBy!);
+    var buyerUser = await userControllerApi.viewUser(createdBy!);
     var buyerCompany =
         await userControllerApi.viewCompany(buyerUser?.company ?? 0);
     return Transaction(

@@ -283,7 +283,7 @@ class TransactionDetailPage extends StatelessWidget {
                                           builder: (context) =>
                                               ProjectDetailPage(
                                                   project:
-                                                      transaction.projectInfo),
+                                                      transaction.projectInfo, onChanged: () {},),
                                         ),
                                       );
                                     }

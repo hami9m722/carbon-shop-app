@@ -206,6 +206,9 @@ class BusinessDetailPage extends StatelessWidget {
                   final project = projects[index];
                   return ProjectItem(
                     project: project,
+                    onChanged: () {
+
+                    },
                   );
                 },
               )),

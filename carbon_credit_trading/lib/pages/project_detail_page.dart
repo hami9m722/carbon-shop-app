@@ -2,6 +2,7 @@ import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/project.dart';
+import 'package:carbon_credit_trading/pages/chat_page.dart';
 import 'package:carbon_credit_trading/pages/feedback_page.dart';
 import 'package:carbon_credit_trading/pages/project_registration_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
@@ -36,9 +37,10 @@ import 'package:flutter/material.dart';
 class ProjectDetailPage extends StatefulWidget {
   final String previousPage;
   final Project project;
+  final VoidCallback onChanged;
 
   const ProjectDetailPage(
-      {super.key, this.previousPage = '', required this.project});
+      {super.key, this.previousPage = '', required this.project, required this.onChanged});
 
   @override
   createState() => _ProjectDetailPageState();
@@ -287,6 +289,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                 onPressed: () async {
                   await mediatorAuditControllerApi
                       .approveProject(widget.project.projectId!);
+                  widget.onChanged.call();
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
@@ -361,15 +364,15 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           child: IconButton(
             icon: const Icon(Icons.message_outlined, color: Colors.white),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const ChatPage(
-              //         contactName:
-              //             'Renewable Biomass Energy Ventures',
-              //         contactAvatar: ''),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                      chatWithUserId: widget.project.companyUser!.userId!,
+                      chatWithUserName: widget.project.companyUser!.name!,
+                      chatWithUserAvatar: widget.project.companyUser!.avatar!.toFilePath()),
+                ),
+              );
             },
           ),
         ),

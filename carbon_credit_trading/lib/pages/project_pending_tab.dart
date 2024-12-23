@@ -149,6 +149,9 @@ class _ProjectPendingTabState extends State<ProjectPendingTab> {
                           searchQuery: widget.previousPage != ''
                               ? _searchQuery
                               : widget.searchQuery,
+                          onChanged: () {
+                            setState(() {});
+                          },
                         );
                       },
                     ),

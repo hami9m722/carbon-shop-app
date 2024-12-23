@@ -11,14 +11,10 @@ class UserQuestionPage extends StatelessWidget {
 
   Future<List<QuestionDTO>> viewAllQuestions() async {
     try {
-      final questions = await userControllerApi.viewQuestions();
+      final questions = await userControllerApi.viewQuestions(self: true, answered: null);
 
       if (questions != null) {
-        final filteredQuestions = questions.content
-            .where((question) => question.askedBy == currentUserId)
-            .toList();
-
-        return filteredQuestions;
+        return questions.content.toList();
       } else {
         return [];
       }

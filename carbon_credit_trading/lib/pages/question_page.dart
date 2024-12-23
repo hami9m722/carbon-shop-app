@@ -21,7 +21,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<List<QuestionDTO>> viewAllQuestions() async {
     try {
-      final questions = await userControllerApi.viewQuestions();
+      final questions = await userControllerApi.viewQuestions(answered: true);
 
       if (questions != null) {
         return questions.content;

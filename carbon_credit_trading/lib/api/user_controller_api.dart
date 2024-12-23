@@ -637,8 +637,10 @@ class UserControllerApi {
   /// Performs an HTTP 'GET /api/user/questions' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [bool] self:
+  ///
   /// * [bool] answered:
-  Future<Response> viewQuestionsWithHttpInfo({ bool? answered, }) async {
+  Future<Response> viewQuestionsWithHttpInfo({ bool? self, bool? answered, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/user/questions';
 
@@ -649,6 +651,9 @@ class UserControllerApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (self != null) {
+      queryParams.addAll(_queryParams('', 'self', self));
+    }
     if (answered != null) {
       queryParams.addAll(_queryParams('', 'answered', answered));
     }
@@ -669,9 +674,11 @@ class UserControllerApi {
 
   /// Parameters:
   ///
+  /// * [bool] self:
+  ///
   /// * [bool] answered:
-  Future<PagedQuestionDTO?> viewQuestions({ bool? answered, }) async {
-    final response = await viewQuestionsWithHttpInfo( answered: answered, );
+  Future<PagedQuestionDTO?> viewQuestions({ bool? self, bool? answered, }) async {
+    final response = await viewQuestionsWithHttpInfo( self: self, answered: answered, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

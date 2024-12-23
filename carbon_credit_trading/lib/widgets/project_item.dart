@@ -8,11 +8,12 @@ class ProjectItem extends StatelessWidget {
   final Project project;
   final String previousPage;
   final String? searchQuery;
+  final VoidCallback onChanged;
   const ProjectItem(
       {super.key,
       required this.project,
       this.previousPage = '',
-      this.searchQuery});
+      this.searchQuery, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class ProjectItem extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => ProjectDetailPage(
-                    previousPage: previousPage, project: project),
+                    previousPage: previousPage, project: project, onChanged: onChanged,),
               ),
             )
           },

@@ -120,6 +120,9 @@ class _SearchTabState extends State<SearchTab> {
                       return ProjectItem(
                         project: project,
                         searchQuery: _searchQuery,
+                        onChanged: () {
+                          setState(() {});
+                        },
                       );
                     },
                   ),

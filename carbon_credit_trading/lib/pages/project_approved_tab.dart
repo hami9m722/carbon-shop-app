@@ -1,26 +1,29 @@
 import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
-
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
-
 import 'package:carbon_credit_trading/widgets/project_item.dart';
-
 import 'package:flutter/material.dart';
 
 // approved projects (name, price, first project image)
 
-class ProjectApprovedTab extends StatelessWidget {
+class ProjectApprovedTab extends StatefulWidget {
   final String? searchQuery;
+
   const ProjectApprovedTab({super.key, this.searchQuery});
 
+  @override
+  State<ProjectApprovedTab> createState() => _ProjectApprovedTabState();
+}
+
+class _ProjectApprovedTabState extends State<ProjectApprovedTab> {
   @override
   Widget build(BuildContext context) {
     Future<List<Project>> getFilteredProjects() async {
       try {
-        final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(status: 'APPROVED', filter: searchQuery);
+        final pagedProjectDTO = await sellerControllerApi.viewAllProject1(
+            status: 'APPROVED', filter: widget.searchQuery);
 
         if (pagedProjectDTO != null) {
           return await Future.wait(pagedProjectDTO.content.map((projectData) {
@@ -63,7 +66,10 @@ class ProjectApprovedTab extends StatelessWidget {
                   final project = filteredProjects[index];
                   return ProjectItem(
                     project: project,
-                    searchQuery: searchQuery,
+                    searchQuery: widget.searchQuery,
+                    onChanged: () {
+                      setState(() {});
+                    },
                   );
                 },
               );

@@ -139,6 +139,9 @@ class _FavoriteTabState extends State<FavoriteTab> {
                           return ProjectItem(
                             project: project,
                             searchQuery: _searchQuery,
+                            onChanged: () {
+                              setState(() {});
+                            },
                           );
                         },
                       ),

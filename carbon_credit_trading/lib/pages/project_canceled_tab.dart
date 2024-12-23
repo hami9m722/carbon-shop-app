@@ -11,16 +11,21 @@ import 'package:flutter/material.dart';
 
 // canceledcanceled projects (name, price, first project image)
 
-class ProjectCanceledTab extends StatelessWidget {
+class ProjectCanceledTab extends StatefulWidget {
   final String? searchQuery;
   const ProjectCanceledTab({super.key, this.searchQuery});
 
+  @override
+  State<ProjectCanceledTab> createState() => _ProjectCanceledTabState();
+}
+
+class _ProjectCanceledTabState extends State<ProjectCanceledTab> {
   @override
   Widget build(BuildContext context) {
     Future<List<Project>> getFilteredProjects() async {
       try {
         final pagedProjectDTO =
-            await sellerControllerApi.viewAllProject1(status: 'REJECTED', filter: searchQuery);
+            await sellerControllerApi.viewAllProject1(status: 'REJECTED', filter: widget.searchQuery);
 
         if (pagedProjectDTO != null) {
           return await Future.wait(pagedProjectDTO.content.map((projectData) {
@@ -63,7 +68,10 @@ class ProjectCanceledTab extends StatelessWidget {
                   final project = filteredProjects[index];
                   return ProjectItem(
                     project: project,
-                    searchQuery: searchQuery,
+                    searchQuery: widget.searchQuery,
+                    onChanged: () {
+                      setState(() {});
+                    },
                   );
                 },
               );
