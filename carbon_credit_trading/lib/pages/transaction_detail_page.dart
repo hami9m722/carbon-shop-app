@@ -42,10 +42,12 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
     String transactionStatusMessage =
         getTransactionStatusMessage(widget.transaction.status);
 
-    String billImage = widget.transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
+    String billImage =
+        widget.transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
 
-    final List<String> creditImages =
-        widget.transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
+    final List<String> creditImages = widget.transaction.rootDto.certImages
+        .map((e) => e.toFilePath())
+        .toList();
 
     return Scaffold(
         appBar: const CustomAppBar(title: "Chi tiết giao dịch"),
@@ -97,7 +99,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Doanh nghiệp mua',
                             style: TextStyle(
                               fontSize: 17,
@@ -126,7 +128,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Doanh nghiệp bán',
                             style: TextStyle(
                               fontSize: 17,
@@ -155,7 +157,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Thông tin dự án',
                             style: TextStyle(
                               fontSize: 17,
@@ -214,7 +216,9 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              child: const Text('hopdong234.docs'),
+                              child: Text(widget
+                                  .transaction.rootDto.paymentBillFile!
+                                  .toFilePath()),
                             ),
                           ),
                           const SizedBox(height: 15.0),
@@ -260,7 +264,8 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                 width: MediaQuery.of(context).size.width,
                                 child: TextButton(
                                   onPressed: () {
-                                    if (widget.transaction.status == 'pending') {
+                                    if (widget.transaction.status ==
+                                        'pending') {
                                     } else if (widget.transaction.status ==
                                         'approved') {
                                       if (businessOption == 'buyer') {
@@ -287,8 +292,10 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ProjectDetailPage(
-                                                  project:
-                                                      widget.transaction.projectInfo, onChanged: () {},),
+                                            project:
+                                                widget.transaction.projectInfo,
+                                            onChanged: () {},
+                                          ),
                                         ),
                                       ).whenComplete(() {
                                         setState(() {});
@@ -303,12 +310,14 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                   child: Text(
                                     widget.transaction.status == 'pending'
                                         ? 'Hủy'
-                                        : widget.transaction.status == 'approved'
+                                        : widget.transaction.status ==
+                                                'approved'
                                             ? businessOption ==
                                                     'buyer' // or check userID = buyer userID
                                                 ? 'Đánh giá'
                                                 : 'Xem đánh giá'
-                                            : widget.transaction.status == 'canceled'
+                                            : widget.transaction.status ==
+                                                    'canceled'
                                                 ? 'Mua lại'
                                                 : '',
                                     style: const TextStyle(
