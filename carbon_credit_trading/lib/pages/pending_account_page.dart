@@ -16,12 +16,10 @@ class PendingAccountPage extends StatefulWidget {
 }
 
 class _PendingAccountPageState extends State<PendingAccountPage> {
-  late Future<List<Map<String, dynamic>>> _pendingAccountsFuture;
 
   @override
   void initState() {
     super.initState();
-    _pendingAccountsFuture = getPendingAccount();
   }
 
   Future<List<Map<String, dynamic>>> getPendingAccount() async {
@@ -61,7 +59,7 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
         title: "Tài khoản đang chờ duyệt",
       ),
       body: FutureBuilder(
-        future: _pendingAccountsFuture,
+        future: getPendingAccount(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -92,7 +90,10 @@ class _PendingAccountPageState extends State<PendingAccountPage> {
                           accountDetails: account,
                         ),
                       ),
-                    );
+                    ).whenComplete(() {
+                      setState(() {
+                      });
+                    });
                   },
                   child: Card(
                     color: Colors.white,

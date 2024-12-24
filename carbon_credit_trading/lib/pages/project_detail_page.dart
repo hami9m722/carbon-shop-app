@@ -47,6 +47,9 @@ class ProjectDetailPage extends StatefulWidget {
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
+
+  Future<void>? processing;
+
   void showPurchaseDialog() {
     showDialog(
       context: context,
@@ -251,8 +254,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         ));
   }
 
-  Padding buildMediatorFooter() {
-    return Padding(
+  Widget buildMediatorFooter() {
+    return processing == null ? Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -286,10 +289,10 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
             const SizedBox(width: 10),
             Expanded(
               child: TextButton(
-                onPressed: () async {
-                  await mediatorAuditControllerApi
-                      .approveProject(widget.project.projectId!);
-                  widget.onChanged.call();
+                onPressed: () {
+                  setState(() {
+                    processing = approve();
+                  });
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.greenButton,
@@ -312,7 +315,26 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               ),
             ),
           ],
-        ));
+        )) : FutureBuilder(future: processing, builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: LinearProgressIndicator(),
+          ),
+        );
+      } else {
+        Navigator.pop(context);
+        return const SizedBox();
+      }
+    });
+  }
+
+  Future<void> approve() async {
+    await mediatorAuditControllerApi
+        .approveProject(widget.project.projectId!);
+    widget.onChanged.call();
   }
 
   Row buildPendingUI(BuildContext context) {

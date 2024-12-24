@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -21,8 +23,9 @@ class AnswerQuestionPage extends StatefulWidget {
 
 class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
   final TextEditingController answerController = TextEditingController();
+  Future<void>? processing;
 
-  void replyQuestion() async {
+  Future<void> replyQuestion() async {
     try {
       await mediatorAuditControllerApi.answerQuestion(
           widget.question.id!,
@@ -34,7 +37,12 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
     }
   }
 
-  void rejectQuestion() async {
+  Future<void> rejectQuestion() async {
+    try {
+      await mediatorAuditControllerApi.deleteQuestionAnswer(widget.question.id!);
+    } catch (e) {
+      print("Error fetching pending accounts: $e");
+    }
   }
 
   @override
@@ -48,109 +56,123 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
       appBar: const CustomAppBar(
         title: "Câu hỏi thường gặp",
       ),
-      body: Column(
-        children: [
-          // Hiển thị câu hỏi
-          Padding(
-            padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-            child: Text(
-              widget.question.question ?? "N/A",
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-            ),
+      body: processing == null ? buildDetail() : FutureBuilder(future: processing, builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        Navigator.pop(context);
+        return const SizedBox();
+      }),
+    );
+  }
+
+  Column buildDetail() {
+    return Column(
+      children: [
+        // Hiển thị câu hỏi
+        Padding(
+          padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+          child: Text(
+            widget.question.question ?? "N/A",
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 30, left: 15, right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Câu trả lời',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-              child: TextField(
-                controller: answerController,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: "Nhập câu trả lời...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 16),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 30, left: 15, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Câu trả lời',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+            child: TextField(
+              controller: answerController,
+              maxLines: null,
+              decoration: InputDecoration(
+                hintText: "Nhập câu trả lời...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              style: const TextStyle(fontSize: 16),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                          onPressed: replyQuestion,
-                          style: TextButton.styleFrom(
-                            backgroundColor: AppColors.greenButton,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Duyệt và hiển thị câu hỏi',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ],
-                          )),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: rejectQuestion,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                        onPressed: () {
+                          processing = replyQuestion();
+                        },
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColors.greenButton,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.close,
+                              Icons.check,
                               color: Colors.white,
                             ),
                             SizedBox(width: 8),
                             Text(
-                              'Hủy câu hỏi',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              'Duyệt và hiển thị câu hỏi',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16),
                             ),
                           ],
-                        ),
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: rejectQuestion,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Hủy câu hỏi',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

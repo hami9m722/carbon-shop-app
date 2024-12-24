@@ -27,20 +27,25 @@ import 'package:flutter/material.dart';
 
 */
 
-class TransactionDetailPage extends StatelessWidget {
+class TransactionDetailPage extends StatefulWidget {
   final Transaction transaction;
 
   const TransactionDetailPage({super.key, required this.transaction});
 
   @override
+  State<TransactionDetailPage> createState() => _TransactionDetailPageState();
+}
+
+class _TransactionDetailPageState extends State<TransactionDetailPage> {
+  @override
   Widget build(BuildContext context) {
     String transactionStatusMessage =
-        getTransactionStatusMessage(transaction.status);
+        getTransactionStatusMessage(widget.transaction.status);
 
-    String billImage = transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
+    String billImage = widget.transaction.rootDto.paymentBillFile?.toFilePath() ?? '';
 
     final List<String> creditImages =
-        transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
+        widget.transaction.rootDto.certImages.map((e) => e.toFilePath()).toList();
 
     return Scaffold(
         appBar: const CustomAppBar(title: "Chi tiết giao dịch"),
@@ -57,7 +62,7 @@ class TransactionDetailPage extends StatelessWidget {
                   color: Colors.green,
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Giao dịch ${transaction.transactionId} $transactionStatusMessage',
+                    'Giao dịch ${widget.transaction.transactionId} $transactionStatusMessage',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -71,15 +76,15 @@ class TransactionDetailPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ngày ký hợp đồng: ${transaction.rootDto.contractSignDate?.toDateString() ?? 'N/A'}',
+                            'Ngày ký hợp đồng: ${widget.transaction.rootDto.contractSignDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Ngày tạo đơn: ${transaction.rootDto.payDate?.toDateString() ?? 'N/A'}',
+                            'Ngày tạo đơn: ${widget.transaction.rootDto.payDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Ngày tạo đơn: ${transaction.rootDto.deliveryDate?.toDateString() ?? 'N/A'}',
+                            'Ngày tạo đơn: ${widget.transaction.rootDto.deliveryDate?.toDateString() ?? 'N/A'}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -100,15 +105,15 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên doanh nghiệp: ${transaction.buyerCompany?.name}',
+                            'Tên doanh nghiệp: ${widget.transaction.buyerCompany?.name}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Mã số thuế: ${transaction.buyerCompany?.taxCode}',
+                            'Mã số thuế: ${widget.transaction.buyerCompany?.taxCode}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Địa chỉ: ${transaction.buyerCompany?.address}',
+                            'Địa chỉ: ${widget.transaction.buyerCompany?.address}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -129,15 +134,15 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên doanh nghiệp: ${transaction.projectInfo.company?.name}',
+                            'Tên doanh nghiệp: ${widget.transaction.projectInfo.company?.name}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Mã số thuế: ${transaction.projectInfo.company?.taxCode}',
+                            'Mã số thuế: ${widget.transaction.projectInfo.company?.taxCode}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Địa chỉ: ${transaction.projectInfo.company?.address}',
+                            'Địa chỉ: ${widget.transaction.projectInfo.company?.address}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -158,27 +163,27 @@ class TransactionDetailPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Tên dự án: ${transaction.projectName}',
+                            'Tên dự án: ${widget.transaction.projectName}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Vị trí: ${transaction.projectInfo.location}',
+                            'Vị trí: ${widget.transaction.projectInfo.location}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Quy mô:  ${transaction.projectInfo.scale}',
+                            'Quy mô:  ${widget.transaction.projectInfo.scale}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Thời gian:  ${transaction.projectInfo.startDate} - ${transaction.projectInfo.endDate}',
+                            'Thời gian:  ${widget.transaction.projectInfo.startDate} - ${widget.transaction.projectInfo.endDate}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Phạm vi: ${transaction.projectInfo.scope}',
+                            'Phạm vi: ${widget.transaction.projectInfo.scope}',
                             style: AppTextStyles.normalText,
                           ),
                           Text(
-                            'Số lượng cần bán: ${transaction.projectInfo.availableCredits}',
+                            'Số lượng cần bán: ${widget.transaction.projectInfo.availableCredits}',
                             style: AppTextStyles.normalText,
                           ),
                         ])),
@@ -248,15 +253,15 @@ class TransactionDetailPage extends StatelessWidget {
                             },
                           ),
                           if (!(businessOption == 'seller' &&
-                              transaction.status == 'canceled'))
+                              widget.transaction.status == 'canceled'))
                             Column(children: [
                               const SizedBox(height: 20),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 child: TextButton(
                                   onPressed: () {
-                                    if (transaction.status == 'pending') {
-                                    } else if (transaction.status ==
+                                    if (widget.transaction.status == 'pending') {
+                                    } else if (widget.transaction.status ==
                                         'approved') {
                                       if (businessOption == 'buyer') {
                                         Navigator.push(
@@ -275,7 +280,7 @@ class TransactionDetailPage extends StatelessWidget {
                                           ),
                                         );
                                       }
-                                    } else if (transaction.status ==
+                                    } else if (widget.transaction.status ==
                                         'canceled') {
                                       Navigator.push(
                                         context,
@@ -283,9 +288,11 @@ class TransactionDetailPage extends StatelessWidget {
                                           builder: (context) =>
                                               ProjectDetailPage(
                                                   project:
-                                                      transaction.projectInfo, onChanged: () {},),
+                                                      widget.transaction.projectInfo, onChanged: () {},),
                                         ),
-                                      );
+                                      ).whenComplete(() {
+                                        setState(() {});
+                                      });
                                     }
                                   },
                                   style: TextButton.styleFrom(
@@ -294,14 +301,14 @@ class TransactionDetailPage extends StatelessWidget {
                                         vertical: 12),
                                   ),
                                   child: Text(
-                                    transaction.status == 'pending'
+                                    widget.transaction.status == 'pending'
                                         ? 'Hủy'
-                                        : transaction.status == 'approved'
+                                        : widget.transaction.status == 'approved'
                                             ? businessOption ==
                                                     'buyer' // or check userID = buyer userID
                                                 ? 'Đánh giá'
                                                 : 'Xem đánh giá'
-                                            : transaction.status == 'canceled'
+                                            : widget.transaction.status == 'canceled'
                                                 ? 'Mua lại'
                                                 : '',
                                     style: const TextStyle(
