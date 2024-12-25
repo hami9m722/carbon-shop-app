@@ -28,9 +28,9 @@ class _FavoriteTabState extends State<FavoriteTab> {
       final appUser = await userControllerApi.viewUser(currentUserId!);
 
       if (appUser?.favoriteProjects != null &&
-          appUser!.favoriteProjects!.isNotEmpty) {
+          appUser!.favoriteProjects.isNotEmpty) {
         return await Future.wait(
-          appUser.favoriteProjects!.map((favoriteProjectId) async {
+          appUser.favoriteProjects.map((favoriteProjectId) async {
             try {
               final projectData =
                   await buyerControllerApi.viewProject2(favoriteProjectId);

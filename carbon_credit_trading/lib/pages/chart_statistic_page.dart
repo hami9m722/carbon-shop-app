@@ -63,7 +63,7 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
             height: 16,
             color: colors[i],
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text('$key (${value.toStringAsFixed(1)}%)'),
         ],
       ));
@@ -79,13 +79,13 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Biểu đồ Flutter'),
+        title: const Text('Biểu đồ Flutter'),
       ),
       body: FutureBuilder<List<Project>>(
         future: _projectsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Lỗi: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -95,7 +95,7 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  Text('Giao dịch'),
+                  const Text('Giao dịch'),
                   SizedBox(
                     height: 200,
                     child: PieChart(
@@ -118,13 +118,13 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 32.0),
-                  Text('Dự án'),
+                  const SizedBox(height: 32.0),
+                  const Text('Dự án'),
                   buildLegend(
                       {'Bị hủy': 40, 'Thành công': 30, 'Đang duyệt': 30},
                       [Colors.red, Colors.green, Colors.yellow]),
-                  SizedBox(height: 32.0),
-                  Text('Dự án'),
+                  const SizedBox(height: 32.0),
+                  const Text('Dự án'),
                   SizedBox(
                     height: 200,
                     child: PieChart(
@@ -151,8 +151,8 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                   ),
                   buildLegend(projectPercentages,
                       [Colors.red, Colors.green, Colors.yellow]),
-                  SizedBox(height: 32.0),
-                  Text('Tổng doanh thu theo tháng'),
+                  const SizedBox(height: 32.0),
+                  const Text('Tổng doanh thu theo tháng'),
                   SizedBox(
                     height: 300,
                     child: LineChart(
@@ -160,19 +160,19 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                         lineBarsData: [
                           LineChartBarData(
                             spots: [
-                              FlSpot(0, 1),
-                              FlSpot(1, 1.5),
-                              FlSpot(2, 1.4),
-                              FlSpot(3, 3.4),
-                              FlSpot(4, 2),
-                              FlSpot(5, 2.2),
-                              FlSpot(6, 1.8),
-                              FlSpot(7, 2.8),
-                              FlSpot(8, 2.5),
-                              FlSpot(9, 3.5),
+                              const FlSpot(0, 1),
+                              const FlSpot(1, 1.5),
+                              const FlSpot(2, 1.4),
+                              const FlSpot(3, 3.4),
+                              const FlSpot(4, 2),
+                              const FlSpot(5, 2.2),
+                              const FlSpot(6, 1.8),
+                              const FlSpot(7, 2.8),
+                              const FlSpot(8, 2.5),
+                              const FlSpot(9, 3.5),
                             ],
                             isCurved: true,
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [Colors.blue, Colors.lightBlueAccent],
                             ),
                             barWidth: 4,
@@ -186,7 +186,7 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
                                 ],
                               ),
                             ),
-                            dotData: FlDotData(show: false),
+                            dotData: const FlDotData(show: false),
                           ),
                         ],
                       ),
@@ -196,7 +196,7 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
               ),
             );
           } else {
-            return Center(child: Text('Không có dữ liệu'));
+            return const Center(child: Text('Không có dữ liệu'));
           }
         },
       ),
@@ -204,4 +204,4 @@ class _ChartStatisticPageState extends State<ChartStatisticPage> {
   }
 }
 
-void main() => runApp(MaterialApp(home: ChartStatisticPage()));
+void main() => runApp(const MaterialApp(home: ChartStatisticPage()));

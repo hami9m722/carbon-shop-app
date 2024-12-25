@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
@@ -39,7 +37,8 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
 
   Future<void> rejectQuestion() async {
     try {
-      await mediatorAuditControllerApi.deleteQuestionAnswer(widget.question.id!);
+      await mediatorAuditControllerApi
+          .deleteQuestionAnswer(widget.question.id!);
     } catch (e) {
       print("Error fetching pending accounts: $e");
     }
@@ -56,15 +55,19 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
       appBar: const CustomAppBar(
         title: "Câu hỏi thường gặp",
       ),
-      body: processing == null ? buildDetail() : FutureBuilder(future: processing, builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        Navigator.pop(context);
-        return const SizedBox();
-      }),
+      body: processing == null
+          ? buildDetail()
+          : FutureBuilder(
+              future: processing,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                Navigator.pop(context);
+                return const SizedBox();
+              }),
     );
   }
 
@@ -132,8 +135,8 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
                             SizedBox(width: 8),
                             Text(
                               'Duyệt và hiển thị câu hỏi',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],
                         )),
@@ -160,8 +163,7 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
                           SizedBox(width: 8),
                           Text(
                             'Hủy câu hỏi',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],
                       ),

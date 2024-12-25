@@ -1,4 +1,3 @@
-import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/globals.dart';
 
 class User {

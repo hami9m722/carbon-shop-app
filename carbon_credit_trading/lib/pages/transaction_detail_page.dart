@@ -307,14 +307,15 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                         vertical: 12),
                                   ),
                                   child: Text(
-                                    transaction.status == 'PENDING'
+                                    widget.transaction.status == 'PENDING'
                                         ? 'Hủy'
-                                        : transaction.status == 'DONE'
+                                        : widget.transaction.status == 'DONE'
                                             ? businessOption ==
                                                     BusinessOption.buyer
                                                 ? 'Đánh giá'
                                                 : 'Xem đánh giá'
-                                            : transaction.status == 'CANCELLED'
+                                            : widget.transaction.status ==
+                                                    'CANCELLED'
                                                 ? 'Mua lại'
                                                 : '',
                                     style: const TextStyle(

@@ -78,7 +78,7 @@ class SellerPage extends StatelessWidget {
                                 ),
                                 Text(
                                   appUser.email ?? '',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: const TextStyle(color: Colors.grey),
                                 ),
                               ],
                             ),

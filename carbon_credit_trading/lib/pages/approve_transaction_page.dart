@@ -170,13 +170,13 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
 
   SingleChildScrollView buildDetails(
       String transactionStatusMessage,
-      void openFile(),
-      void deleteFile(),
-      void uploadFile(),
-      void removeCreditImage(dynamic image),
-      void addCreditImage(List<File> newImages),
+      void Function() openFile,
+      void Function() deleteFile,
+      void Function() uploadFile,
+      void Function(dynamic image) removeCreditImage,
+      void Function(List<File> newImages) addCreditImage,
       BuildContext context,
-      Future<void> approveOrder()) {
+      Future<void> Function() approveOrder) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -199,7 +199,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Doanh nghiệp mua',
+                const Text('Doanh nghiệp mua',
                     style:
                         TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
                 Text(
@@ -220,7 +220,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Doanh nghiệp bán',
+                const Text('Doanh nghiệp bán',
                     style:
                         TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
                 Text(
@@ -240,7 +240,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             color: Colors.white,
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

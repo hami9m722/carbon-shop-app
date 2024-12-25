@@ -1,5 +1,4 @@
 import 'package:carbon_credit_trading/api/api.dart';
-import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/pages/question_details_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,8 @@ class UserQuestionPage extends StatelessWidget {
 
   Future<List<QuestionDTO>> viewAllQuestions() async {
     try {
-      final questions = await userControllerApi.viewQuestions(self: true, answered: null);
+      final questions =
+          await userControllerApi.viewQuestions(self: true, answered: null);
 
       if (questions != null) {
         return questions.content.toList();

@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _pushNotifications = true;
+  final bool _pushNotifications = true;
 
   @override
   Widget build(BuildContext context) {

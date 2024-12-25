@@ -7,6 +7,7 @@ import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
 import 'package:flutter/material.dart';
+import 'package:carbon_credit_trading/extensions/dto.dart';
 
 //no use
 class ProfilePage extends StatelessWidget {
