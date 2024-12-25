@@ -256,8 +256,8 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                               showFullScreen(context, images, index);
                             },
                           ),
-                          if (!(businessOption == 'seller' &&
-                              widget.transaction.status == 'canceled'))
+                          if (!(businessOption == BusinessOption.seller &&
+                              widget.transaction.status == 'CANCELLED'))
                             Column(children: [
                               const SizedBox(height: 20),
                               SizedBox(
@@ -265,10 +265,11 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     if (widget.transaction.status ==
-                                        'pending') {
+                                        'PENDING') {
                                     } else if (widget.transaction.status ==
-                                        'approved') {
-                                      if (businessOption == 'buyer') {
+                                        'DONE') {
+                                      if (businessOption ==
+                                          BusinessOption.buyer) {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -286,7 +287,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                         );
                                       }
                                     } else if (widget.transaction.status ==
-                                        'canceled') {
+                                        'CANCELLED') {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -297,9 +298,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                             onChanged: () {},
                                           ),
                                         ),
-                                      ).whenComplete(() {
-                                        setState(() {});
-                                      });
+                                      );
                                     }
                                   },
                                   style: TextButton.styleFrom(
@@ -308,16 +307,14 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                                         vertical: 12),
                                   ),
                                   child: Text(
-                                    widget.transaction.status == 'pending'
+                                    transaction.status == 'PENDING'
                                         ? 'Hủy'
-                                        : widget.transaction.status ==
-                                                'approved'
+                                        : transaction.status == 'DONE'
                                             ? businessOption ==
-                                                    'buyer' // or check userID = buyer userID
+                                                    BusinessOption.buyer
                                                 ? 'Đánh giá'
                                                 : 'Xem đánh giá'
-                                            : widget.transaction.status ==
-                                                    'canceled'
+                                            : transaction.status == 'CANCELLED'
                                                 ? 'Mua lại'
                                                 : '',
                                     style: const TextStyle(
