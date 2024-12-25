@@ -1,3 +1,4 @@
+import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/globals.dart';
 import 'package:carbon_credit_trading/models/comment.dart';
 import 'package:carbon_credit_trading/models/project.dart';
@@ -52,6 +53,9 @@ class BusinessDetailPage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final businessInfo = snapshot.data![0];
+            snapshot.data!;
+            final appUser = businessInfo[0] as AppUserDTO;
+            final company = businessInfo[1] as CompanyDTO;
             final projects = snapshot.data![1] as List<Project>;
 
             return Container(
@@ -75,27 +79,27 @@ class BusinessDetailPage extends StatelessWidget {
                                   const SizedBox(height: 20),
                                   customRichText(
                                     title: 'Tên doanh nghiệp:',
-                                    value: 'Renewable Biomass Energy Ventures',
+                                    value: company.name!,
                                   ),
                                   const SizedBox(height: 20),
                                   customRichText(
                                     title: 'Mã số thuế:',
-                                    value: '1029384756',
+                                    value: company.taxCode!,
                                   ),
                                   const SizedBox(height: 20),
                                   customRichText(
                                     title: 'Địa chỉ:',
-                                    value: 'Jakarta, Indonesia',
+                                    value: company.address!,
                                   ),
                                   const SizedBox(height: 20),
                                   customRichText(
                                     title: 'Ngành nghề kinh doanh:',
-                                    value: 'Năng lượng sinh khối và tái tạo',
+                                    value: company.industry!,
                                   ),
                                   const SizedBox(height: 20),
                                   customRichText(
                                     title: 'Email:',
-                                    value: 'andi@renewablebiomass.id',
+                                    value: company.email!,
                                   ),
                                   const SizedBox(height: 20),
                                   const Text(
@@ -107,12 +111,12 @@ class BusinessDetailPage extends StatelessWidget {
                                   const SizedBox(height: 10),
                                   customRichText(
                                     title: 'Họ và tên:',
-                                    value: 'Andi Pratama',
+                                    value: appUser.name!,
                                   ),
                                   const SizedBox(height: 10),
                                   customRichText(
                                     title: 'Số điện thoại:',
-                                    value: '+62 21 987 6543',
+                                    value: appUser.phone!,
                                   ),
                                 ],
                               ),
