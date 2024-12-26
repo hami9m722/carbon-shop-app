@@ -64,93 +64,91 @@ class BusinessDetailPage extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    SizedBox(
-                      child: Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 70),
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20),
-                                  customRichText(
-                                    title: 'Tên doanh nghiệp:',
-                                    value: company.name!,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  customRichText(
-                                    title: 'Mã số thuế:',
-                                    value: company.taxCode!,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  customRichText(
-                                    title: 'Địa chỉ:',
-                                    value: company.address!,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  customRichText(
-                                    title: 'Ngành nghề kinh doanh:',
-                                    value: company.industry!,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  customRichText(
-                                    title: 'Email:',
-                                    value: company.email!,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const Text(
-                                    'Thông tin người đại diện:',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontStyle: FontStyle.italic),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  customRichText(
-                                    title: 'Họ và tên:',
-                                    value: appUser.name!,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  customRichText(
-                                    title: 'Số điện thoại:',
-                                    value: appUser.phone!,
-                                  ),
-                                ],
-                              ),
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 70),
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20),
+                                customRichText(
+                                  title: 'Tên doanh nghiệp:',
+                                  value: company.name!,
+                                ),
+                                const SizedBox(height: 20),
+                                customRichText(
+                                  title: 'Mã số thuế:',
+                                  value: company.taxCode!,
+                                ),
+                                const SizedBox(height: 20),
+                                customRichText(
+                                  title: 'Địa chỉ:',
+                                  value: company.address!,
+                                ),
+                                const SizedBox(height: 20),
+                                customRichText(
+                                  title: 'Ngành nghề kinh doanh:',
+                                  value: company.industry!,
+                                ),
+                                const SizedBox(height: 20),
+                                customRichText(
+                                  title: 'Email:',
+                                  value: company.email!,
+                                ),
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'Thông tin người đại diện:',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                                const SizedBox(height: 10),
+                                customRichText(
+                                  title: 'Họ và tên:',
+                                  value: appUser.name!,
+                                ),
+                                const SizedBox(height: 10),
+                                customRichText(
+                                  title: 'Số điện thoại:',
+                                  value: appUser.phone!,
+                                ),
+                              ],
                             ),
                           ),
-                          Positioned(
-                            top: 5,
-                            left: 20,
-                            child: GestureDetector(
-                              key: userInfoKey,
-                              onTap: () {
-                                RenderBox renderBox = userInfoKey
-                                    .currentContext!
-                                    .findRenderObject() as RenderBox;
-                                Offset offset =
-                                    renderBox.localToGlobal(Offset.zero);
+                        ),
+                        Positioned(
+                          top: 5,
+                          left: 20,
+                          child: GestureDetector(
+                            key: userInfoKey,
+                            onTap: () {
+                              RenderBox renderBox = userInfoKey.currentContext!
+                                  .findRenderObject() as RenderBox;
+                              Offset offset =
+                                  renderBox.localToGlobal(Offset.zero);
 
-                                double top = offset.dy + renderBox.size.height;
+                              double top = offset.dy + renderBox.size.height;
 
-                                CustomMenuWidget.showCustomMenu(context,
-                                    left: 0,
-                                    top: top + 10,
-                                    isBusinessDetailPage: true);
-                              },
-                              child: const CircleAvatar(
-                                radius: 50,
-                                backgroundColor:
-                                    Color.fromARGB(255, 200, 200, 200),
-                                child: Icon(Icons.person, size: 40),
-                              ),
+                              CustomMenuWidget.showCustomMenu(context,
+                                  left: 0,
+                                  top: top + 10,
+                                  isBusinessDetailPage: true);
+                            },
+                            child: const CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                                  Color.fromARGB(255, 200, 200, 200),
+                              child: Icon(Icons.person, size: 40),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 25),
                     const Padding(

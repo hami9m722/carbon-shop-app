@@ -16,7 +16,6 @@ class ChangeProfilePage extends StatefulWidget {
 }
 
 class _ChangeProfilePageState extends State<ChangeProfilePage> {
-  // Text controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController companyNameController = TextEditingController();
   final TextEditingController taxCodeController = TextEditingController();

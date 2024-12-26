@@ -114,7 +114,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(
                   child: Text(
-                'Không có dự án nào bị hủy',
+                'Không có dự án nào thích',
                 textAlign: TextAlign.center,
                 softWrap: true,
                 style: AppTextStyles.normalText,
