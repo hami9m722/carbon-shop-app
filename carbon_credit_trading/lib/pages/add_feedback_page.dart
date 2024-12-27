@@ -1,4 +1,8 @@
 import 'dart:io';
+import 'package:carbon_credit_trading/api/api.dart';
+import 'package:carbon_credit_trading/extensions/file_id.dart';
+import 'package:carbon_credit_trading/models/transaction.dart';
+import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/add_file_widget.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
@@ -15,7 +19,9 @@ import 'package:flutter/material.dart';
 */
 
 class AddFeedbackPage extends StatefulWidget {
-  const AddFeedbackPage({super.key});
+  final Transaction transaction;
+
+  const AddFeedbackPage({super.key, required this.transaction});
 
   @override
   createState() => _AddFeedbackPageState();
@@ -25,6 +31,7 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
   List<File> imageList = [];
   File? video;
   double rating = 0.0;
+  final TextEditingController _controller = TextEditingController();
 
   void _handleImageListChanged(List<File> newList) {
     setState(() {
@@ -44,6 +51,18 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
     });
   }
 
+  Future<void> addFeedback() async {
+    var images = await Future.wait(imageList
+        .map((image) async => await fileControllerApi.uploadFile(image)));
+    await buyerControllerApi.reviewProject(
+      widget.transaction.projectInfo.projectId!,
+      BuyerReviewProjectDTO(
+          images: images,
+          rate: rating.ceil(),
+          message: _controller.text.trim()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,83 +76,66 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
               child: Text(
-                'Đánh giá doanh nghiệp bán',
+                'Đánh giá doanh nghiệp bán và dự án',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               color: Colors.white,
-              child: const Column(
+              width: double.infinity,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Doanh nghiệp bán:',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Tên doanh nghiệp: Coastal Mangrove Restoration Initiative',
-                    style: TextStyle(fontSize: 16),
+                    'Tên doanh nghiệp: ${widget.transaction.projectInfo.company?.name}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Mã số thuế: 1122334455',
-                    style: TextStyle(fontSize: 16),
+                    'Mã số thuế: ${widget.transaction.projectInfo.company?.taxCode}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Địa chỉ: Bangkok, Thái Lan',
-                    style: TextStyle(fontSize: 16),
+                    'Địa chỉ: ${widget.transaction.projectInfo.company?.address}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              child: TextField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Đánh giá của bạn',
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-              child: Text(
-                'Đánh giá dự án',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              width: double.infinity,
               color: Colors.white,
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Thông tin dự án:',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Tên dự án: REDD+ Bảo tồn rừng ngập mặn Thái Lan',
-                    style: TextStyle(fontSize: 16),
+                    'Tên dự án: ${widget.transaction.projectName}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Vị trí: Ven biển Thái Lan',
-                    style: TextStyle(fontSize: 16),
+                    'Vị trí: ${widget.transaction.projectInfo.location}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Quy mô: 20000 ha',
-                    style: TextStyle(fontSize: 16),
+                    'Quy mô:  ${widget.transaction.projectInfo.scale}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Thời gian: 2021-2041',
-                    style: TextStyle(fontSize: 16),
+                    'Thời gian:  ${widget.transaction.projectInfo.startDate} -  ${widget.transaction.projectInfo.endDate}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Phạm vi: Giảm 60000 tấn CO2/năm, bảo vệ hệ sinh thái ven biển',
-                    style: TextStyle(fontSize: 16),
+                    'Phạm vi:  ${widget.transaction.projectInfo.scope}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),
@@ -153,11 +155,12 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
               child: TextField(
+                controller: _controller,
                 maxLines: 5,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Đánh giá của bạn',
                   fillColor: Colors.white,
@@ -180,7 +183,8 @@ class _AddFeedbackPageState extends State<AddFeedbackPage> {
                 width: MediaQuery.of(context).size.width,
                 child: TextButton(
                   onPressed: () {
-                    //handle when click submit button
+                    addFeedback();
+                    Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.greenButton,

@@ -1,13 +1,11 @@
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/globals.dart';
-import 'package:carbon_credit_trading/models/comment.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:carbon_credit_trading/widgets/custom_menu_widget.dart';
 import 'package:carbon_credit_trading/widgets/custom_ricktext.dart';
-import 'package:carbon_credit_trading/widgets/feedback_item.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_credit_trading/extensions/dto.dart';

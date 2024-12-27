@@ -1,3 +1,5 @@
+import 'package:carbon_credit_trading/extensions/dto.dart';
+import 'package:carbon_credit_trading/extensions/file_id.dart';
 import 'package:carbon_credit_trading/models/comment.dart';
 import 'package:carbon_credit_trading/widgets/full_screen_view.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +80,7 @@ class FeedbackItem extends StatelessWidget {
                       itemBuilder: (context, imgIndex) {
                         return GestureDetector(
                           onTap: () {
-                            showFullScreen(
-                                context, feedback.images, imgIndex);
+                            showFullScreen(context, feedback.images, imgIndex);
                           },
                           child: Padding(
                             padding:
@@ -88,7 +89,10 @@ class FeedbackItem extends StatelessWidget {
                               width: 150,
                               color: Colors.grey[300],
                               child: Center(
-                                child: Text(feedback.images[imgIndex]),
+                                child: Image.network(
+                                  feedback.images.length.toString(),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),

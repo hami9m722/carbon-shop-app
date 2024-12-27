@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/globals.dart';
-import 'package:carbon_credit_trading/services/check_validate.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';

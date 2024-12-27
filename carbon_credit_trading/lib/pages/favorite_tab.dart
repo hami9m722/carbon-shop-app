@@ -6,7 +6,6 @@ import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/theme/colors.dart';
 import 'package:carbon_credit_trading/theme/text_styles.dart';
 import 'package:carbon_credit_trading/widgets/project_item.dart';
-import 'package:carbon_credit_trading/extensions/dto.dart';
 import 'package:flutter/material.dart';
 
 // all approved project (name, price, first project image)

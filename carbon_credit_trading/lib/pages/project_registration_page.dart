@@ -134,20 +134,24 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
       appBar: const CustomAppBar(
         title: "Đăng ký dự án",
       ),
-      body: processing == null ? buildPageView() : FutureBuilder(future: processing, builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Có lỗi xảy ra: ${snapshot.error}"),
-          );
-        }
-        Navigator.pop(context);
-        return const Center(
-          child: Text("Đăng ký dự án thành công"),
-        );h
-      }),
+      body: processing == null
+          ? buildPageView()
+          : FutureBuilder(
+              future: processing,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Có lỗi xảy ra: ${snapshot.error}"),
+                  );
+                }
+                Navigator.pop(context);
+                return const Center(
+                  child: Text("Đăng ký dự án thành công"),
+                );
+              }),
     );
   }
 
