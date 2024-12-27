@@ -80,7 +80,12 @@ class FeedbackItem extends StatelessWidget {
                       itemBuilder: (context, imgIndex) {
                         return GestureDetector(
                           onTap: () {
-                            showFullScreen(context, feedback.images, imgIndex);
+                            showFullScreen(
+                                context,
+                                feedback.images
+                                    .map((image) => image.toFilePath())
+                                    .toList(),
+                                imgIndex);
                           },
                           child: Padding(
                             padding:
@@ -90,7 +95,7 @@ class FeedbackItem extends StatelessWidget {
                               color: Colors.grey[300],
                               child: Center(
                                 child: Image.network(
-                                  feedback.images.length.toString(),
+                                  feedback.images[imgIndex].toFilePath(),
                                   fit: BoxFit.cover,
                                 ),
                               ),

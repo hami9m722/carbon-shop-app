@@ -3,7 +3,7 @@ class Comment {
   final String userImage;
   final String date;
   final String review;
-  final List<String> images;
+  final List<int> images;
   final int rating;
   final List<String> likes;
   final List<String> dislikes;

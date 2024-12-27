@@ -113,7 +113,7 @@ class SellerPage extends StatelessWidget {
                                 Expanded(
                                   child: _buildTransactionCard(
                                     'Giao dịch đang chờ duyệt',
-                                    '0',
+                                    '',
                                     onTapped: () {
                                       Navigator.push(
                                         context,
@@ -131,7 +131,7 @@ class SellerPage extends StatelessWidget {
                                 Expanded(
                                   child: _buildTransactionCard(
                                     'Giao dịch đã hoàn thành',
-                                    '0',
+                                    '',
                                     onTapped: () {
                                       Navigator.push(
                                         context,
@@ -152,7 +152,7 @@ class SellerPage extends StatelessWidget {
                                 Expanded(
                                   child: _buildTransactionCard(
                                     'Giao dịch đã hủy',
-                                    '0',
+                                    '',
                                     onTapped: () {
                                       Navigator.push(
                                         context,
@@ -168,7 +168,7 @@ class SellerPage extends StatelessWidget {
                                 Expanded(
                                   child: _buildTransactionCard(
                                     'Liên hệ',
-                                    '0',
+                                    '',
                                     onTapped: () {
                                       Navigator.push(
                                         context,

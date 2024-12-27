@@ -158,7 +158,7 @@ class _ApproveTransactionPageState extends State<ApproveTransactionPage> {
                       return const Center(
                           child: Text('Có lỗi xảy ra khi xử lý giao dịch'));
                     } else {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       return const Center(
                           child: Text('Giao dịch đã được xử lý thành công'));
                     }

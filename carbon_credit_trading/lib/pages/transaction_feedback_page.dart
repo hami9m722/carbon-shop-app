@@ -16,7 +16,7 @@ class TransactionFeedbackPage extends StatelessWidget {
       date: '13/06/2019',
       review:
           'Dự án này không chỉ giúp giảm phát thải khí nhà kính mà còn đóng góp tích cực cho việc phát triển bền vững vùng ven biển.',
-      images: ['img1.jpg', 'img2.jpg', 'img3.jpg'],
+      images: [],
       rating: 3,
       likes: ['You', 'user1'],
       dislikes: ['user2'],

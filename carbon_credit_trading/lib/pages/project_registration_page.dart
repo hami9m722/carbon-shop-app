@@ -4,6 +4,7 @@ import 'package:carbon_credit_trading/api/api.dart';
 import 'package:carbon_credit_trading/models/project.dart';
 import 'package:carbon_credit_trading/pages/add_info_project_page.dart';
 import 'package:carbon_credit_trading/pages/credit_image_upload_page.dart';
+import 'package:carbon_credit_trading/pages/project_image_upload_page.dart';
 import 'package:carbon_credit_trading/services/service.dart';
 import 'package:carbon_credit_trading/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
   }
 
   void _nextPage() {
-    if (_currentIndex < 11) {
+    if (_currentIndex < 2) {
       setState(() {
         _currentIndex++;
       });
@@ -117,7 +118,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
         creditAmount: int.tryParse(_availableCredits),
         cert: _certificates,
         price: _price,
-        projectImages: _creditImages,
+        projectImages: _projectImages,
         methodPayment: _selectedPaymentMethodList.join(","),
       ));
     } catch (error) {
@@ -147,7 +148,7 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
                     child: Text("Có lỗi xảy ra: ${snapshot.error}"),
                   );
                 }
-                Navigator.pop(context);
+                // Navigator.pop(context);
                 return const Center(
                   child: Text("Đăng ký dự án thành công"),
                 );
@@ -200,23 +201,23 @@ class _ProjectRegistrationPageState extends State<ProjectRegistrationPage>
             });
           },
         ),
-        // ProjectImageUploadPage(
-        //   initialImages: _projectImages,
-        //   onPrevious: _previousPage,
-        //   onNext: (images) async {
-        //     List<int> imageIds = [];
-        //     for (final image in images) {
-        //       if (image is File) {
-        //         final imageId = await fileControllerApi.uploadFile(image);
-        //         imageIds.add(imageId);
-        //       }
-        //     }
-        //     setState(() {
-        //       _projectImages = imageIds;
-        //     });
-        //     _nextPage();
-        //   },
-        // ),
+        ProjectImageUploadPage(
+          initialImages: _projectImages,
+          onPrevious: _previousPage,
+          onNext: (images) async {
+            List<int> imageIds = [];
+            for (final image in images) {
+              if (image is File) {
+                final imageId = await fileControllerApi.uploadFile(image);
+                imageIds.add(imageId);
+              }
+            }
+            setState(() {
+              _projectImages = imageIds;
+            });
+            _nextPage();
+          },
+        ),
         CreditImageUploadPage(
           initialImages: _creditImages,
           onPrevious: _previousPage,

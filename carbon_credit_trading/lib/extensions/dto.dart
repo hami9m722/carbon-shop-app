@@ -44,7 +44,7 @@ extension ProjectReviewDTOMapper on ProjectReviewDTO {
       userImage: '',
       date: DateTime.timestamp().toString(),
       review: message ?? '',
-      images: [],
+      images: images,
       rating: rate ?? 0,
     );
   }

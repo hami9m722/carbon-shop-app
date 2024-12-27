@@ -40,14 +40,16 @@ class ProjectDetailPage extends StatefulWidget {
   final VoidCallback onChanged;
 
   const ProjectDetailPage(
-      {super.key, this.previousPage = '', required this.project, required this.onChanged});
+      {super.key,
+      this.previousPage = '',
+      required this.project,
+      required this.onChanged});
 
   @override
   createState() => _ProjectDetailPageState();
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
-
   Future<void>? processing;
 
   void showPurchaseDialog() {
@@ -255,85 +257,87 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
   }
 
   Widget buildMediatorFooter() {
-    return processing == null ? Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: TextButton(
-                onPressed: () async {
-                  await mediatorAuditControllerApi
-                      .rejectProject(widget.project.projectId!);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.close,
-                      color: Colors.white,
+    return processing == null
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () async {
+                      await mediatorAuditControllerApi
+                          .rejectProject(widget.project.projectId!);
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    SizedBox(width: 8),
-                    Text(
-                      'Từ chối',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Từ chối',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    processing = approve();
-                  });
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: AppColors.greenButton,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.check,
-                      color: Colors.white,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        processing = approve();
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: AppColors.greenButton,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    SizedBox(width: 8),
-                    Text(
-                      'Duyệt',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Duyệt',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ],
-        )) : FutureBuilder(future: processing, builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-          child: SizedBox(
-            width: double.infinity,
-            child: LinearProgressIndicator(),
-          ),
-        );
-      } else {
-        Navigator.pop(context);
-        return const SizedBox();
-      }
-    });
+              ],
+            ))
+        : FutureBuilder(
+            future: processing,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: LinearProgressIndicator(),
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            });
   }
 
   Future<void> approve() async {
-    await mediatorAuditControllerApi
-        .approveProject(widget.project.projectId!);
+    await mediatorAuditControllerApi.approveProject(widget.project.projectId!);
     widget.onChanged.call();
   }
 
@@ -392,7 +396,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                   builder: (context) => ChatPage(
                       chatWithUserId: widget.project.companyUser!.userId!,
                       chatWithUserName: widget.project.companyUser!.name!,
-                      chatWithUserAvatar: widget.project.companyUser!.avatar!.toFilePath()),
+                      chatWithUserAvatar:
+                          widget.project.companyUser!.avatar!.toFilePath()),
                 ),
               );
             },
